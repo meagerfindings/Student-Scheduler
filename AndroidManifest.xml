@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.NotesProvider"
+            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.notesprovider"
             android:name=".NotesProvider"
             android:exported="false" />
     </application>

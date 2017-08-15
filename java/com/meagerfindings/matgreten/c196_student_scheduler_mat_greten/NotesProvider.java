@@ -16,7 +16,7 @@ import android.support.annotation.Nullable;
 public class NotesProvider extends ContentProvider{
 
     //TODO: Refactor
-    private static final String AUTHORITY = "com.example.plainolnotes.notesprovider";
+    private static final String AUTHORITY = "com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.notesprovider";
     private static final String BASE_PATH = "notes";
     public static final Uri CONTENT_URI =
             Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH );
@@ -48,8 +48,8 @@ public class NotesProvider extends ContentProvider{
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query( Uri uri,String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        return database.query(DBOpenHelper.TABLE_NOTES, DBOpenHelper.ALL_COLUMNS, selection, null, null, null, DBOpenHelper.NOTE_CREATED +  " DESC");
     }
 
     @Nullable
@@ -60,17 +60,18 @@ public class NotesProvider extends ContentProvider{
 
     @Nullable
     @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+        long id = database.insert(DBOpenHelper.TABLE_NOTES, null, values);
+        return Uri.parse(BASE_PATH + "/" + id);
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return database.delete(DBOpenHelper.TABLE_NOTES, selection, selectionArgs);
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return database.update(DBOpenHelper.TABLE_NOTES, values, selection, selectionArgs);
     }
 }

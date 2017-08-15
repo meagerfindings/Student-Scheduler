@@ -1,10 +1,15 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.NotesProvider.*;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -12,6 +17,8 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        insertNote("New note");
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -24,6 +31,14 @@ public class HomeScreen extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    public void insertNote(String noteText) {
+        ContentValues values = new ContentValues();
+        values.put(DBOpenHelper.NOTE_TEXT, noteText);
+        Uri noteUri = getContentResolver().insert(CONTENT_URI, values);
+
+        Log.d("HomeScreenActivity", "Inserted note " + noteUri.getLastPathSegment());
     }
 
     @Override
