@@ -19,10 +19,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.notesprovider"
             android:name=".NotesProvider"
+            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.notesprovider"
             android:exported="false" />
+
+        <activity
+            android:name=".EditorActivity"
+            android:label="EditorActivity"
+            android:parentActivityName=".HomeScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.HomeScreen"/>
+            </activity>
     </application>
 
 </manifest>
