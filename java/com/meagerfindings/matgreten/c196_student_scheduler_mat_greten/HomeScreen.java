@@ -30,10 +30,7 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        String[] from = {DBOpenHelper.NOTE_TEXT};
-        int[] to = {R.id.tvNote};
-
-        cursorAdapter = new SimpleCursorAdapter(this, R.layout.note_list_item, null, from, to, 0);
+        cursorAdapter = new NotesCursorAdapter(this, null, 0);
 
         ListView list = (ListView) findViewById(android.R.id.list);
         list.setAdapter(cursorAdapter);
