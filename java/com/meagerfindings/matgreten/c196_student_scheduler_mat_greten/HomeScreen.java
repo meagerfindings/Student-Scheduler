@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,6 +39,16 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
         list.setAdapter(cursorAdapter);
 
         getLoaderManager().initLoader(0, null, this);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Intent intent = new Intent(HomeScreen.this, EditorActivity.class);
+                Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
+                intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+            }
+        });
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
