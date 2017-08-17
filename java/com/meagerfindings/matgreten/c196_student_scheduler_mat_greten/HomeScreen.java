@@ -144,4 +144,11 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
 
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+            restartLoader();
+        }
+    }
 }
