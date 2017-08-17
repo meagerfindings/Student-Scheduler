@@ -3,6 +3,7 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.NotesProvider.CONTENT_URI;
 
 public class HomeScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter cursorAdapter;
 
     @Override
@@ -41,14 +43,7 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
     }
 
     public void insertNote(String noteText) {
@@ -144,4 +139,9 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
         cursorAdapter.swapCursor(null);
     }
 
+    public void openEditorForNewNote(View view) {
+        Intent intent = new Intent(this, EditorActivity.class);
+
+        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
 }
