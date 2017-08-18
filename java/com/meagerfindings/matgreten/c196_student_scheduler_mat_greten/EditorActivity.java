@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -54,6 +55,9 @@ public class EditorActivity extends AppCompatActivity {
             case android.R.id.home:
                 finishEditing();
                 break;
+            case R.id.action_delete:
+                deleteNote();
+                break;
         }
 
         return true;
@@ -82,6 +86,10 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void deleteNote() {
+        getContentResolver().delete(NotesProvider.CONTENT_URI, noteFilter, null);
+        Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void updateNote(String noteText) {
@@ -103,6 +111,14 @@ public class EditorActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         finishEditing();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        if (action.equals(Intent.ACTION_EDIT)){
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        }
+        return true;
     }
 
 

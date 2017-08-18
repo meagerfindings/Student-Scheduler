@@ -17,4 +17,10 @@
         android:orderInCategory="102"
         android:title="@string/delete_all_notes"
         app:showAsAction="never" />
+
+    <item
+        android:actionLayout="@+id/action_delete"
+        android:title="@string/action_delete"
+        android:orderInCategory="103"
+        app:showAsAction="always" />
 </menu>
