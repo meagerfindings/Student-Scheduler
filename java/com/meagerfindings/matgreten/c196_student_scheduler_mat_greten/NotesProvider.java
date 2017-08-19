@@ -39,7 +39,7 @@ public class NotesProvider extends ContentProvider{
 
     @Override
     public boolean onCreate() {
-        DBOpenHelper helper = new DBOpenHelper(getContext());
+        Database helper = new Database(getContext());
 
         database = helper.getWritableDatabase();
 
@@ -53,10 +53,10 @@ public class NotesProvider extends ContentProvider{
     public Cursor query( Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         if (uriMatcher.match(uri) == NOTES_ID){
-            selection = DBOpenHelper.NOTE_ID + "=" + uri.getLastPathSegment();
+            selection = Database.TERM_ID + "=" + uri.getLastPathSegment();
         }
 
-        return database.query(DBOpenHelper.TABLE_NOTES, DBOpenHelper.ALL_COLUMNS, selection, null, null, null, DBOpenHelper.NOTE_CREATED +  " DESC");
+        return database.query(Database.TABLE_TERMS, Database.ALL_TERM_COLUMNS, selection, null, null, null, Database.TERM_CREATED +  " DESC");
     }
 
     @Nullable
@@ -68,17 +68,17 @@ public class NotesProvider extends ContentProvider{
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        long id = database.insert(DBOpenHelper.TABLE_NOTES, null, values);
+        long id = database.insert(Database.TABLE_TERMS, null, values);
         return Uri.parse(BASE_PATH + "/" + id);
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return database.delete(DBOpenHelper.TABLE_NOTES, selection, selectionArgs);
+        return database.delete(Database.TABLE_TERMS, selection, selectionArgs);
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return database.update(DBOpenHelper.TABLE_NOTES, values, selection, selectionArgs);
+        return database.update(Database.TABLE_TERMS, values, selection, selectionArgs);
     }
 }

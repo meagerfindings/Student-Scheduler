@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.NotesProvider.CONTENT_URI;
-
 public class EditorActivity extends AppCompatActivity {
 
     private String action;
@@ -36,12 +34,12 @@ public class EditorActivity extends AppCompatActivity {
             setTitle("New Note");
         } else {
             action = Intent.ACTION_EDIT;
-            noteFilter = DBOpenHelper.NOTE_ID + "=" + uri.getLastPathSegment();
+            noteFilter = Database.TERM_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, DBOpenHelper.ALL_COLUMNS, noteFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, Database.ALL_TERM_COLUMNS, noteFilter, null, null);
 
             cursor.moveToFirst();
-            oldText = cursor.getString(cursor.getColumnIndex(DBOpenHelper.NOTE_TEXT));
+            oldText = cursor.getString(cursor.getColumnIndex(Database.TERM_TITLE));
             editor.setText(oldText);
             editor.requestFocus();
         }
@@ -94,7 +92,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private void updateNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(DBOpenHelper.NOTE_TEXT, noteText);
+        values.put(Database.TERM_TITLE, noteText);
         getContentResolver().update(NotesProvider.CONTENT_URI, values, noteFilter, null);
 
         Toast.makeText(this, R.string.note_updated, Toast.LENGTH_SHORT).show();
@@ -103,7 +101,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private void insertNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(DBOpenHelper.NOTE_TEXT, noteText);
+        values.put(Database.TERM_TITLE, noteText);
         getContentResolver().insert(NotesProvider.CONTENT_URI, values);
         setResult(RESULT_OK);
     }

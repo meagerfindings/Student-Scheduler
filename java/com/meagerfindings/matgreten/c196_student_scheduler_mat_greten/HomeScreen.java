@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -59,7 +56,7 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
 
     public void insertNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(DBOpenHelper.NOTE_TEXT, noteText);
+        values.put(Database.TERM_TITLE, noteText);
         Uri noteUri = getContentResolver().insert(CONTENT_URI, values);
 
         assert noteUri != null;
