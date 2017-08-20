@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.NotesProvider.CONTENT_URI;
 
-public class HomeScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class TermsScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter cursorAdapter;
 
@@ -40,7 +40,7 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Intent intent = new Intent(HomeScreen.this, EditorActivity.class);
+                Intent intent = new Intent(TermsScreen.this, EditorActivity.class);
                 Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
                 intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
@@ -103,7 +103,7 @@ public class HomeScreen extends AppCompatActivity implements android.app.LoaderM
                             getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
                             restartLoader();
 
-                            Toast.makeText(HomeScreen.this,
+                            Toast.makeText(TermsScreen.this,
                                     getString(R.string.all_deleted),
                                     Toast.LENGTH_SHORT).show();
                         }
