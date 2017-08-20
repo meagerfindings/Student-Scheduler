@@ -33,7 +33,7 @@ class NotesCursorAdapter extends CursorAdapter {
      * @param cursor  The cursor from which to get the data. The cursor is already
      *                moved to the correct position.
      * @param parent  The parent to which the new view is attached to
-     * @return the newly created view.
+     * @return the newly created view.jansdfm,nasdf,.,kjklj
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {

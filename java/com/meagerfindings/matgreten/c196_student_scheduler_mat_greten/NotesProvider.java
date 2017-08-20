@@ -17,7 +17,7 @@ public class NotesProvider extends ContentProvider{
 
     //TODO: Refactor
     private static final String AUTHORITY = "com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.notesprovider";
-    private static final String BASE_PATH = "notes";
+    private static final String BASE_PATH = "schedule";
     public static final Uri CONTENT_URI =
             Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH );
 
@@ -27,7 +27,7 @@ public class NotesProvider extends ContentProvider{
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static final String CONTENT_ITEM_TYPE = "Note";
+    public static final String CONTENT_ITEM_TYPE = "Term";
 
     //TODO: Refactor
     static {
