@@ -10,4 +10,6 @@
     <string name="note_updated">Note udpated</string>
     <string name="action_delete">action_delete</string>
     <string name="note_deleted">Note deleted</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="student_scheduler">Sudent Scheduler</string>
 </resources>
