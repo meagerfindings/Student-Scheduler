@@ -28,7 +28,7 @@ public class TermsScreen extends AppCompatActivity implements android.app.Loader
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_terms_screen);
 
         cursorAdapter = new NotesCursorAdapter(this, null, 0);
 
