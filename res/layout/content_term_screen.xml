@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsScreen"
-    tools:showIn="@layout/activity_home_screen">
+    tools:showIn="@layout/activity_terms_screen">
 
     <TextView
         android:layout_width="wrap_content"
