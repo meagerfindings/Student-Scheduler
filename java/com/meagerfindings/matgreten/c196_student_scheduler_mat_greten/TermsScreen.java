@@ -19,7 +19,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.NotesProvider.CONTENT_URI;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleProvider.CONTENT_URI;
+
+//TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
 public class TermsScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1001;
