@@ -66,12 +66,9 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         Cursor returnedCursor;
 
-        System.out.println("SDGIUDGOI#IO#*(YTIO#HLK");
         System.out.println(uri.toString());
 
         //TODO figure out why line 74 is failing out. Currently our URI is: content://com.meagerfindings.matgreten.c196_student_scheduler_mat_greten/terms and we are failing to convert this to a long... which makes sense
-
-        long _id = ContentUris.parseId(uri);
 
         switch (stringUriMatcher.match(uri)){
             case TERM:
@@ -86,6 +83,7 @@ public class ScheduleProvider extends ContentProvider {
                 );
                 break;
             case TERM_ID:
+                long _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
                         ScheduleContract.TermEntry.TABLE_NAME,
                         projection,
@@ -108,6 +106,7 @@ public class ScheduleProvider extends ContentProvider {
                 );
                 break;
             case COURSE_ID:
+                _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
                         ScheduleContract.CourseEntry.TABLE_NAME,
                         projection,
@@ -130,6 +129,7 @@ public class ScheduleProvider extends ContentProvider {
                 );
                 break;
             case MENTOR_ID:
+                _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
                         ScheduleContract.MentorEntry.TABLE_NAME,
                         projection,
@@ -152,6 +152,7 @@ public class ScheduleProvider extends ContentProvider {
                 );
                 break;
             case ASSESSMENT_ID:
+                _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
                         ScheduleContract.AssessmentEntry.TABLE_NAME,
                         projection,
@@ -174,6 +175,7 @@ public class ScheduleProvider extends ContentProvider {
                 );
                 break;
             case COURSE_ALERT_ID:
+                _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
                         ScheduleContract.CourseAlertEntry.TABLE_NAME,
                         projection,
@@ -196,6 +198,7 @@ public class ScheduleProvider extends ContentProvider {
                 );
                 break;
             case ASSESSMENT_ALERT_ID:
+                _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
                         ScheduleContract.AssessmentAlertEntry.TABLE_NAME,
                         projection,
