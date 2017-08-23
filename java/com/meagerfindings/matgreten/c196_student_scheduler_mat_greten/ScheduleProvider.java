@@ -29,7 +29,7 @@ public class ScheduleProvider extends ContentProvider {
     private static final int ASSESSMENT_ALERT = 600;
     private static final int ASSESSMENT_ALERT_ID = 601;
 
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final UriMatcher stringUriMatcher = buildUriMatcher();
     private ScheduleDBHelper mOpenHelper;
 
     @Override
@@ -65,9 +65,15 @@ public class ScheduleProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         Cursor returnedCursor;
+
+        System.out.println("SDGIUDGOI#IO#*(YTIO#HLK");
+        System.out.println(uri.toString());
+
+        //TODO figure out why line 74 is failing out. Currently our URI is: content://com.meagerfindings.matgreten.c196_student_scheduler_mat_greten/terms and we are failing to convert this to a long... which makes sense
+
         long _id = ContentUris.parseId(uri);
 
-        switch (sUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)){
             case TERM:
                 returnedCursor = db.query(
                         ScheduleContract.TermEntry.TABLE_NAME,
@@ -211,7 +217,7 @@ public class ScheduleProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        switch (sUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)){
             case TERM:
                 return ScheduleContract.TermEntry.CONTENT_TYPE;
             case TERM_ID:
@@ -248,7 +254,7 @@ public class ScheduleProvider extends ContentProvider {
         long _id;
         Uri returnUri;
 
-        switch (sUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)){
             case TERM:
                 _id = db.insert(ScheduleContract.TermEntry.TABLE_NAME, null, contentValues);
                 if(_id > 0) {
@@ -311,7 +317,7 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int rows;
 
-        switch(sUriMatcher.match(uri)){
+        switch(stringUriMatcher.match(uri)){
             case TERM:
                 rows = db.update(ScheduleContract.TermEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
@@ -345,7 +351,7 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int rows; // Number of rows effected
 
-        switch(sUriMatcher.match(uri)) {
+        switch(stringUriMatcher.match(uri)) {
             case TERM:
                 rows = db.delete(ScheduleContract.TermEntry.TABLE_NAME, selection, selectionArgs);
                 break;

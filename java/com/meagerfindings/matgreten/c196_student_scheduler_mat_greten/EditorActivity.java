@@ -27,19 +27,19 @@ public class EditorActivity extends AppCompatActivity {
 
         Intent intent =  getIntent();
 
-        Uri uri = intent.getParcelableExtra(NotesProvider.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null){
             action = Intent.ACTION_INSERT;
             setTitle("New Note");
         } else {
             action = Intent.ACTION_EDIT;
-            noteFilter = Database.TERM_ID + "=" + uri.getLastPathSegment();
+            noteFilter = ScheduleContract.TermEntry.TERM_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, Database.ALL_TERM_COLUMNS, noteFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, ScheduleContract.TermEntry.ALL_TERM_COLUMNS, noteFilter, null, null);
 
             cursor.moveToFirst();
-            oldText = cursor.getString(cursor.getColumnIndex(Database.TERM_TITLE));
+            oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_TITLE));
             editor.setText(oldText);
             editor.requestFocus();
         }
@@ -84,7 +84,7 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void deleteNote() {
-        getContentResolver().delete(NotesProvider.CONTENT_URI, noteFilter, null);
+        getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, noteFilter, null);
         Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
@@ -92,8 +92,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private void updateNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(Database.TERM_TITLE, noteText);
-        getContentResolver().update(NotesProvider.CONTENT_URI, values, noteFilter, null);
+        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
+        getContentResolver().update(ScheduleContract.TermEntry.CONTENT_URI, values, noteFilter, null);
 
         Toast.makeText(this, R.string.note_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
@@ -101,8 +101,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private void insertNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(Database.TERM_TITLE, noteText);
-        getContentResolver().insert(NotesProvider.CONTENT_URI, values);
+        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
+        getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }
 

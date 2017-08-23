@@ -1,10 +1,12 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
@@ -16,50 +18,56 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleProvider.CONTENT_URI;
-
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
-public class TermsScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int EDITOR_REQUEST_CODE = 1001;
+public class TermsScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+    private static final int EDITOR_REQUEST_CODE = 100;
     private CursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms_screen);
+        setContentView(R.layout.term_list_item);
 
         cursorAdapter = new NotesCursorAdapter(this, null, 0);
 
-        ListView list = (ListView) findViewById(android.R.id.list);
-        list.setAdapter(cursorAdapter);
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor termCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_TERMS, null);
+
+        ListView termListView = (ListView) findViewById(R.id.termListView);
+
+        TermCursorAdapter termAdapter = new TermCursorAdapter(this, R.layout.term_list_item, termCursor, 0);
+        termListView.setAdapter(termAdapter);
+//        termAdapter.changeCursor(termCursor);
 
         getLoaderManager().initLoader(0, null, this);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Intent intent = new Intent(TermsScreen.this, EditorActivity.class);
-                Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
-                intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
-                startActivityForResult(intent, EDITOR_REQUEST_CODE);
-            }
-        });
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+//                Intent intent = new Intent(TermsScreen.this, EditorActivity.class);
+//                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
+//                intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
+//                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+//            }
+//        });
+//
+//
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
 
     }
 
     public void insertNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(Database.TERM_TITLE, noteText);
-        Uri noteUri = getContentResolver().insert(CONTENT_URI, values);
+        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
+        Uri noteUri = getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
 
         assert noteUri != null;
         Log.d("HomeScreenActivity", "Inserted note " + noteUri.getLastPathSegment());
@@ -102,7 +110,7 @@ public class TermsScreen extends AppCompatActivity implements android.app.Loader
                         if (button == DialogInterface.BUTTON_POSITIVE) {
 
                             //Insert Data management code here
-                            getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+                            getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, null, null);
                             restartLoader();
 
                             Toast.makeText(TermsScreen.this,
@@ -136,7 +144,7 @@ public class TermsScreen extends AppCompatActivity implements android.app.Loader
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, NotesProvider.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, ScheduleContract.TermEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override

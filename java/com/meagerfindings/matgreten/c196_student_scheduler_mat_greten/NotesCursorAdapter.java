@@ -49,7 +49,7 @@ class NotesCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        String noteText = cursor.getString(cursor.getColumnIndex(Database.TERM_TITLE));
+        String noteText = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_TITLE));
 
         int pos = noteText.indexOf(10);
 

@@ -25,7 +25,7 @@
             android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten"
             android:exported="false"
             android:protectionLevel="signature"
-            android:syncable="true"/>
+            android:syncable="true" />
 
         <activity
             android:name=".EditorActivity"
@@ -38,7 +38,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
