@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TermsActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,19 +26,42 @@
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
-
+        <activity
+            android:name=".TermsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity" />
+        </activity>
         <activity
             android:name=".TermEditorActivity"
             android:label="EditorActivity"
             android:parentActivityName=".TermsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermEditorActivity" />
+        </activity>
+        <!--<activity-->
+            <!--android:name=".MainActivity"-->
+            <!--android:label="@string/title_activity_main"-->
+            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <activity
+            android:name=".CoursesActivity"
+            android:label="EditorActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursesActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".CourseEditorActivity"
+            android:label="EditorActivity"
+            android:parentActivityName=".CoursesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity" />
+        </activity>
     </application>
 
 </manifest>

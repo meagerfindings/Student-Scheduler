@@ -54,7 +54,7 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Courses");
 
     }
@@ -78,10 +78,6 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         switch (id) {
             case R.id.action_settings:

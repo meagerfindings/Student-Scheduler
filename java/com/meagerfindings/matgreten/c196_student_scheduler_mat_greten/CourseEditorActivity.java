@@ -15,7 +15,7 @@ import android.widget.Toast;
  * Created by matgreten on 8/29/17.
  */
 
-class CourseEditorActivity extends AppCompatActivity{
+public class CourseEditorActivity extends AppCompatActivity{
     private String action;
     private EditText titleEditor;
     private EditText startEditor;

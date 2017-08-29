@@ -56,7 +56,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Terms");
 
     }
@@ -80,10 +80,6 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         switch (id) {
             case R.id.action_settings:
