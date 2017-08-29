@@ -1,7 +1,6 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,20 +17,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
-public class TermsScreen extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class TermsScreenActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EDITOR_REQUEST_CODE = 100;
     private CursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_list_item);
+        setContentView(R.layout.activity_term_screen);
 
         cursorAdapter = new NotesCursorAdapter(this, null, 0);
 
@@ -41,26 +39,25 @@ public class TermsScreen extends AppCompatActivity implements android.app.Loader
 
         ListView termListView = (ListView) findViewById(R.id.termListView);
 
-        TermCursorAdapter termAdapter = new TermCursorAdapter(this, R.layout.term_list_item, termCursor, 0);
+        TermCursorAdapter termAdapter = new TermCursorAdapter(this, R.layout.activity_term_screen, termCursor, 0);
         termListView.setAdapter(termAdapter);
-//        termAdapter.changeCursor(termCursor);
+        termAdapter.changeCursor(termCursor);
 
         getLoaderManager().initLoader(0, null, this);
 
-//        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-//                Intent intent = new Intent(TermsScreen.this, EditorActivity.class);
-//                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
-//                intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
-//                startActivityForResult(intent, EDITOR_REQUEST_CODE);
-//            }
-//        });
-//
-//
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Intent intent = new Intent(TermsScreenActivity.this, EditorActivity.class);
+                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
+                intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+            }
+        });
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Terms");
 
     }
 
@@ -70,7 +67,7 @@ public class TermsScreen extends AppCompatActivity implements android.app.Loader
         Uri noteUri = getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
 
         assert noteUri != null;
-        Log.d("HomeScreenActivity", "Inserted note " + noteUri.getLastPathSegment());
+        Log.d("TermScreenActivity", "Inserted term " + noteUri.getLastPathSegment());
     }
 
     @Override
@@ -113,7 +110,7 @@ public class TermsScreen extends AppCompatActivity implements android.app.Loader
                             getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, null, null);
                             restartLoader();
 
-                            Toast.makeText(TermsScreen.this,
+                            Toast.makeText(TermsScreenActivity.this,
                                     getString(R.string.all_deleted),
                                     Toast.LENGTH_SHORT).show();
                         }

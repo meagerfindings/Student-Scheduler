@@ -43,7 +43,7 @@ public class TermCursorAdapter extends ResourceCursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        return LayoutInflater.from(context).inflate(R.layout.term_list_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_term, parent, false);
     }
 
     /**
@@ -59,8 +59,4 @@ public class TermCursorAdapter extends ResourceCursorAdapter {
         String termTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
         tvTermTitle.setText(termTitle);
     }
-
-//    ScheduleDBHelper handler = new ScheduleDBHelper();
-//    SQLiteDatabase db = handler.getWritableDatabase();
-//    Cursor termCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_TERMS + "", null);
 }
