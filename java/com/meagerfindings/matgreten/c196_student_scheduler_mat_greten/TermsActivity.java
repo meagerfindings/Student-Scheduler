@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EDITOR_REQUEST_CODE = 100;
-    private CursorAdapter termCursorAdapter;
+    private CursorAdapter  termCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,13 +125,13 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     private void insertSampleData() {
         insertTerm("Simple Term");
         insertTerm("Multi-line\nterm");
-
-
+        
         restartLoader();
     }
 
     private void restartLoader() {
-        getLoaderManager().restartLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, TermsActivity.this);
+        startActivity(new Intent(this, TermsActivity.class));
     }
 
 
