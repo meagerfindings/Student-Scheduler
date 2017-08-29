@@ -19,4 +19,11 @@
     <string name="start_date">Start Date</string>
     <string name="term_start">Term Start</string>
     <string name="term_end">Term End</string>
+    <string name="course_title">Course Title</string>
+    <string name="course_start">Course Start</string>
+    <string name="course_end">Course End</string>
+    <string name="course_status">Course Status</string>
+    <string name="hyphen">-</string>
+    <string name="course_updated">Course udpated</string>
+    <string name="course_deleted">Course deleted</string>
 </resources>

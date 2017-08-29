@@ -4,30 +4,30 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvTermTitle"
+        android:id="@+id/tvCourseTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:layout_weight="1.70"
-        android:text="@string/term_title"
+        android:text="@string/course_title"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvTermStart"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvCourseStart"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:text="@string/term_start"
+        android:text="@string/course_start"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/termSeperator"
+        android:id="@+id/courseSeperator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
@@ -39,12 +39,24 @@
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/tvTermEnd"
+        android:id="@+id/tvCourseEnd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:layout_weight="0.86"
-        android:text="@string/term_end"
+        android:text="@string/course_end"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvCourseStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_weight="0.86"
+        android:text="@string/course_status"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"

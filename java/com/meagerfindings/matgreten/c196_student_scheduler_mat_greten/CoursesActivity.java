@@ -20,54 +20,52 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-//TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
-
-public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
-    private static final int EDITOR_REQUEST_CODE = 100;
-    private CursorAdapter termCursorAdapter;
+public class CoursesActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+    private static final int EDITOR_REQUEST_CODE = 1010;
+    private CursorAdapter courseCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_term_screen);
+        setContentView(R.layout.activity_course_screen);
 
-        termCursorAdapter = new TermCursorAdapter(this,R.layout.activity_term_screen, null, 0);
+        courseCursorAdapter = new CourseCursorAdapter(this,R.layout.activity_course_screen, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor termCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_TERMS, null);
+        Cursor courseCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_COURSES, null);
 
-        ListView termListView = (ListView) findViewById(R.id.termListView);
+        ListView courseListView = (ListView) findViewById(R.id.courseListView);
 
-        TermCursorAdapter termAdapter = new TermCursorAdapter(this, R.layout.activity_term_screen, termCursor, 0);
-        termListView.setAdapter(termAdapter);
-        termAdapter.changeCursor(termCursor);
+        CourseCursorAdapter courseAdapter = new CourseCursorAdapter(this, R.layout.activity_course_screen, courseCursor, 0);
+        courseListView.setAdapter(courseAdapter);
+        courseAdapter.changeCursor(courseCursor);
 
         getLoaderManager().initLoader(0, null, this);
 
-        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Intent intent = new Intent(TermsActivity.this, TermEditorActivity.class);
-                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
-                intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
+                Intent intent = new Intent(CoursesActivity.this, CourseEditorActivity.class);
+                Uri uri = Uri.parse(ScheduleContract.CourseEntry.CONTENT_URI + "/" + id);
+                intent.putExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Terms");
+        getSupportActionBar().setTitle("Courses");
 
     }
 
-    public void insertTerm(String noteText) {
+    public void insertCourse(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
-        Uri noteUri = getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
+        values.put(ScheduleContract.CourseEntry.COURSE_TITLE, noteText);
+        Uri noteUri = getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
 
         assert noteUri != null;
-        Log.d("TermScreenActivity", "Inserted term " + noteUri.getLastPathSegment());
+        Log.d("CourseScreenActivity", "Inserted course " + noteUri.getLastPathSegment());
     }
 
     @Override
@@ -92,14 +90,14 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
                 insertSampleData();
                 break;
             case R.id.action_delete_all:
-                deleteAllTerms();
+                deleteAllCourses();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteAllTerms() {
+    private void deleteAllCourses() {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -107,10 +105,10 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
                         if (button == DialogInterface.BUTTON_POSITIVE) {
 
                             //Insert Data management code here
-                            getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, null, null);
+                            getContentResolver().delete(ScheduleContract.CourseEntry.CONTENT_URI, null, null);
                             restartLoader();
 
-                            Toast.makeText(TermsActivity.this,
+                            Toast.makeText(CoursesActivity.this,
                                     getString(R.string.all_deleted),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -127,8 +125,8 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     }
 
     private void insertSampleData() {
-        insertTerm("Simple Term");
-        insertTerm("Multi-line\nterm");
+        insertCourse("Simple Course");
+        insertCourse("Multi-line\ncourse");
 
 
         restartLoader();
@@ -141,21 +139,21 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.TermEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, ScheduleContract.CourseEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-        termCursorAdapter.swapCursor(data);
+        courseCursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
-        termCursorAdapter.swapCursor(null);
+        courseCursorAdapter.swapCursor(null);
     }
 
-    public void openEditorForNewTerm(View view) {
-        Intent intent = new Intent(this, TermEditorActivity.class);
+    public void openEditorForNewCourse(View view) {
+        Intent intent = new Intent(this, CourseEditorActivity.class);
 
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }

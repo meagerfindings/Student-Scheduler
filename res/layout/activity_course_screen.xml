@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity">
+    tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursesActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -28,11 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:onClick="openEditorForNewTerm"
+        android:onClick="openEditorForNewCourse"
         app:backgroundTint="@android:color/darker_gray"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <include layout="@layout/content_term_screen" />
+    <include layout="@layout/content_course_screen" />
 
 
 </android.support.design.widget.CoordinatorLayout>
