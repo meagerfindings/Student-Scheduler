@@ -11,19 +11,19 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class EditorActivity extends AppCompatActivity {
+public class TermEditorActivity extends AppCompatActivity {
 
     private String action;
     private EditText editor;
-    private String noteFilter;
+    private String termFilter;
     private String oldText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_term_editor);
 
-        editor = (EditText) findViewById(R.id.editText);
+        editor = (EditText) findViewById(R.id.editTermTitle);
 
         Intent intent =  getIntent();
 
@@ -31,12 +31,12 @@ public class EditorActivity extends AppCompatActivity {
 
         if (uri == null){
             action = Intent.ACTION_INSERT;
-            setTitle("New Note");
+            setTitle("New Term");
         } else {
             action = Intent.ACTION_EDIT;
-            noteFilter = ScheduleContract.TermEntry.TERM_ID + "=" + uri.getLastPathSegment();
+            termFilter = ScheduleContract.TermEntry.TERM_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, ScheduleContract.TermEntry.ALL_TERM_COLUMNS, noteFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, ScheduleContract.TermEntry.ALL_TERM_COLUMNS, termFilter, null, null);
 
             cursor.moveToFirst();
             oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_TITLE));
@@ -84,7 +84,7 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void deleteNote() {
-        getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, noteFilter, null);
+        getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, termFilter, null);
         Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
@@ -93,7 +93,7 @@ public class EditorActivity extends AppCompatActivity {
     private void updateNote(String noteText) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
-        getContentResolver().update(ScheduleContract.TermEntry.CONTENT_URI, values, noteFilter, null);
+        getContentResolver().update(ScheduleContract.TermEntry.CONTENT_URI, values, termFilter, null);
 
         Toast.makeText(this, R.string.note_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);

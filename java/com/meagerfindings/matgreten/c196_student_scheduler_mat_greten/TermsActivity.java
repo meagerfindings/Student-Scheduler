@@ -22,16 +22,16 @@ import android.widget.Toast;
 
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
-public class TermsScreenActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EDITOR_REQUEST_CODE = 100;
-    private CursorAdapter cursorAdapter;
+    private CursorAdapter termCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_screen);
 
-        cursorAdapter = new NotesCursorAdapter(this, null, 0);
+        termCursorAdapter = new TermCursorAdapter(this,R.layout.activity_term_screen, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -48,7 +48,7 @@ public class TermsScreenActivity extends AppCompatActivity implements android.ap
         termListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Intent intent = new Intent(TermsScreenActivity.this, EditorActivity.class);
+                Intent intent = new Intent(TermsActivity.this, TermEditorActivity.class);
                 Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
@@ -110,7 +110,7 @@ public class TermsScreenActivity extends AppCompatActivity implements android.ap
                             getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, null, null);
                             restartLoader();
 
-                            Toast.makeText(TermsScreenActivity.this,
+                            Toast.makeText(TermsActivity.this,
                                     getString(R.string.all_deleted),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -146,16 +146,16 @@ public class TermsScreenActivity extends AppCompatActivity implements android.ap
 
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-        cursorAdapter.swapCursor(data);
+        termCursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
-        cursorAdapter.swapCursor(null);
+        termCursorAdapter.swapCursor(null);
     }
 
     public void openEditorForNewNote(View view) {
-        Intent intent = new Intent(this, EditorActivity.class);
+        Intent intent = new Intent(this, TermEditorActivity.class);
 
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
