@@ -130,7 +130,7 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
 
     private void restartLoader() {
 //        getLoaderManager().restartLoader(0, null, CoursesActivity.this);
-        startActivity(new Intent(this, TermsActivity.class));
+        startActivity(new Intent(this, CoursesActivity.class));
     }
 
 

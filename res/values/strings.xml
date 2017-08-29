@@ -26,4 +26,13 @@
     <string name="hyphen">-</string>
     <string name="course_updated">Course udpated</string>
     <string name="course_deleted">Course deleted</string>
+    <string name="example_date">Ex: 08/23/1987</string>
+    <string name="course_mentors">Course Mentors</string>
+    <string name="assessments">Assessments</string>
+    <string name="course_notes">Course Notes</string>
+    <string name="course_notes_hint">Add notes for this course here.</string>
+    <string name="course_alerts">Course Alerts</string>
+    <string name="start_alert">Start Alert</string>
+    <string name="end_alert">End Alert</string>
+    <string name="share_notes">Share Notes</string>
 </resources>
