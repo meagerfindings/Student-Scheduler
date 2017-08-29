@@ -242,7 +242,7 @@
         style="@android:style/Widget.DeviceDefault.Light.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/share_notes"
+        android:text="@string/add_note"
         app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintLeft_toRightOf="@+id/courseNotesLabel"
         app:layout_constraintRight_toRightOf="parent"

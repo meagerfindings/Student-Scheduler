@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
@@ -59,6 +61,11 @@ public class CourseEditorActivity extends AppCompatActivity{
             endEditor.setText(oldEnd);
 
             titleEditor.requestFocus();
+
+            Spinner statusMenu = (Spinner) findViewById(R.id.spinner);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.status_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            statusMenu.setAdapter(adapter);
         }
     }
 
