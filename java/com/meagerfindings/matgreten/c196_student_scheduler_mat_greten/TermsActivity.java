@@ -61,7 +61,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
     }
 
-    public void insertNote(String noteText) {
+    public void insertTerm(String noteText) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
         Uri noteUri = getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
@@ -92,14 +92,14 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
                 insertSampleData();
                 break;
             case R.id.action_delete_all:
-                deleteAllNotes();
+                deleteAllTerms();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteAllNotes() {
+    private void deleteAllTerms() {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -127,8 +127,8 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     }
 
     private void insertSampleData() {
-        insertNote("Simple Note");
-        insertNote("Multi-line\nnote");
+        insertTerm("Simple Term");
+        insertTerm("Multi-line\nterm");
 
 
         restartLoader();

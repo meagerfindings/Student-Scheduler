@@ -5,11 +5,10 @@
     <string name="delete_all_notes">Delete All Notes</string>
     <string name="all_deleted">\"All resources deleted.\"</string>
     <string name="are_you_sure">\"Are you sure?\"</string>
-    <string name="new_note">New Note</string>
     <string name="name">Name</string>
-    <string name="note_updated">Note updated</string>
+    <string name="term_updated">Term updated</string>
     <string name="action_delete">action_delete</string>
-    <string name="note_deleted">Note deleted</string>
+    <string name="term_deleted">Term deleted</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="student_scheduler">Student Scheduler</string>
     <string name="terms">Terms</string>
@@ -18,4 +17,6 @@
     <string name="term_title">Term Title</string>
     <string name="end_date">End Date</string>
     <string name="start_date">Start Date</string>
+    <string name="term_start">Term Start</string>
+    <string name="term_end">Term End</string>
 </resources>

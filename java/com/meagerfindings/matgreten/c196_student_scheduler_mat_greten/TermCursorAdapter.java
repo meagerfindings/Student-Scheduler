@@ -58,5 +58,13 @@ public class TermCursorAdapter extends ResourceCursorAdapter {
         TextView tvTermTitle = view.findViewById(R.id.tvTermTitle);
         String termTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
         tvTermTitle.setText(termTitle);
+
+        TextView tvTermStart = view.findViewById(R.id.tvTermStart);
+        String termStart = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_START));
+        tvTermStart.setText(termStart);
+
+        TextView tvTermEnd = view.findViewById(R.id.tvTermEnd);
+        String termEnd = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_END));
+        tvTermEnd.setText(termEnd);
     }
 }

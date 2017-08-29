@@ -14,16 +14,22 @@ import android.widget.Toast;
 public class TermEditorActivity extends AppCompatActivity {
 
     private String action;
-    private EditText editor;
+    private EditText titleEditor;
+    private EditText startEditor;
+    private EditText endEditor;
     private String termFilter;
     private String oldText;
+    private String oldStart;
+    private String oldEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_editor);
 
-        editor = (EditText) findViewById(R.id.editTermTitle);
+        titleEditor = (EditText) findViewById(R.id.editTermTitle);
+        startEditor = (EditText) findViewById(R.id.editTermStartDate);
+        endEditor = (EditText) findViewById(R.id.editTermEndDate);
 
         Intent intent =  getIntent();
 
@@ -38,10 +44,18 @@ public class TermEditorActivity extends AppCompatActivity {
 
             Cursor cursor = getContentResolver().query(uri, ScheduleContract.TermEntry.ALL_TERM_COLUMNS, termFilter, null, null);
 
+            assert cursor != null;
             cursor.moveToFirst();
+
             oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_TITLE));
-            editor.setText(oldText);
-            editor.requestFocus();
+            oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_START));
+            oldEnd = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_END));
+
+            titleEditor.setText(oldText);
+            startEditor.setText(oldStart);
+            endEditor.setText(oldEnd);
+
+            titleEditor.requestFocus();
         }
     }
 
@@ -54,7 +68,7 @@ public class TermEditorActivity extends AppCompatActivity {
                 finishEditing();
                 break;
             case R.id.action_delete:
-                deleteNote();
+                deleteTerm();
                 break;
         }
 
@@ -62,46 +76,56 @@ public class TermEditorActivity extends AppCompatActivity {
     }
 
     private void finishEditing(){
-        String newText = editor.getText().toString().trim();
+        String newTitle = titleEditor.getText().toString().trim();
+        String newStart = startEditor.getText().toString().trim();
+        String newEnd = endEditor.getText().toString().trim();
         switch (action){
             case Intent.ACTION_INSERT:
-                if (newText.length() == 0){
+                if (newTitle.length() == 0) {
+                    setResult(RESULT_CANCELED);
+                } else if (newStart.length() == 0){
+                    setResult(RESULT_CANCELED);
+                } else if (newEnd.length() == 0){
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertNote(newText);
+                    insertTerm(newTitle, newStart, newEnd);
                 }
                 break;
             case Intent.ACTION_EDIT:
-                if (newText.length() == 0) {
-                    deleteNote();
-                } else if (oldText.equals(newText)){
+                if (newTitle.length() == 0) {
+//                    deleteTerm();
+                } else if (oldText.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateNote(newText);
+                    updateTerm(newTitle, newStart, newEnd);
                 }
         }
         finish();
     }
 
-    private void deleteNote() {
+    private void deleteTerm() {
         getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, termFilter, null);
-        Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.term_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
     }
 
-    private void updateNote(String noteText) {
+    private void updateTerm(String termTitle, String termStart, String termEnd) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
+        values.put(ScheduleContract.TermEntry.TERM_TITLE, termTitle);
+        values.put(ScheduleContract.TermEntry.TERM_START, termStart);
+        values.put(ScheduleContract.TermEntry.TERM_END, termEnd);
         getContentResolver().update(ScheduleContract.TermEntry.CONTENT_URI, values, termFilter, null);
 
-        Toast.makeText(this, R.string.note_updated, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.term_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
-    private void insertNote(String noteText) {
+    private void insertTerm(String termTitle, String termStart, String termEnd) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
+        values.put(ScheduleContract.TermEntry.TERM_TITLE, termTitle);
+        values.put(ScheduleContract.TermEntry.TERM_START, termStart);
+        values.put(ScheduleContract.TermEntry.TERM_END, termEnd);
         getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }
