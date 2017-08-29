@@ -69,6 +69,36 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
                     ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_TIME + " TEXT, " +
                     ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";
 
+    private static final String CREATE_TABLE_COURSE_NOTES =
+            "CREATE TABLE " + ScheduleContract.CourseNoteEntry.TABLE_NAME + " (" +
+                    ScheduleContract.CourseNoteEntry.COURSE_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ScheduleContract.CourseNoteEntry.COURSE_NOTE_COURSE_FK + " INTEGER, " +
+                    ScheduleContract.CourseNoteEntry.COURSE_NOTE_TITLE + " TEXT, " +
+                    ScheduleContract.CourseNoteEntry.COURSE_NOTE_TEXT + " TEXT, " +
+                    ScheduleContract.CourseNoteEntry.COURSE_NOTE_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";
+
+    private static final String CREATE_TABLE_ASSESSMENT_NOTES =
+            "CREATE TABLE " + ScheduleContract.AssessmentNoteEntry.TABLE_NAME + " (" +
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " INTEGER, " +
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE + " TEXT, " +
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT + " TEXT, " +
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_CREATED+ " TEXT default CURRENT_TIMESTAMP" + ")";
+
+    private static final String CREATE_TABLE_COURSE_PHOTOS =
+            "CREATE TABLE " + ScheduleContract.CoursePhotoEntry.TABLE_NAME + " (" +
+                    ScheduleContract.CoursePhotoEntry.COURSE_PHOTO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ScheduleContract.CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " INTEGER, " +
+                    ScheduleContract.CoursePhotoEntry.COURSE_PHOTO + " BLOB, " +
+                    ScheduleContract.CoursePhotoEntry.COURSE_PHOTO_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";
+
+    private static final String CREATE_TABLE_ASSESSMENT_PHOTOS =
+            "CREATE TABLE " + ScheduleContract.AssessmentPhotoEntry.TABLE_NAME + " (" +
+                    ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " INTEGER, " +
+                    ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO + " BLOB, " +
+                    ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_CREATED+ " TEXT default CURRENT_TIMESTAMP" + ")";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_TERMS);
@@ -77,6 +107,10 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_ASSESSMENTS);
         db.execSQL(CREATE_TABLE_COURSE_ALERTS);
         db.execSQL(CREATE_TABLE_ASSESSMENT_ALERTS);
+        db.execSQL(CREATE_TABLE_COURSE_NOTES);
+        db.execSQL(CREATE_TABLE_ASSESSMENT_NOTES);
+        db.execSQL(CREATE_TABLE_COURSE_PHOTOS);
+        db.execSQL(CREATE_TABLE_ASSESSMENT_PHOTOS);
     }
 
     @Override
@@ -87,6 +121,12 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.AssessmentEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.CourseAlertEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME);
+        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.CourseNoteEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.AssessmentNoteEntry.TABLE_NAME);
+        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.CoursePhotoEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.AssessmentPhotoEntry.TABLE_NAME);
         onCreate(db);
     }
 
