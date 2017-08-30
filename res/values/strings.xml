@@ -23,7 +23,7 @@
     <string name="course_start">Course Start</string>
     <string name="course_end">Course End</string>
     <string name="course_status">Course Status</string>
-    <string name="hyphen">-</string>
+    <string name="hyphen">  -  </string>
     <string name="course_updated">Course udpated</string>
     <string name="course_deleted">Course deleted</string>
     <string name="example_date">Ex: 08/23/1987</string>
