@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Objects;
+
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.status_array;
+
 /**
  * Created by matgreten on 8/29/17.
  */
@@ -22,15 +26,22 @@ public class CourseEditorActivity extends AppCompatActivity{
     private EditText titleEditor;
     private EditText startEditor;
     private EditText endEditor;
+    private Spinner statusMenu;
     private String courseFilter;
     private String oldText;
     private String oldStart;
     private String oldEnd;
+    private String oldStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_editor);
+
+        statusMenu = (Spinner) findViewById(R.id.courseStatusSpinner);
+        ArrayAdapter<CharSequence> statusArrayAdapter = ArrayAdapter.createFromResource(this, status_array, android.R.layout.simple_spinner_item);
+        statusArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusMenu.setAdapter(statusArrayAdapter);
 
         titleEditor = (EditText) findViewById(R.id.editCourseTitle);
         startEditor = (EditText) findViewById(R.id.editCourseStartDate);
@@ -55,17 +66,26 @@ public class CourseEditorActivity extends AppCompatActivity{
             oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_START));
             oldEnd = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_END));
+            oldStatus = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_STATUS));
+
+            if (oldText == null) oldText = "";
+            if (oldStart == null) oldStart = "";
+            if (oldEnd == null) oldEnd = "";
+            if (oldStatus == null || oldStatus.isEmpty()) oldStatus = "Planned";
 
             titleEditor.setText(oldText);
             startEditor.setText(oldStart);
             endEditor.setText(oldEnd);
 
+            for(int i = 0; i < statusArrayAdapter.getCount();  i++){
+                if (Objects.equals(statusArrayAdapter.getItem(i).toString(), oldStatus)){
+                    statusMenu.setSelection(i);
+                    break;
+                }
+            }
+
             titleEditor.requestFocus();
 
-            Spinner statusMenu = (Spinner) findViewById(R.id.spinner);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.status_array, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            statusMenu.setAdapter(adapter);
         }
     }
 
@@ -89,6 +109,7 @@ public class CourseEditorActivity extends AppCompatActivity{
         String newTitle = titleEditor.getText().toString().trim();
         String newStart = startEditor.getText().toString().trim();
         String newEnd = endEditor.getText().toString().trim();
+        String newStatus = statusMenu.getSelectedItem().toString();
         switch (action){
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
@@ -98,7 +119,7 @@ public class CourseEditorActivity extends AppCompatActivity{
                 } else if (newEnd.length() == 0){
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertCourse(newTitle, newStart, newEnd);
+                    insertCourse(newTitle, newStart, newEnd, newStatus);
                 }
                 break;
             case Intent.ACTION_EDIT:
@@ -107,7 +128,7 @@ public class CourseEditorActivity extends AppCompatActivity{
                 } else if (oldText.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateCourse(newTitle, newStart, newEnd);
+                    updateCourse(newTitle, newStart, newEnd, newStatus);
                 }
         }
         finish();
@@ -120,22 +141,24 @@ public class CourseEditorActivity extends AppCompatActivity{
         finish();
     }
 
-    private void updateCourse(String courseTitle, String courseStart, String courseEnd) {
+    private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseTitle);
         values.put(ScheduleContract.CourseEntry.COURSE_START, courseStart);
         values.put(ScheduleContract.CourseEntry.COURSE_END, courseEnd);
+        values.put(ScheduleContract.CourseEntry.COURSE_STATUS, courseStatus);
         getContentResolver().update(ScheduleContract.CourseEntry.CONTENT_URI, values, courseFilter, null);
 
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
-    private void insertCourse(String courseTitle, String courseStart, String courseEnd) {
+    private void insertCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseTitle);
         values.put(ScheduleContract.CourseEntry.COURSE_START, courseStart);
         values.put(ScheduleContract.CourseEntry.COURSE_END, courseEnd);
+        values.put(ScheduleContract.CourseEntry.COURSE_STATUS, courseStatus);
         getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }

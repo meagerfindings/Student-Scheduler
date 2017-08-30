@@ -7,7 +7,7 @@
     <string name="are_you_sure">\"Are you sure?\"</string>
     <string name="name">Name</string>
     <string name="term_updated">Term updated</string>
-    <string name="action_delete">action_delete</string>
+    <string name="action_delete">Delete</string>
     <string name="term_deleted">Term deleted</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="student_scheduler">Student Scheduler</string>
