@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteX="0dp">
 
     <TextView
-        android:id="@+id/tvCourseTitle"
+        android:id="@+id/tvTermCourseTitle"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvCourseStart"
+        android:id="@+id/tvTermCourseStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -37,10 +37,10 @@
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCourseTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTermCourseTitle" />
 
     <TextView
-        android:id="@+id/courseSeperator"
+        android:id="@+id/termCourseSeperator"
         android:layout_width="5dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
@@ -52,11 +52,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintLeft_toRightOf="@+id/tvCourseStart"
-        app:layout_constraintTop_toBottomOf="@+id/tvCourseTitle" />
+        app:layout_constraintLeft_toRightOf="@+id/tvTermCourseStart"
+        app:layout_constraintTop_toBottomOf="@+id/tvTermCourseTitle" />
 
     <TextView
-        android:id="@+id/tvCourseEnd"
+        android:id="@+id/tvTermCourseEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
@@ -68,11 +68,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintLeft_toRightOf="@+id/courseSeperator"
-        app:layout_constraintTop_toTopOf="@+id/tvCourseStart" />
+        app:layout_constraintLeft_toRightOf="@+id/termCourseSeperator"
+        app:layout_constraintTop_toTopOf="@+id/tvTermCourseStart" />
 
     <TextView
-        android:id="@+id/tvCourseStatus"
+        android:id="@+id/tvTermCourseStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -83,6 +83,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintTop_toTopOf="@+id/tvCourseTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvTermCourseTitle"
         app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

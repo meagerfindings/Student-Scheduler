@@ -110,6 +110,7 @@ public class CourseEditorActivity extends AppCompatActivity{
         String newStart = startEditor.getText().toString().trim();
         String newEnd = endEditor.getText().toString().trim();
         String newStatus = statusMenu.getSelectedItem().toString();
+        String newTermID = "1";
         switch (action){
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
@@ -119,7 +120,7 @@ public class CourseEditorActivity extends AppCompatActivity{
                 } else if (newEnd.length() == 0){
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertCourse(newTitle, newStart, newEnd, newStatus);
+                    insertCourse(newTitle, newStart, newEnd, newStatus,newTermID);
                 }
                 break;
             case Intent.ACTION_EDIT:
@@ -128,7 +129,7 @@ public class CourseEditorActivity extends AppCompatActivity{
                 } else if (oldText.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateCourse(newTitle, newStart, newEnd, newStatus);
+                    updateCourse(newTitle, newStart, newEnd, newStatus, newTermID);
                 }
         }
         finish();
@@ -141,24 +142,26 @@ public class CourseEditorActivity extends AppCompatActivity{
         finish();
     }
 
-    private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus) {
+    private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, String termID) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseTitle);
         values.put(ScheduleContract.CourseEntry.COURSE_START, courseStart);
         values.put(ScheduleContract.CourseEntry.COURSE_END, courseEnd);
         values.put(ScheduleContract.CourseEntry.COURSE_STATUS, courseStatus);
+        values.put(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK, termID);
         getContentResolver().update(ScheduleContract.CourseEntry.CONTENT_URI, values, courseFilter, null);
 
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
-    private void insertCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus) {
+    private void insertCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, String termID) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseTitle);
         values.put(ScheduleContract.CourseEntry.COURSE_START, courseStart);
         values.put(ScheduleContract.CourseEntry.COURSE_END, courseEnd);
         values.put(ScheduleContract.CourseEntry.COURSE_STATUS, courseStatus);
+        values.put(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK, termID);
         getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }

@@ -1,18 +1,28 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class TermEditorActivity extends AppCompatActivity {
+public class TermEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final int EDITOR_REQUEST_CODE = 1011;
+    private CursorAdapter termCourseCursorAdapter;
     private String action;
     private EditText titleEditor;
     private EditText startEditor;
@@ -56,6 +66,36 @@ public class TermEditorActivity extends AppCompatActivity {
             endEditor.setText(oldEnd);
 
             titleEditor.requestFocus();
+
+            termCourseCursorAdapter = new TermCourseCursorAdapter(this,R.layout.activity_course_screen, null, 0);
+
+            String courseFK = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_ID));
+
+            ScheduleDBHelper handler = new ScheduleDBHelper(this);
+            SQLiteDatabase db = handler.getWritableDatabase();
+
+            String queryString = "SELECT * FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
+                                 ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + courseFK;
+
+            Cursor courseCursor = db.rawQuery(queryString, null);
+
+            ListView courseListView = (ListView) findViewById(R.id.termCourseListView);
+
+            TermCourseCursorAdapter courseAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, courseCursor, 0);
+            courseListView.setAdapter(courseAdapter);
+            courseAdapter.changeCursor(courseCursor);
+
+            getLoaderManager().initLoader(0, null, this);
+
+//            courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+//                    Intent intent = new Intent(CoursesActivity.this, CourseEditorActivity.class);
+//                    Uri uri = Uri.parse(ScheduleContract.CourseEntry.CONTENT_URI + "/" + id);
+//                    intent.putExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE, uri);
+//                    startActivityForResult(intent, EDITOR_REQUEST_CODE);
+//                }
+//            });
         }
     }
 
@@ -141,6 +181,22 @@ public class TermEditorActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;
+    }
+
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, ScheduleContract.CourseEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        termCourseCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        termCourseCursorAdapter.swapCursor(null);
     }
 
 
