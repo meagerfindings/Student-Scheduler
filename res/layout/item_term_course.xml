@@ -19,7 +19,7 @@
         android:textAlignment="textStart"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="24sp"
+        android:textSize="19sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

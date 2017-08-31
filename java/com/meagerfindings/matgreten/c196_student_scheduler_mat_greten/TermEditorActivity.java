@@ -65,9 +65,9 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
             startEditor.setText(oldStart);
             endEditor.setText(oldEnd);
 
-            titleEditor.requestFocus();
+//            titleEditor.requestFocus();
 
-            termCourseCursorAdapter = new TermCourseCursorAdapter(this,R.layout.activity_course_screen, null, 0);
+            termCourseCursorAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, null, 0);
 
             String courseFK = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_ID));
 
