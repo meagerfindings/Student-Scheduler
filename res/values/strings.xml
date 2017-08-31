@@ -39,4 +39,6 @@
     <string name="term">Term</string>
     <string name="course_in_term">Courses in Term</string>
     <string name="add_course_to_term">Add Course to Term</string>
+    <string name="edit_course">Edit Course</string>
+    <string name="edit_term">Edit Term</string>
 </resources>

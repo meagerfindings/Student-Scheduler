@@ -1,8 +1,13 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentUris;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by matgreten on 8/21/17.

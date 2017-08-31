@@ -129,5 +129,4 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + ScheduleContract.AssessmentPhotoEntry.TABLE_NAME);
         onCreate(db);
     }
-
 }

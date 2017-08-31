@@ -87,15 +87,15 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
             getLoaderManager().initLoader(0, null, this);
 
-//            courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-//                    Intent intent = new Intent(CoursesActivity.this, CourseEditorActivity.class);
-//                    Uri uri = Uri.parse(ScheduleContract.CourseEntry.CONTENT_URI + "/" + id);
-//                    intent.putExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE, uri);
-//                    startActivityForResult(intent, EDITOR_REQUEST_CODE);
-//                }
-//            });
+            courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                    Intent intent = new Intent(TermEditorActivity.this, CourseEditorActivity.class);
+                    Uri uri = Uri.parse(ScheduleContract.CourseEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE, uri);
+                    startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                }
+            });
         }
     }
 
