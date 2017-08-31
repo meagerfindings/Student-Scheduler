@@ -37,4 +37,6 @@
     <string name="share_notes">Share Notes</string>
     <string name="add_note">Add Note</string>
     <string name="term">Term</string>
+    <string name="course_in_term">Courses in Term</string>
+    <string name="add_course_to_term">Add Course to Term</string>
 </resources>
