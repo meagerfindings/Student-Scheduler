@@ -170,6 +170,12 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
         setResult(RESULT_OK);
     }
 
+    public void openEditorForNewCourse(View view) {
+        Intent intent = new Intent(this, CourseEditorActivity.class);
+
+        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
+
     @Override
     public void onBackPressed(){
         finishEditing();

@@ -59,13 +59,13 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
 
     }
 
-    public void insertCourse(String noteText) {
+    public void insertCourse(String courseText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.CourseEntry.COURSE_TITLE, noteText);
-        Uri noteUri = getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
+        values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseText);
+        Uri courseURI = getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
 
-        assert noteUri != null;
-        Log.d("CourseScreenActivity", "Inserted course " + noteUri.getLastPathSegment());
+        assert courseURI != null;
+        Log.d("CourseScreenActivity", "Inserted course " + courseURI.getLastPathSegment());
     }
 
     @Override
