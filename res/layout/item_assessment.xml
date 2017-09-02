@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/assessment_target_end"
+        android:text="@string/assessment_due_date"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"

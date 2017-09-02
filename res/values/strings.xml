@@ -42,7 +42,7 @@
     <string name="edit_course">Edit Course</string>
     <string name="edit_term">Edit Term</string>
     <string name="assessment_title">Assessment Title</string>
-    <string name="assessment_target_end">Assessment Target End Date</string>
+    <string name="course_end_date">Target Course End Date</string>
     <string name="assessment_alerts">Assessment Alerts</string>
     <string name="assessment_notes">Assessment Notes</string>
     <string name="assessment_notes_hint">Enter Assessment notes here</string>
@@ -50,4 +50,7 @@
     <string name="delete_all_data">Delete All Data</string>
     <string name="assessment_deleted">Assessment Deleted</string>
     <string name="assessment_updated">Assessment Updated</string>
+    <string name="assessment_due_date">Assessment Due Date</string>
+    <string name="assessment_alert">Assessment Alert</string>
+    <string name="example_date_time_hint">Ex: 09/02/2017 5:00 PM</string>
 </resources>

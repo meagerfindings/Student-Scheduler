@@ -38,7 +38,7 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         setContentView(R.layout.activity_assessment_editor);
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentTitle);
-        startEditor = (EditText) findViewById(R.id.editAssessmentStartDate);
+        startEditor = (EditText) findViewById(R.id.editAssessmentDueDateValue);
 
         Intent intent =  getIntent();
 
