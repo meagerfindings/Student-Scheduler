@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class TermEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int EDITOR_REQUEST_CODE = 1011;
-    private TermCursorAdapter termCourseCursorAdapter;
+    private TermCourseCursorAdapter termCourseCursorAdapter;
     private String action;
     private EditText titleEditor;
     private EditText startEditor;
@@ -64,7 +64,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
 //            titleEditor.requestFocus();
 
-            termCourseCursorAdapter = new TermCursorAdapter(this, R.layout.activity_term_editor, null, 0);
+            termCourseCursorAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, cursor, 0);
 
             String courseFK = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_ID));
 
@@ -78,7 +78,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
             ListView courseListView = (ListView) findViewById(R.id.termCourseListView);
 
-            TermCursorAdapter courseAdapter = new TermCursorAdapter(this, R.layout.activity_term_editor, courseCursor, 0);
+            TermCourseCursorAdapter courseAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, courseCursor, 0);
             courseListView.setAdapter(courseAdapter);
             courseAdapter.changeCursor(courseCursor);
 

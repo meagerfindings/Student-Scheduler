@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 /**
  * Created by matgreten on 8/22/17.
  */
@@ -43,15 +45,15 @@ public class TermCursorAdapter extends ResourceCursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView tvTermTitle = view.findViewById(R.id.tvTermTitle);
-        String termTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
+        String termTitle = cursor.getString(cursor.getColumnIndexOrThrow(TermEntry.TERM_TITLE));
         tvTermTitle.setText(termTitle);
 
         TextView tvTermStart = view.findViewById(R.id.tvTermStart);
-        String termStart = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_START));
+        String termStart = cursor.getString(cursor.getColumnIndexOrThrow(TermEntry.TERM_START));
         tvTermStart.setText(termStart);
 
         TextView tvTermEnd = view.findViewById(R.id.tvTermEnd);
-        String termEnd = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_END));
+        String termEnd = cursor.getString(cursor.getColumnIndexOrThrow(TermEntry.TERM_END));
         tvTermEnd.setText(termEnd);
     }
 }

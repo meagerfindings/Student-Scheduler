@@ -12,9 +12,9 @@ import android.widget.TextView;
  * Created by matgreten on 8/29/17.
  */
 
-public class CourseAssessmentCurosorAdapater extends ResourceCursorAdapter {
+public class TermCourseCursorAdapter extends ResourceCursorAdapter {
 
-    public CourseAssessmentCurosorAdapater(Context context, int layout, Cursor cursor, int flags) {
+    public TermCourseCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
         super(context, layout, cursor, flags);
     }
 
@@ -58,5 +58,6 @@ public class CourseAssessmentCurosorAdapater extends ResourceCursorAdapter {
         String courseStatus = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_STATUS));
         tvCourseStatus.setText(courseStatus);
     }
-    
+
 }
+
