@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract;
+import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R;
+
 /**
  * Created by matgreten on 8/29/17.
  */

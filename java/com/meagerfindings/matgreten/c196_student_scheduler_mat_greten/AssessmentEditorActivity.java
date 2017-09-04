@@ -15,6 +15,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract;
+import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleDBHelper;
+import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

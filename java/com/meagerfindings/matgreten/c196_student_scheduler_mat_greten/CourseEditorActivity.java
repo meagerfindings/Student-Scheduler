@@ -1,15 +1,12 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
-import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.status_array;
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.id.courseListView;
 
 /**
  * Created by matgreten on 8/29/17.
