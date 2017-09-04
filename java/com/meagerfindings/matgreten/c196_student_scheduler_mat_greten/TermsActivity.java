@@ -123,8 +123,8 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     }
 
     private void insertSampleData() {
-        insertTerm("Simple Term");
-        insertTerm("Multi-line\nterm");
+        insertTerm("First Term");
+        insertTerm("Second Term");
         
         restartLoader();
     }

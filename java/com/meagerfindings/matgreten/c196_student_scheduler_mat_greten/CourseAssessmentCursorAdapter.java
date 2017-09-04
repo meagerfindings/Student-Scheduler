@@ -12,9 +12,9 @@ import android.widget.TextView;
  * Created by matgreten on 8/29/17.
  */
 
-public class TermCourseCursorAdapter extends ResourceCursorAdapter {
+public class CourseAssessmentCursorAdapter extends ResourceCursorAdapter {
 
-    public TermCourseCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
+    public CourseAssessmentCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
         super(context, layout, cursor, flags);
     }
 
@@ -30,7 +30,7 @@ public class TermCourseCursorAdapter extends ResourceCursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        return LayoutInflater.from(context).inflate(R.layout.item_term_course, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_course_assessment, parent, false);
     }
 
     /**
@@ -42,21 +42,13 @@ public class TermCourseCursorAdapter extends ResourceCursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tvCourseTitle = view.findViewById(R.id.tvTermCourseTitle);
-        String courseTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_TITLE));
-        tvCourseTitle.setText(courseTitle);
+        TextView tvCourseAssessmentTitle = view.findViewById(R.id.tvCourseAssessmentTitle);
+        String assessmentTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
+        tvCourseAssessmentTitle.setText(assessmentTitle);
 
-        TextView tvCourseStart = view.findViewById(R.id.tvTermCourseStart);
-        String courseStart = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_START));
-        tvCourseStart.setText(courseStart);
-
-        TextView tvCourseEnd = view.findViewById(R.id.tvTermCourseEnd);
-        String courseEnd = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_END));
-        tvCourseEnd.setText(courseEnd);
-
-        TextView tvCourseStatus = view.findViewById(R.id.tvTermCourseStatus);
-        String courseStatus = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_STATUS));
-        tvCourseStatus.setText(courseStatus);
+        TextView tvCourseAssessmentTargetDateValue = view.findViewById(R.id.tvCourseAssessmentTargetDateValue);
+        String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
+        tvCourseAssessmentTargetDateValue.setText(assessmentDate);
     }
-    
+
 }

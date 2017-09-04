@@ -50,9 +50,9 @@ public class AssessmentCursorAdapter extends ResourceCursorAdapter {
         String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
         tvAssessmentTargetDateValue.setText(assessmentDate);
 
-        TextView tvAssessmentAlertValue = view.findViewById(R.id.tvAssessmentAlertValue);
-        String assessmentAlert = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
-        tvAssessmentAlertValue.setText(assessmentAlert);
+//        TextView tvAssessmentAlertValue = view.findViewById(R.id.tvAssessmentAlertValue);
+//        String assessmentAlert = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
+//        tvAssessmentAlertValue.setText(assessmentAlert);
 
         TextView tvAssessmentTermValue = view.findViewById(R.id.tvAssessmentTermValue);
         String assessmentTerm = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
@@ -61,6 +61,12 @@ public class AssessmentCursorAdapter extends ResourceCursorAdapter {
         TextView tvAssessmentCourseValue = view.findViewById(R.id.tvAssessmentCourseValue);
         String assessmentCourse = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_TITLE));
         tvAssessmentCourseValue.setText(assessmentCourse);
+
+//        TextView courseDueDateValue = view.findViewById(R.id.courseDueDateValue);
+//        String assessmentCourseDueDateValue = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_END));
+//        courseDueDateValue.setText(assessmentCourseDueDateValue);
+
+
     }
 
 }

@@ -1,16 +1,23 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,12 +26,15 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.status_array;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.id.courseListView;
 
 /**
  * Created by matgreten on 8/29/17.
  */
 
-public class CourseEditorActivity extends AppCompatActivity{
+public class CourseEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+    private CourseAssessmentCursorAdapter assessmentAdapter;
+    private static final int EDITOR_REQUEST_CODE = 3011;
     private String action;
     private EditText titleEditor;
     private EditText startEditor;
@@ -95,7 +105,36 @@ public class CourseEditorActivity extends AppCompatActivity{
 
             loadTermSpinnerData();
 
-//            titleEditor.requestFocus();
+            assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
+
+            String courseID = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_ID));
+
+            ScheduleDBHelper handler = new ScheduleDBHelper(this);
+            SQLiteDatabase db = handler.getWritableDatabase();
+
+            String queryString = "SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENTS + " WHERE " +
+                    ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " + courseID;
+
+            Cursor courseCursor = db.rawQuery(queryString, null);
+
+            ListView assessmentListView = (ListView) findViewById(R.id.courseAssessmentsListView);
+
+            CourseAssessmentCursorAdapter assessmentAdapter;
+            assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, courseCursor, 0);
+            assessmentListView.setAdapter(assessmentAdapter);
+            assessmentAdapter.changeCursor(courseCursor);
+
+            getLoaderManager().initLoader(0, null, this);
+
+            assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                    Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
+                    Uri uri = Uri.parse(ScheduleContract.AssessmentEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE, uri);
+                    startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                }
+            });
 
         }
     }
@@ -247,5 +286,20 @@ public class CourseEditorActivity extends AppCompatActivity{
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;
+    }
+
+    @Override
+    public android.content.Loader<Cursor>  onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, ScheduleContract.AssessmentEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        assessmentAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        assessmentAdapter.swapCursor(null);
     }
 }

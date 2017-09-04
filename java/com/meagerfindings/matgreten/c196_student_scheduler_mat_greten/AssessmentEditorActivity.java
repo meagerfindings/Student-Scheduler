@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,10 +23,11 @@ import java.util.Objects;
  * Created by matgreten on 8/29/17.
  */
 
-public class AssessmentEditorActivity extends AppCompatActivity{
+public class AssessmentEditorActivity extends AppCompatActivity {
     private String action;
     private EditText titleEditor;
     private EditText startEditor;
+    private TextView courseDueDateValue;
     private String assessmentFilter;
     private String oldText;
     private String oldStart;
@@ -44,11 +46,11 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         courseSpinner = (Spinner) findViewById(R.id.assessmentCourseSpinner);
 
 
-        Intent intent =  getIntent();
+        Intent intent = getIntent();
 
         Uri uri = intent.getParcelableExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE);
 
-        if (uri == null){
+        if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Assessment");
             loadCourseSpinnerData();
@@ -74,17 +76,25 @@ public class AssessmentEditorActivity extends AppCompatActivity{
 
             loadCourseSpinnerData();
 
+            String courseDueDate = getCourseDueDate();
+
+            courseDueDateValue = (TextView) findViewById(R.id.courseDueDateValue);
+
+            courseDueDateValue.setText(courseDueDate);
+
+
         }
     }
 
-    public List<String> getCourseTitles(){
+    public List<String> getCourseTitles() {
         ArrayList<String> courseTitles = new ArrayList<>();
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_TITLE + " FROM " + ScheduleContract.TABLE_COURSES;
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
-            do courseTitles.add(assessmentCourseCursor.getString(0)); while (assessmentCourseCursor.moveToNext());
+            do courseTitles.add(assessmentCourseCursor.getString(0));
+            while (assessmentCourseCursor.moveToNext());
         assessmentCourseCursor.close();
         db.close();
 
@@ -97,19 +107,19 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         courseTitlesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         courseSpinner.setAdapter(courseTitlesAdapter);
 
-        for(int i = 0; i < courseTitlesAdapter.getCount();  i++){
-            if (Objects.equals(courseSpinner.getItemAtPosition(i), oldCourse)){
+        for (int i = 0; i < courseTitlesAdapter.getCount(); i++) {
+            if (Objects.equals(courseSpinner.getItemAtPosition(i), oldCourse)) {
                 courseSpinner.setSelection(i);
                 break;
             }
         }
     }
 
-    public int getCourseKey(String searchTerm){
+    public int getCourseKey(String searchCourseString) {
         int courseKey = -1;
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_ID + " FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
-                ScheduleContract.CourseEntry.COURSE_TITLE + " = " + "'" + searchTerm + "'";
+                ScheduleContract.CourseEntry.COURSE_TITLE + " = " + "'" + searchCourseString + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
@@ -120,28 +130,45 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         return courseKey;
     }
 
-    public String courseTitleFromKey(String searchKey){
-        String courseTile = "";
+    public String courseTitleFromKey(String searchKey) {
+        String courseTitle = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_TITLE+ " FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
+        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_TITLE + " FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
                 ScheduleContract.CourseEntry.COURSE_ID + " = " + "'" + searchKey + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
-            courseTile = assessmentCourseCursor.getString(0);
+            courseTitle = assessmentCourseCursor.getString(0);
         assessmentCourseCursor.close();
         db.close();
 
-        System.out.println(courseTile);
+        System.out.println(courseTitle);
 
-        return courseTile;
+        return courseTitle;
+    }
+
+    public String getCourseDueDate() {
+        String courseDueDate = "";
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_END +
+                " FROM " + ScheduleContract.TABLE_COURSES +
+                " WHERE " + ScheduleContract.CourseEntry.COURSE_ID + " = " + getCourseKey(courseSpinner.getSelectedItem().toString());
+
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
+        if (assessmentCourseCursor.moveToFirst())
+          courseDueDate = assessmentCourseCursor.getString(0);
+        assessmentCourseCursor.close();
+        db.close();
+
+        return courseDueDate;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finishEditing();
                 break;
@@ -152,15 +179,15 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         return true;
     }
 
-    private void finishEditing(){
+    private void finishEditing() {
         String newTitle = titleEditor.getText().toString().trim();
         String newTargetEndDate = startEditor.getText().toString().trim();
         int newCourseID = getCourseKey(courseSpinner.getSelectedItem().toString());
-        switch (action){
+        switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newTargetEndDate.length() == 0){
+                } else if (newTargetEndDate.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
                     insertAssessment(newTitle, newTargetEndDate, newCourseID);
@@ -169,7 +196,7 @@ public class AssessmentEditorActivity extends AppCompatActivity{
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteAssessment();
-                } else if (oldText.equals(newTitle) && oldStart.equals(newTargetEndDate)){
+                } else if (oldText.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateAssessment(newTitle, newTargetEndDate, newCourseID);
@@ -185,7 +212,7 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         finish();
     }
 
-    private void updateAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID){
+    private void updateAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
         values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
@@ -196,7 +223,7 @@ public class AssessmentEditorActivity extends AppCompatActivity{
         setResult(RESULT_OK);
     }
 
-    private void insertAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID){
+    private void insertAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
         values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
@@ -206,13 +233,13 @@ public class AssessmentEditorActivity extends AppCompatActivity{
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finishEditing();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        if (action.equals(Intent.ACTION_EDIT)){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;

@@ -166,7 +166,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/courseStatus" />
 
             <TextView
-                android:id="@+id/courseAssessments"
+                android:id="@+id/courseAssessmentsLabel"
                 android:layout_width="133dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="16dp"
@@ -177,6 +177,15 @@
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/courseMentors" />
+
+            <ListView
+                android:id="@+id/courseAssessmentsListView"
+                android:layout_width="368dp"
+                android:layout_height="287dp"
+                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/courseAssessmentsLabel" />
 
             <TextView
                 android:id="@+id/courseNotesLabel"
@@ -189,7 +198,7 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseAssessments" />
+                app:layout_constraintTop_toBottomOf="@+id/courseAssessmentsListView" />
 
             <EditText
                 android:id="@+id/editCourseNotes"
@@ -281,13 +290,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:text="@string/add_note"
                 app:layout_constraintBottom_toTopOf="@+id/editCourseNotes"
                 app:layout_constraintHorizontal_bias="0.904"
                 app:layout_constraintLeft_toRightOf="@+id/courseNotesLabel"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseAssessments" />
+                app:layout_constraintRight_toRightOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

@@ -20,7 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class AssessmentActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class AssessmentActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
     private CursorAdapter assessmentCursorAdapter;
 
@@ -29,15 +29,31 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_screen);
 
-        assessmentCursorAdapter = new AssessmentCursorAdapter(this,R.layout.activity_assessment_screen, null, 0);
+        assessmentCursorAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_screen, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-//        Cursor assessmentCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENTS, null);
-        String sqlQuery = "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS + " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME + " ON " +
-                ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
-                ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME + " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." +
-                ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
+        String sqlQuery =
+                "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS +
+                        " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
+                        " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
+                        ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
+                        ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
+                        " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
+                        ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
+
+//        String sqlQuery = "SELECT * FROM ((" + ScheduleContract.TABLE_ASSESSMENTS +
+//            " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
+//            " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
+//            ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
+//            ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
+//            " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
+//            ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID + ")" +
+//            " INNER JOIN " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME +
+//            " ON " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME + "." + ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " +
+//            ScheduleContract.AssessmentEntry.TABLE_NAME + "." + ScheduleContract.AssessmentEntry.ASSESSMENT_ID;
+
+        System.out.println(sqlQuery);
 
         Cursor assessmentCursor = db.rawQuery(sqlQuery, null);
 
@@ -49,9 +65,9 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
         getLoaderManager().initLoader(0, null, this);
 
-        assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AssessmentActivity.this, AssessmentEditorActivity.class);
                 Uri uri = Uri.parse(ScheduleContract.AssessmentEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE, uri);
@@ -60,7 +76,6 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Assessments");
 
     }
@@ -76,7 +91,6 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home_screen, menu);
         return true;
     }
@@ -163,7 +177,7 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }
