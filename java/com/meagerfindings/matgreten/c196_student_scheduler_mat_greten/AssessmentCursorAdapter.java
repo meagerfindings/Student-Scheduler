@@ -54,13 +54,13 @@ public class AssessmentCursorAdapter extends ResourceCursorAdapter {
         String assessmentAlert = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
         tvAssessmentAlertValue.setText(assessmentAlert);
 
-        TextView tvAssessmentTermLabel = view.findViewById(R.id.tvAssessmentTermLabel);
+        TextView tvAssessmentTermValue = view.findViewById(R.id.tvAssessmentTermValue);
         String assessmentTerm = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
-        tvAssessmentTermLabel.setText(assessmentTerm);
+        tvAssessmentTermValue.setText(assessmentTerm);
 
-        TextView tvAssessmentCourseLabel = view.findViewById(R.id.tvAssessmentCourseLabel);
+        TextView tvAssessmentCourseValue = view.findViewById(R.id.tvAssessmentCourseValue);
         String assessmentCourse = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_TITLE));
-        tvAssessmentCourseLabel.setText(assessmentCourse);
+        tvAssessmentCourseValue.setText(assessmentCourse);
     }
 
 }
