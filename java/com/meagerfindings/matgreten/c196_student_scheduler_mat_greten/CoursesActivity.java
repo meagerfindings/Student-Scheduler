@@ -20,7 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class CoursesActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class CoursesActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
     private CursorAdapter courseCursorAdapter;
 
@@ -29,7 +29,7 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_screen);
 
-        courseCursorAdapter = new CourseCursorAdapter(this,R.layout.activity_course_screen, null, 0);
+        courseCursorAdapter = new CourseCursorAdapter(this, R.layout.activity_course_screen, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -43,9 +43,9 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
 
         getLoaderManager().initLoader(0, null, this);
 
-        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(CoursesActivity.this, CourseEditorActivity.class);
                 Uri uri = Uri.parse(ScheduleContract.CourseEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE, uri);
@@ -121,9 +121,8 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
     }
 
     private void insertSampleData() {
-        insertCourse("Simple Course");
-        insertCourse("Multi-line\ncourse");
-
+        insertCourse("First Course");
+        insertCourse("Second course");
 
         restartLoader();
     }
@@ -157,7 +156,7 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }

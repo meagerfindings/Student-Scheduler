@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract;
-import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R;
-
 /**
  * Created by matgreten on 8/29/17.
  */
 
-public class AssessmentCursorAdapter extends ResourceCursorAdapter {
+public class AssessmentNotesCursorAdapter extends ResourceCursorAdapter {
 
-    public AssessmentCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
+    public AssessmentNotesCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
         super(context, layout, cursor, flags);
     }
 
@@ -33,7 +30,7 @@ public class AssessmentCursorAdapter extends ResourceCursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        return LayoutInflater.from(context).inflate(R.layout.item_assessment, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_assessment_note, parent, false);
     }
 
     /**
@@ -45,31 +42,14 @@ public class AssessmentCursorAdapter extends ResourceCursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tvAssessmentTitle = view.findViewById(R.id.tvAssessmentTitle);
-        String assessmentTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
-        tvAssessmentTitle.setText(assessmentTitle);
+        TextView tvAssessmentNoteTitle = view.findViewById(R.id.tvAssessmentNoteTitle);
+        String assessmentNoteTitle;
+        assessmentNoteTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
+        tvAssessmentNoteTitle.setText(assessmentNoteTitle);
 
-        TextView tvAssessmentTargetDateValue = view.findViewById(R.id.tvAssessmentTargetDateValue);
-        String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
-        tvAssessmentTargetDateValue.setText(assessmentDate);
-
-//        TextView tvAssessmentAlertValue = view.findViewById(R.id.tvAssessmentAlertValue);
-//        String assessmentAlert = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
-//        tvAssessmentAlertValue.setText(assessmentAlert);
-
-        TextView tvAssessmentTermValue = view.findViewById(R.id.tvAssessmentTermValue);
-        String assessmentTerm = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
-        tvAssessmentTermValue.setText(assessmentTerm);
-
-        TextView tvAssessmentCourseValue = view.findViewById(R.id.tvAssessmentCourseValue);
-        String assessmentCourse = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_TITLE));
-        tvAssessmentCourseValue.setText(assessmentCourse);
-
-//        TextView courseDueDateValue = view.findViewById(R.id.courseDueDateValue);
-//        String assessmentCourseDueDateValue = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_END));
-//        courseDueDateValue.setText(assessmentCourseDueDateValue);
-
-
+        TextView tvAssessmentNoteText = view.findViewById(R.id.tvAssessmentNoteText);
+        String assessmentNoteText = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
+        tvAssessmentNoteText.setText(assessmentNoteText);
     }
 
 }

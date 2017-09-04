@@ -1,5 +1,20 @@
 # MOBILE APPLICATIONS DEVELOPMENT
 
+## TODO List
+
+- Assessments
+    - Add the rest of the data points into creation/editing of assessments.
+        - Assessments Alerts Listview
+            - build
+            - add to edit assessments
+    - ~~hook up `Add Notes` button~~
+- Add `save` and `cancel` buttons througout the application
+- Assessment Notes:
+    - add photo list view
+        - completely implement photos....
+- Add `No notes added` or similar messages to every listview for when they are viewed for the first time
+
+
 ### Competencies:
 - 4026.1.1: Introduction to Mobile Application Development - The graduate explains mobile development, develops a simple mobile application using IDE, documents debugging the mobile application, and describes how to use an emulator.
 - 4026.1.2: Activity Lifecycle - The graduate describes the Activity lifecycle in the mobile application, and creates and links an activity.

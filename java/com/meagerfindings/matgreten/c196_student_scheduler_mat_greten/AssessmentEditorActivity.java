@@ -1,16 +1,21 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +32,10 @@ import java.util.Objects;
  * Created by matgreten on 8/29/17.
  */
 
-public class AssessmentEditorActivity extends AppCompatActivity {
+public class AssessmentEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+    private static final int EDITOR_REQUEST_CODE = 4011;
+    private AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
+
     private String action;
     private EditText titleEditor;
     private EditText startEditor;
@@ -48,7 +56,6 @@ public class AssessmentEditorActivity extends AppCompatActivity {
         startEditor = (EditText) findViewById(R.id.editAssessmentDueDateValue);
 
         courseSpinner = (Spinner) findViewById(R.id.assessmentCourseSpinner);
-
 
         Intent intent = getIntent();
 
@@ -71,7 +78,6 @@ public class AssessmentEditorActivity extends AppCompatActivity {
             oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
             oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
 
-
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
 
@@ -86,7 +92,36 @@ public class AssessmentEditorActivity extends AppCompatActivity {
 
             courseDueDateValue.setText(courseDueDate);
 
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_editor, null, 0);
 
+            String assessmentID = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_ID));
+
+            ScheduleDBHelper handler = new ScheduleDBHelper(this);
+            SQLiteDatabase db = handler.getWritableDatabase();
+
+            String queryString = "SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENT_NOTES + " WHERE " +
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
+
+            Cursor notesCursor = db.rawQuery(queryString, null);
+
+            ListView assessmentNotesListView = (ListView) findViewById(R.id.assessmentNotesListView);
+
+            AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_editor, notesCursor, 0);
+            assessmentNotesListView.setAdapter(assessmentNoteCursorAdapter);
+            assessmentNoteCursorAdapter.changeCursor(notesCursor);
+
+            getLoaderManager().initLoader(0, null, this);
+
+            assessmentNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                    Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
+                    Uri uri = Uri.parse(ScheduleContract.AssessmentNoteEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE, uri);
+                    startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                }
+            });
         }
     }
 
@@ -247,5 +282,39 @@ public class AssessmentEditorActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;
+    }
+
+    private void restartLoader() {
+//        getLoaderManager().initLoader(0, null, TermsActivity.this);
+        startActivity(new Intent(this, AssessmentEditorActivity.class));
+    }
+
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, ScheduleContract.AssessmentEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        assessmentNoteCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        assessmentNoteCursorAdapter.swapCursor(null);
+    }
+
+    public void openEditorForNewAssessmentNote(View view) {
+        Intent intent = new Intent(this, AssessmentNoteEditorActivity.class);
+
+        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+            restartLoader();
+        }
     }
 }

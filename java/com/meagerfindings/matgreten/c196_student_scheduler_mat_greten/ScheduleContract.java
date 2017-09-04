@@ -155,7 +155,7 @@ public class ScheduleContract {
     }
 
     public static final class CourseNoteEntry implements BaseColumns{
-        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_TERMS).build();
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_COURSE_NOTES).build();
 
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_URI + "/" + TABLE_COURSE_NOTES;
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_URI + "/" + TABLE_COURSE_NOTES;
@@ -175,7 +175,7 @@ public class ScheduleContract {
     }
 
     public static final class AssessmentNoteEntry implements BaseColumns{
-        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_TERMS).build();
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_ASSESSMENT_NOTES).build();
 
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_URI + "/" + TABLE_ASSESSMENT_NOTES;
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_URI + "/" + TABLE_ASSESSMENT_NOTES;
@@ -195,7 +195,7 @@ public class ScheduleContract {
     }
 
     public static final class CoursePhotoEntry implements BaseColumns{
-        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_TERMS).build();
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_COURSE_PHOTOS).build();
 
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_URI + "/" + TABLE_COURSE_PHOTOS;
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_URI + "/" + TABLE_COURSE_PHOTOS;
@@ -214,7 +214,7 @@ public class ScheduleContract {
     }
 
     public static final class AssessmentPhotoEntry implements BaseColumns{
-        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_TERMS).build();
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_ASSESSMENT_PHOTOS).build();
 
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_URI + "/" + TABLE_ASSESSMENT_PHOTOS;
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_URI + "/" + TABLE_ASSESSMENT_PHOTOS;

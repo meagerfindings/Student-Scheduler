@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermEditorActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/termLabel"
@@ -38,32 +38,32 @@
         android:id="@+id/termEndLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
+        android:layout_marginTop="16dp"
         android:text="@string/end_date"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/termStartLabel"
-        android:layout_marginLeft="26dp" />
+        app:layout_constraintTop_toBottomOf="@+id/termStartLabel" />
 
     <EditText
         android:id="@+id/editTermTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="top"
         android:inputType="textAutoComplete"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/termLabel"
-        android:layout_marginLeft="8dp"
         app:layout_constraintHorizontal_bias="0.436"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/termLabel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTermStartDate"
@@ -73,9 +73,9 @@
         android:hint="@string/example_date"
         android:inputType="date"
         android:selectAllOnFocus="false"
-        app:layout_constraintTop_toBottomOf="@+id/editTermTitle"
         app:layout_constraintHorizontal_bias="0.456"
-        app:layout_constraintLeft_toLeftOf="@+id/editTermTitle" />
+        app:layout_constraintLeft_toLeftOf="@+id/editTermTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editTermTitle" />
 
     <EditText
         android:id="@+id/editTermEndDate"
@@ -84,10 +84,10 @@
         android:ems="10"
         android:hint="@string/example_date"
         android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@+id/editTermStartDate"
-        tools:ignore="LabelFor"
         app:layout_constraintHorizontal_bias="0.436"
-        app:layout_constraintLeft_toLeftOf="@+id/editTermStartDate" />
+        app:layout_constraintLeft_toLeftOf="@+id/editTermStartDate"
+        app:layout_constraintTop_toBottomOf="@+id/editTermStartDate"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/termCoursesLabel"
@@ -108,11 +108,11 @@
         android:layout_height="wrap_content"
         android:onClick="openEditorForNewCourse"
         android:text="@string/add_course_to_term"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/termCourseListView"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/termCourseListView" />
 
     <ListView
         android:id="@+id/termCourseListView"
@@ -124,17 +124,17 @@
         app:layout_constraintTop_toBottomOf="@+id/termCoursesLabel" />
 
     <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:keyboardNavigationCluster="false"-->
-        <!--android:onClick="openEditorForNewCourse"-->
-        <!--app:backgroundTint="@android:color/darker_gray"-->
-        <!--app:elevation="0dp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:srcCompat="@android:drawable/ic_input_add" />-->
+    <!--android:id="@+id/fab"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:layout_marginRight="16dp"-->
+    <!--android:keyboardNavigationCluster="false"-->
+    <!--android:onClick="openEditorForNewCourse"-->
+    <!--app:backgroundTint="@android:color/darker_gray"-->
+    <!--app:elevation="0dp"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:srcCompat="@android:drawable/ic_input_add" />-->
 
 </android.support.constraint.ConstraintLayout>

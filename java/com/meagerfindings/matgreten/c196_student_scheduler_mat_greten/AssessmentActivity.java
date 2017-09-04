@@ -42,17 +42,6 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
                         " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
                         ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
 
-//        String sqlQuery = "SELECT * FROM ((" + ScheduleContract.TABLE_ASSESSMENTS +
-//            " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
-//            " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
-//            ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
-//            ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
-//            " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
-//            ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID + ")" +
-//            " INNER JOIN " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME +
-//            " ON " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME + "." + ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " +
-//            ScheduleContract.AssessmentEntry.TABLE_NAME + "." + ScheduleContract.AssessmentEntry.ASSESSMENT_ID;
-
         System.out.println(sqlQuery);
 
         Cursor assessmentCursor = db.rawQuery(sqlQuery, null);
@@ -136,14 +125,11 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
                 .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
                 .setNegativeButton(getString(android.R.string.no), dialogClickListener)
                 .show();
-
-
     }
 
     private void insertSampleData() {
-        insertAssessment("Simple Assessment");
-        insertAssessment("Multi-line\nassessment");
-
+        insertAssessment("Assessment 1");
+        insertAssessment("Assessment 2");
 
         restartLoader();
     }

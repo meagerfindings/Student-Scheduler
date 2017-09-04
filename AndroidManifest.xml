@@ -19,7 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <provider
             android:name=".ScheduleProvider"
             android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten"
@@ -43,7 +42,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermEditorActivity" />
         </activity>
-
         <activity
             android:name=".AssessmentActivity"
             android:label="Assessments"
@@ -60,9 +58,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
         </activity>
-
-
-
         <activity
             android:name=".CoursesActivity"
             android:label="EditorActivity"
@@ -70,6 +65,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursesActivity" />
+        </activity>
+        <activity
+            android:name=".AssessmentNoteEditorActivity"
+            android:label="Edit Assessment Note"
+            android:parentActivityName=".AssessmentEditorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentNoteEditorActivity" />
         </activity>
         <activity
             android:name=".CourseEditorActivity"

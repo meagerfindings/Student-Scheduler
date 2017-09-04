@@ -20,73 +20,35 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class AssessmentActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class AssessmentNoteActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
-    private CursorAdapter assessmentCursorAdapter;
+    private CursorAdapter assessmentNoteCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assessment_screen);
+        setContentView(R.layout.activity_assessment_note_screen);
 
-        assessmentCursorAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_screen, null, 0);
+        assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-        String sqlQuery =
-                "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS +
-                        " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
-                        " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
-                        ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
-                        ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
-                        " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
-                        ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
-
-//        String sqlQuery = "SELECT * FROM ((" + ScheduleContract.TABLE_ASSESSMENTS +
-//            " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
-//            " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
-//            ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
-//            ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
-//            " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
-//            ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID + ")" +
-//            " INNER JOIN " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME +
-//            " ON " + ScheduleContract.AssessmentAlertEntry.TABLE_NAME + "." + ScheduleContract.AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " +
-//            ScheduleContract.AssessmentEntry.TABLE_NAME + "." + ScheduleContract.AssessmentEntry.ASSESSMENT_ID;
+        String sqlQuery = "SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENT_NOTES;
 
         System.out.println(sqlQuery);
 
-        Cursor assessmentCursor = db.rawQuery(sqlQuery, null);
-
-        ListView assessmentListView = (ListView) findViewById(R.id.assessmentListView);
-
-        AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_screen, assessmentCursor, 0);
-        assessmentListView.setAdapter(assessmentAdapter);
-        assessmentAdapter.changeCursor(assessmentCursor);
-
-        getLoaderManager().initLoader(0, null, this);
-
-        assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(AssessmentActivity.this, AssessmentEditorActivity.class);
-                Uri uri = Uri.parse(ScheduleContract.AssessmentEntry.CONTENT_URI + "/" + id);
-                intent.putExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE, uri);
-                startActivityForResult(intent, EDITOR_REQUEST_CODE);
-            }
-        });
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        getSupportActionBar().setTitle("Assessments");
+        getSupportActionBar().setTitle("Assessment Notes");
 
     }
 
-    public void insertAssessment(String assessmentText) {
+    public void insertAssessment(String assessmentNoteText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE, assessmentText);
-        Uri assessmentURI = getContentResolver().insert(ScheduleContract.AssessmentEntry.CONTENT_URI, values);
+        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteText);
+        Uri assessmentURI = getContentResolver().insert(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, values);
 
         assert assessmentURI != null;
-        Log.d("AssessmentActivity", "Inserted assessment " + assessmentURI.getLastPathSegment());
+        Log.d("AssessmentNote", "Inserted assessment note" + assessmentURI.getLastPathSegment());
     }
 
     @Override
@@ -106,14 +68,14 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
                 insertSampleData();
                 break;
             case R.id.action_delete_all:
-                deleteAllAssessments();
+                deleteAllAssessmentNotes();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteAllAssessments() {
+    private void deleteAllAssessmentNotes() {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -121,10 +83,10 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
                         if (button == DialogInterface.BUTTON_POSITIVE) {
 
                             //Insert Data management code here
-                            getContentResolver().delete(ScheduleContract.AssessmentEntry.CONTENT_URI, null, null);
+                            getContentResolver().delete(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, null, null);
                             restartLoader();
 
-                            Toast.makeText(AssessmentActivity.this,
+                            Toast.makeText(AssessmentNoteActivity.this,
                                     getString(R.string.all_deleted),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -141,36 +103,35 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
     }
 
     private void insertSampleData() {
-        insertAssessment("Simple Assessment");
-        insertAssessment("Multi-line\nassessment");
-
+        insertAssessment("Simple Assessment Note");
+        insertAssessment("Multi-line\nAssessment Note");
 
         restartLoader();
     }
 
     private void restartLoader() {
 //        getLoaderManager().restartLoader(0, null, AssessmentsActivity.this);
-        startActivity(new Intent(this, AssessmentActivity.class));
+        startActivity(new Intent(this, AssessmentNoteActivity.class));
     }
 
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.AssessmentEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, ScheduleContract.AssessmentNoteEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-        assessmentCursorAdapter.swapCursor(data);
+        assessmentNoteCursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
-        assessmentCursorAdapter.swapCursor(null);
+        assessmentNoteCursorAdapter.swapCursor(null);
     }
 
-    public void openEditorForNewAssessment(View view) {
-        Intent intent = new Intent(this, AssessmentEditorActivity.class);
+    public void openEditorForNewAssessmentNote(View view) {
+        Intent intent = new Intent(this, AssessmentNoteEditorActivity.class);
 
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
