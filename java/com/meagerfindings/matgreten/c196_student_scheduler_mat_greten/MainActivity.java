@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void openAssessments(View view){
-//        Intent intent = new Intent(this, AssessmentsActivity.class);
-//        startActivity(intent);
-//    }
+    public void openAssessments(View view){
+        Intent intent = new Intent(this, AssessmentActivity.class);
+        startActivity(intent);
+    }
 
 
 }

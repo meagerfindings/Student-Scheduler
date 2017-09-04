@@ -33,7 +33,13 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor assessmentCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENTS, null);
+//        Cursor assessmentCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENTS, null);
+        String sqlQuery = "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS + " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME + " ON " +
+                ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
+                ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME + " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." +
+                ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
+
+        Cursor assessmentCursor = db.rawQuery(sqlQuery, null);
 
         ListView assessmentListView = (ListView) findViewById(R.id.assessmentListView);
 

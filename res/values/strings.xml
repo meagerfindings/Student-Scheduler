@@ -53,4 +53,6 @@
     <string name="assessment_due_date">Assessment Due Date</string>
     <string name="assessment_alert">Assessment Alert</string>
     <string name="example_date_time_hint">Ex: 09/02/2017 5:00 PM</string>
+    <string name="assessment_term">Assessment Term</string>
+    <string name="course">Course</string>
 </resources>

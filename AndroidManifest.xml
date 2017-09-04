@@ -45,6 +45,25 @@
         </activity>
 
         <activity
+            android:name=".AssessmentActivity"
+            android:label="Assessments"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentActivity" />
+        </activity>
+        <activity
+            android:name=".AssessmentEditorActivity"
+            android:label="Assessments"
+            android:parentActivityName=".AssessmentActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
+        </activity>
+
+
+
+        <activity
             android:name=".CoursesActivity"
             android:label="EditorActivity"
             android:parentActivityName=".MainActivity">

@@ -116,7 +116,6 @@ public class CourseEditorActivity extends AppCompatActivity{
 
     private void loadTermSpinnerData() {
         List<String> termTitles = getTermTitles();
-        System.out.println(termTitles);
         ArrayAdapter<String> termTitlesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, termTitles);
         termTitlesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         termSpinner.setAdapter(termTitlesAdapter);
@@ -140,8 +139,6 @@ public class CourseEditorActivity extends AppCompatActivity{
             termKey = termCursor.getInt(0);
         termCursor.close();
         db.close();
-
-        System.out.println(termKey);
 
         return termKey;
     }

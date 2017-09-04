@@ -134,7 +134,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteTerm();
-                } else if (oldText.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
+                } else if (oldText.equals(newTitle) /*&& oldStart.equals(newStart) && oldEnd.equals(newEnd)*/){
                     setResult(RESULT_CANCELED);
                 } else {
                     updateTerm(newTitle, newStart, newEnd);
