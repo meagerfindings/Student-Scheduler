@@ -65,7 +65,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Assessment");
-            if (getIntent().getExtras().getString("courseTitle") != null)
+            if (getIntent().getExtras() != null)
                 oldCourse = String.valueOf(getIntent().getExtras().getString("courseTitle"));
 
             loadCourseSpinnerData();
@@ -314,7 +314,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     }
 
     public void openEditorForNewAssessmentNote(View view) {
-        Intent intent = new Intent(this, AssessmentNoteEditorActivity.class);
+        Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
         intent.putExtra("assessmentKey", assessmentKeyID);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
