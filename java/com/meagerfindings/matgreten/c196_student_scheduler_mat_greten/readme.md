@@ -2,6 +2,9 @@
 
 ## TODO List
 
+- Add validation throughout...
+- Courses
+    - make cm listview for courses. Adding the activity did not work like I hoped it would...
 - Assessments
     - Add the rest of the data points into creation/editing of assessments.
         - Assessments Alerts Listview

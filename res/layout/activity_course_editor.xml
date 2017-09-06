@@ -170,13 +170,13 @@
                 android:layout_width="133dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/assessments"
                 android:textAlignment="viewEnd"
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseMentors" />
+                app:layout_constraintTop_toBottomOf="@+id/include_course_mentors" />
 
             <ListView
                 android:id="@+id/courseAssessmentsListView"
@@ -310,6 +310,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/courseAssessmentsLabel" />
+
+            <include
+                android:id="@+id/include_course_mentors"
+                layout="@layout/activity_mentor_screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/courseMentors" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

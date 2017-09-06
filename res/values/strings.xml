@@ -59,4 +59,9 @@
     <string name="assessment_note_deleted">Assessment Note Deleted</string>
     <string name="assessment_note_updated">Assessment Note Deleted</string>
     <string name="add_assessment">Add Assessment</string>
+    <string name="mentor_name">Mentor Name:</string>
+    <string name="email">Email:</string>
+    <string name="phone">Phone:</string>
+    <string name="mentor_updated">Updated mentor</string>
+    <string name="mentor_deleted">Deleted mentor</string>
 </resources>
