@@ -38,7 +38,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private Spinner termSpinner;
     private Spinner statusSpinner;
     private String courseFilter;
-    private String oldText;
+    private String oldTitle;
     private String oldTerm;
     private String oldStart;
     private String oldEnd;
@@ -77,18 +77,18 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TITLE));
+            oldTitle = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TITLE));
             oldTerm = termTitleFromKey(cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK)));
             oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_START));
             oldEnd = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_END));
             oldStatus = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_STATUS));
 
-            if (oldText == null) oldText = "";
+            if (oldTitle == null) oldTitle = "";
             if (oldStart == null) oldStart = "";
             if (oldEnd == null) oldEnd = "";
             if (oldStatus == null || oldStatus.isEmpty()) oldStatus = "Planned";
 
-            titleEditor.setText(oldText);
+            titleEditor.setText(oldTitle);
             startEditor.setText(oldStart);
             endEditor.setText(oldEnd);
 
@@ -231,7 +231,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteCourse();
-                } else if (oldText.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
+                } else if (oldTitle.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
                     setResult(RESULT_CANCELED);
                 } else {
                     updateCourse(newTitle, newStart, newEnd, newStatus, newTermID);
@@ -269,6 +269,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK, termID);
         getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
+    }
+
+    public void openEditorForNewAssessment(View view) {
+        Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
+        intent.putExtra("courseTitle", oldTitle);
+        startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 
     @Override

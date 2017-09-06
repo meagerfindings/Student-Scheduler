@@ -37,14 +37,6 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-//        String sqlQuery =
-//                "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS +
-//                        " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
-//                        " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
-//                        ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
-//                        ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
-//                        " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
-//                        ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
 
         String queryColumns = AssessmentEntry.TABLE_NAME + "." + AssessmentEntry.ASSESSMENT_ID + ", " +
                 AssessmentEntry.ASSESSMENT_TITLE + ", " +
@@ -175,7 +167,7 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
     }
 
     public void openEditorForNewAssessment(View view) {
-        Intent intent = new Intent(this, AssessmentEditorActivity.class);
+        Intent intent = new Intent(AssessmentActivity.this, AssessmentEditorActivity.class);
 
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }

@@ -61,9 +61,13 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
         Uri uri = intent.getParcelableExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE);
 
+
         if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Assessment");
+            if (getIntent().getExtras().getString("courseTitle") != null)
+                oldCourse = String.valueOf(getIntent().getExtras().getString("courseTitle"));
+
             loadCourseSpinnerData();
         } else {
             action = Intent.ACTION_EDIT;
@@ -79,7 +83,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
             assessmentKeyID = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_ID));
 
-            System.out.println("ASSESSMENT ID = " + assessmentKeyID);
+//            System.out.println("ASSESSMENT ID = " + assessmentKeyID);
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";

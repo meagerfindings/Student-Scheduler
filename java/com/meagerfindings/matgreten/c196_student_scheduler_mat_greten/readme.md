@@ -13,7 +13,7 @@
     - add photo list view
         - completely implement photos....
 - Add `No notes added` or similar messages to every listview for when they are viewed for the first time
-- FIGURE OUT WHY NOTES ARE ADDING TO THE WRONG ASSESSMENTS... I THINK `off by one`? Maybe? Trying to visulize DB to check actual values
+- ~~FIGURE OUT WHY NOTES ARE ADDING TO THE WRONG ASSESSMENTS... I THINK `off by one`? Maybe? Trying to visulize DB to check actual values~~
 
 
 ### Competencies:
