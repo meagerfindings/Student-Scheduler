@@ -20,6 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 public class AssessmentActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
     private CursorAdapter assessmentCursorAdapter;
@@ -29,18 +33,33 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_screen);
 
-        assessmentCursorAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_screen, null, 0);
+        assessmentCursorAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-        String sqlQuery =
-                "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS +
-                        " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
-                        " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
-                        ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
-                        ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
-                        " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
-                        ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
+//        String sqlQuery =
+//                "SELECT * FROM (" + ScheduleContract.TABLE_ASSESSMENTS +
+//                        " INNER JOIN " + ScheduleContract.CourseEntry.TABLE_NAME +
+//                        " ON " + ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
+//                        ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_ID +
+//                        ") INNER JOIN " + ScheduleContract.TermEntry.TABLE_NAME +
+//                        " ON " + ScheduleContract.CourseEntry.TABLE_NAME + "." + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " +
+//                        ScheduleContract.TermEntry.TABLE_NAME + "." + ScheduleContract.TermEntry.TERM_ID;
+
+        String queryColumns = AssessmentEntry.TABLE_NAME + "." + AssessmentEntry.ASSESSMENT_ID + ", " +
+                AssessmentEntry.ASSESSMENT_TITLE + ", " +
+                AssessmentEntry.ASSESSMENT_TARGET_DATE + ", " +
+                CourseEntry.COURSE_TITLE + ", " +
+                CourseEntry.COURSE_END + ", " +
+                TermEntry.TERM_TITLE;
+
+        String sqlQuery = "SELECT " + queryColumns + " FROM (" + TABLE_ASSESSMENTS +
+                " INNER JOIN " + CourseEntry.TABLE_NAME +
+                " ON " + AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
+                CourseEntry.TABLE_NAME + "." + CourseEntry.COURSE_ID +
+                ") INNER JOIN " + TermEntry.TABLE_NAME +
+                " ON " + CourseEntry.TABLE_NAME + "." + CourseEntry.COURSE_TERM_ID_FK + " = " +
+                TermEntry.TABLE_NAME + "." + TermEntry.TERM_ID;
 
         System.out.println(sqlQuery);
 
@@ -48,7 +67,7 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
         ListView assessmentListView = (ListView) findViewById(R.id.assessmentListView);
 
-        AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_screen, assessmentCursor, 0);
+        AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_editor, assessmentCursor, 0);
         assessmentListView.setAdapter(assessmentAdapter);
         assessmentAdapter.changeCursor(assessmentCursor);
 
@@ -58,8 +77,8 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AssessmentActivity.this, AssessmentEditorActivity.class);
-                Uri uri = Uri.parse(ScheduleContract.AssessmentEntry.CONTENT_URI + "/" + id);
-                intent.putExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE, uri);
+                Uri uri = Uri.parse(AssessmentEntry.CONTENT_URI + "/" + id);
+                intent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
@@ -71,8 +90,8 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
     public void insertAssessment(String assessmentText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE, assessmentText);
-        Uri assessmentURI = getContentResolver().insert(ScheduleContract.AssessmentEntry.CONTENT_URI, values);
+        values.put(AssessmentEntry.ASSESSMENT_TITLE, assessmentText);
+        Uri assessmentURI = getContentResolver().insert(AssessmentEntry.CONTENT_URI, values);
 
         assert assessmentURI != null;
         Log.d("AssessmentActivity", "Inserted assessment " + assessmentURI.getLastPathSegment());
@@ -110,7 +129,7 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
                         if (button == DialogInterface.BUTTON_POSITIVE) {
 
                             //Insert Data management code here
-                            getContentResolver().delete(ScheduleContract.AssessmentEntry.CONTENT_URI, null, null);
+                            getContentResolver().delete(AssessmentEntry.CONTENT_URI, null, null);
                             restartLoader();
 
                             Toast.makeText(AssessmentActivity.this,
@@ -142,7 +161,7 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.AssessmentEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override

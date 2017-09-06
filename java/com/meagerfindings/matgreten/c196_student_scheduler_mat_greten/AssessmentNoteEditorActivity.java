@@ -32,6 +32,8 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
     private String oldText;
     private String oldStart;
     private String oldCourse;
+    private String assessmentKey;
+
 
 
     @Override
@@ -41,25 +43,26 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentNoteTitleValue);
         textEditor = (EditText) findViewById(R.id.editAssessmentNoteTextValue);
+        assessmentKey = String.valueOf(getIntent().getExtras().getString("assessmentKey"));
 
         Intent intent = getIntent();
 
-        Uri uri = intent.getParcelableExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
             action = Intent.ACTION_INSERT;
-            setTitle("New Assessment");
+            setTitle("New Assessment Note");
         } else {
             action = Intent.ACTION_EDIT;
             assessmentNoteFilter = ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, ScheduleContract.AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentNoteFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, ScheduleContract.AssessmentNoteEntry.ALL_ASSESSMENT_NOTE_COLUMNS, assessmentNoteFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
-            oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
+            oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
+            oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -110,24 +113,24 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
 
     private void finishEditing() {
         String newTitle = titleEditor.getText().toString().trim();
-        String newTargetEndDate = textEditor.getText().toString().trim();
+        String newText = textEditor.getText().toString().trim();
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newTargetEndDate.length() == 0) {
+                } else if (newText.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertAssessmentNote(newTitle, newTargetEndDate);
+                    insertAssessmentNote(newTitle, newText);
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteAssessmentNote();
-                } else if (oldText.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
+                } else if (oldText.equals(newTitle) && oldStart.equals(newText)) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateAssessmentNote(newTitle, newTargetEndDate);
+                    updateAssessmentNote(newTitle, newText);
                 }
         }
         finish();
@@ -144,10 +147,8 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
         values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, getAssessmentKey(assessmentNoteTitle));
+        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
         getContentResolver().update(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, values, assessmentNoteFilter, null);
-
-        //TODO ADD method to actually resolve the assessment id. Unlike on courses, we don't carry this over into a spinner. Maybe i can pass the assessment ID as part of the intent to launch the note editor screen. Look into this.
 
         Toast.makeText(this, R.string.assessment_note_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
@@ -157,7 +158,8 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
         values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, getAssessmentKey(assessmentNoteTitle));
+        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
+
         getContentResolver().insert(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }

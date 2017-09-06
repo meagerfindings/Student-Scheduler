@@ -353,6 +353,22 @@ public class ScheduleProvider extends ContentProvider {
                 return ScheduleContract.AssessmentAlertEntry.CONTENT_TYPE;
             case ASSESSMENT_ALERT_ID:
                 return ScheduleContract.AssessmentAlertEntry.CONTENT_ITEM_TYPE;
+            case ASSESSMENT_NOTES:
+                return ScheduleContract.AssessmentNoteEntry.CONTENT_TYPE;
+            case ASSESSMENT_NOTE_ID:
+                return ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE;
+            case ASSESSMENT_PHOTOS:
+                return ScheduleContract.AssessmentPhotoEntry.CONTENT_TYPE;
+            case ASSESSMENT_PHOTO_ID:
+                return ScheduleContract.AssessmentPhotoEntry.CONTENT_ITEM_TYPE;
+            case COURSE_NOTES:
+                return ScheduleContract.CourseNoteEntry.CONTENT_TYPE;
+            case COURSE_NOTE_ID:
+                return ScheduleContract.CourseNoteEntry.CONTENT_ITEM_TYPE;
+            case COURSE_PHOTOS:
+                return ScheduleContract.CoursePhotoEntry.CONTENT_TYPE;
+            case COURSE_PHOTO_ID:
+                return ScheduleContract.CoursePhotoEntry.CONTENT_ITEM_TYPE;
             default:
                 throw  new UnsupportedOperationException("Unknown uri: " + uri); // TODO citation for: https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
         }

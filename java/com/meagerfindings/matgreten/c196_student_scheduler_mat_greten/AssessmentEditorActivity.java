@@ -45,7 +45,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private String oldStart;
     private String oldCourse;
     private Spinner courseSpinner;
-
+    private String assessmentKeyID = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             action = Intent.ACTION_EDIT;
             assessmentFilter = ScheduleContract.AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, ScheduleContract.AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
+            final Cursor cursor = getContentResolver().query(uri, ScheduleContract.AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
@@ -77,6 +77,9 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
             oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
+            assessmentKeyID = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_ID));
+
+            System.out.println("ASSESSMENT ID = " + assessmentKeyID);
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -92,14 +95,14 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
             courseDueDateValue.setText(courseDueDate);
 
-            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_editor, null, 0);
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, null, 0);
 
             String assessmentID = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_ID));
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
 
-            String queryString = "SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENT_NOTES + " WHERE " +
+            String queryString = "SELECT * FROM " + ScheduleContract.AssessmentNoteEntry.TABLE_NAME + " WHERE " +
                     ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
 
             Cursor notesCursor = db.rawQuery(queryString, null);
@@ -107,7 +110,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             ListView assessmentNotesListView = (ListView) findViewById(R.id.assessmentNotesListView);
 
             AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
-            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_editor, notesCursor, 0);
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, notesCursor, 0);
             assessmentNotesListView.setAdapter(assessmentNoteCursorAdapter);
             assessmentNoteCursorAdapter.changeCursor(notesCursor);
 
@@ -119,6 +122,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
                     Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
                     Uri uri = Uri.parse(ScheduleContract.AssessmentNoteEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE, uri);
+                    intent.putExtra("assessmentKey", assessmentKeyID);
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
@@ -292,7 +296,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.AssessmentEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, ScheduleContract.AssessmentNoteEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
@@ -307,7 +311,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     public void openEditorForNewAssessmentNote(View view) {
         Intent intent = new Intent(this, AssessmentNoteEditorActivity.class);
-
+        intent.putExtra("assessmentKey", assessmentKeyID);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 
