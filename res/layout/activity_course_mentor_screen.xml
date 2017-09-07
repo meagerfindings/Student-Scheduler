@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity">
+    tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity">
 
     <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/fab"-->
@@ -18,7 +18,7 @@
         <!--app:srcCompat="@android:drawable/ic_input_add" />-->
 
     <ListView
-        android:id="@+id/detailedMentorListView"
+        android:id="@+id/mentorListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

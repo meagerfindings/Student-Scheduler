@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.status_array;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
 
 /**
  * Created by matgreten on 8/29/17.
@@ -43,6 +45,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private String oldStart;
     private String oldEnd;
     private String oldStatus;
+    private ListView mentorListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
         Intent intent =  getIntent();
 
-        Uri uri = intent.getParcelableExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(CourseEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null){
             action = Intent.ACTION_INSERT;
@@ -70,18 +73,19 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             loadTermSpinnerData();
         } else {
             action = Intent.ACTION_EDIT;
-            courseFilter = ScheduleContract.CourseEntry.COURSE_ID + "=" + uri.getLastPathSegment();
+            courseFilter = CourseEntry.COURSE_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, ScheduleContract.CourseEntry.ALL_COURSE_COLUMNS, courseFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, CourseEntry.ALL_COURSE_COLUMNS, courseFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldTitle = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TITLE));
-            oldTerm = termTitleFromKey(cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK)));
-            oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_START));
-            oldEnd = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_END));
-            oldStatus = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_STATUS));
+            String courseID = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_ID));
+            oldTitle = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_TITLE));
+            oldTerm = termTitleFromKey(cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK)));
+            oldStart = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START));
+            oldEnd = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END));
+            oldStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_STATUS));
 
             if (oldTitle == null) oldTitle = "";
             if (oldStart == null) oldStart = "";
@@ -101,15 +105,30 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
             loadTermSpinnerData();
 
-            assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
+            /*ArrayList<String> mentorNames = getMentorNames(courseID);
+            ArrayAdapter<String> mentorAdapter;
+            mentorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mentorNames);
+            ListView mentorListView = (ListView) findViewById(R.id.mentorListView);
+            mentorListView.setAdapter(mentorAdapter);*/
 
-            String courseID = cursor.getString(cursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_ID));
+            /*ArrayList<Mentor> mentorArray = Mentor.getMentors(courseID);
+            CourseMentorAdapter mentorAdapter = new CourseMentorAdapter(this, mentorArray);
+            ListView mentorListView = (ListView) findViewById(R.id.mentorListView);
+            mentorListView.setAdapter(mentorAdapter);*/
+
+            String mentorNames[] = getMentorNames(courseID);
+
+            mentorListView = (ListView) findViewById(R.id.mentorListView);
+            mentorListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mentorNames));
+
+
+            assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
 
-            String queryString = "SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENTS + " WHERE " +
-                    ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " + courseID;
+            String queryString = "SELECT * FROM " + TABLE_ASSESSMENTS + " WHERE " +
+                    AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " + courseID;
 
             Cursor courseCursor = db.rawQuery(queryString, null);
 
@@ -126,8 +145,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                     Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
-                    Uri uri = Uri.parse(ScheduleContract.AssessmentEntry.CONTENT_URI + "/" + id);
-                    intent.putExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE, uri);
+                    Uri uri = Uri.parse(AssessmentEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
@@ -135,10 +154,84 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
     }
 
-    public List<String> getTermTitles(){
+    private String[] getMentorNames(String courseID){
+
+        String[] mentorNames = new String[3];
+        mentorNames[0] = "";
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        String queryString = "SELECT " + MentorEntry.MENTOR_NAME +
+                " FROM " + TABLE_MENTORS +
+                " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor termCursor = db.rawQuery(queryString, null);
+        if (termCursor.moveToFirst()) {
+            int i = 0;
+            do {
+
+                mentorNames[i] = termCursor.getString(0);
+                i += 1;
+            } while (termCursor.moveToNext());
+        }
+        termCursor.close();
+        db.close();
+
+        if (mentorNames[0].isEmpty()) {
+            mentorNames[0] = "No Course Mentors have been added yet.";
+            mentorNames[1] = "Black canvas Slippers";
+            mentorNames[2] = "Third time's a charm.";
+        }
+
+        return mentorNames;
+    }
+
+    /*private String[] getMentorNames(String courseID){
+
+        String[] mentorNames = new String[256];
+        mentorNames[0] = "";
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        String queryString = "SELECT " + MentorEntry.MENTOR_NAME +
+                " FROM " + TABLE_MENTORS +
+                " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor termCursor = db.rawQuery(queryString, null);
+        if (termCursor.moveToFirst()) {
+            int i = 0;
+            do {
+
+                mentorNames[i] = termCursor.getString(0);
+                i += 1;
+            } while (termCursor.moveToNext());
+        }
+        termCursor.close();
+        db.close();
+
+        if (mentorNames[0].isEmpty()) {
+            mentorNames[0] = "No Course Mentors have been added yet.";
+            mentorNames[1] = "Black canvas Slippers";
+            mentorNames[2] = "Third time's a charm.";
+        }
+
+        return mentorNames;
+    }*/
+
+//    private void loadMentorListViewData(String courseID) {
+//        List<String> mentorNames = getMentorNames(courseID);
+//        ArrayAdapter<String> mentorNamesAdapter = new ArrayAdapter<>(this, R.layout.item_mentor_names, mentorNames);
+////        mentorNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mentorListView.setAdapter(mentorNamesAdapter);
+//
+////        for(int i = 0; i < mentorNamesAdapter.getCount();  i++){
+////            if (Objects.equals(termSpinner.getItemAtPosition(i), oldTerm)){
+////                termSpinner.setSelection(i);
+////                break;
+////            }
+////        }
+//    }
+
+    private List<String> getTermTitles(){
         ArrayList<String> termTitles = new ArrayList<>();
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.TermEntry.TERM_TITLE + " FROM " + ScheduleContract.TABLE_TERMS;
+        String queryString = "SELECT " + TermEntry.TERM_TITLE + " FROM " + TABLE_TERMS;
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
         if (termCursor.moveToFirst())
@@ -163,11 +256,11 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
     }
 
-    public int getTermKey(String searchTerm){
+    private int getTermKey(String searchTerm){
         int termKey = -1;
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.TermEntry.TERM_ID+ " FROM " + ScheduleContract.TABLE_TERMS + " WHERE " +
-                ScheduleContract.TermEntry.TERM_TITLE + " = " + "'" + searchTerm + "'";
+        String queryString = "SELECT " + TermEntry.TERM_ID+ " FROM " + TABLE_TERMS + " WHERE " +
+                TermEntry.TERM_TITLE + " = " + "'" + searchTerm + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
         if (termCursor.moveToFirst())
@@ -178,11 +271,11 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return termKey;
     }
 
-    public String termTitleFromKey(String searchKey){
+    private String termTitleFromKey(String searchKey){
         String termTile = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.TermEntry.TERM_TITLE+ " FROM " + ScheduleContract.TABLE_TERMS + " WHERE " +
-                ScheduleContract.TermEntry.TERM_ID + " = " + "'" + searchKey + "'";
+        String queryString = "SELECT " + TermEntry.TERM_TITLE+ " FROM " + TABLE_TERMS + " WHERE " +
+                TermEntry.TERM_ID + " = " + "'" + searchKey + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
         if (termCursor.moveToFirst())
@@ -241,7 +334,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     private void deleteCourse() {
-        getContentResolver().delete(ScheduleContract.CourseEntry.CONTENT_URI, courseFilter, null);
+        getContentResolver().delete(CourseEntry.CONTENT_URI, courseFilter, null);
         Toast.makeText(this, R.string.course_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
@@ -249,12 +342,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseTitle);
-        values.put(ScheduleContract.CourseEntry.COURSE_START, courseStart);
-        values.put(ScheduleContract.CourseEntry.COURSE_END, courseEnd);
-        values.put(ScheduleContract.CourseEntry.COURSE_STATUS, courseStatus);
-        values.put(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK, termID);
-        getContentResolver().update(ScheduleContract.CourseEntry.CONTENT_URI, values, courseFilter, null);
+        values.put(CourseEntry.COURSE_TITLE, courseTitle);
+        values.put(CourseEntry.COURSE_START, courseStart);
+        values.put(CourseEntry.COURSE_END, courseEnd);
+        values.put(CourseEntry.COURSE_STATUS, courseStatus);
+        values.put(CourseEntry.COURSE_TERM_ID_FK, termID);
+        getContentResolver().update(CourseEntry.CONTENT_URI, values, courseFilter, null);
 
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
@@ -262,12 +355,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     private void insertCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.CourseEntry.COURSE_TITLE, courseTitle);
-        values.put(ScheduleContract.CourseEntry.COURSE_START, courseStart);
-        values.put(ScheduleContract.CourseEntry.COURSE_END, courseEnd);
-        values.put(ScheduleContract.CourseEntry.COURSE_STATUS, courseStatus);
-        values.put(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK, termID);
-        getContentResolver().insert(ScheduleContract.CourseEntry.CONTENT_URI, values);
+        values.put(CourseEntry.COURSE_TITLE, courseTitle);
+        values.put(CourseEntry.COURSE_START, courseStart);
+        values.put(CourseEntry.COURSE_END, courseEnd);
+        values.put(CourseEntry.COURSE_STATUS, courseStatus);
+        values.put(CourseEntry.COURSE_TERM_ID_FK, termID);
+        getContentResolver().insert(CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }
 
@@ -292,7 +385,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     @Override
     public android.content.Loader<Cursor>  onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.AssessmentEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
