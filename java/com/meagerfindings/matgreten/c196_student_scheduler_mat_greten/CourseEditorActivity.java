@@ -116,7 +116,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             ListView mentorListView = (ListView) findViewById(R.id.mentorListView);
             mentorListView.setAdapter(mentorAdapter);*/
 
-            String mentorNames[] = getMentorNames(courseID);
+            ArrayList<String> mentorNames = getMentorNames(courseID);
 
             mentorListView = (ListView) findViewById(R.id.mentorListView);
             mentorListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mentorNames));
@@ -154,10 +154,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
     }
 
-    private String[] getMentorNames(String courseID){
+    private ArrayList<String> getMentorNames(String courseID){
 
-        String[] mentorNames = new String[3];
-        mentorNames[0] = "";
+        ArrayList<String> mentorNames = new ArrayList<>();
+//        mentorNames[0] = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         String queryString = "SELECT " + MentorEntry.MENTOR_NAME +
                 " FROM " + TABLE_MENTORS +
@@ -165,20 +165,16 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
         if (termCursor.moveToFirst()) {
-            int i = 0;
-            do {
-
-                mentorNames[i] = termCursor.getString(0);
-                i += 1;
-            } while (termCursor.moveToNext());
+            do mentorNames.add(termCursor.getString(0)); while (termCursor.moveToNext());
         }
         termCursor.close();
         db.close();
 
-        if (mentorNames[0].isEmpty()) {
-            mentorNames[0] = "No Course Mentors have been added yet.";
-            mentorNames[1] = "Black canvas Slippers";
-            mentorNames[2] = "Third time's a charm.";
+        if (mentorNames.isEmpty()) {
+            mentorNames.add("Click to add a mentor.");
+        } else if (mentorNames.size() > 2 ){
+            mentorNames.set(2, "Click to see full list of mentors.");
+
         }
 
         return mentorNames;
