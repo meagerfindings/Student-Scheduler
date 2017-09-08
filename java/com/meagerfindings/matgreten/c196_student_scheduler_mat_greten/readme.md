@@ -1,7 +1,7 @@
 # MOBILE APPLICATIONS DEVELOPMENT
 
 ## New TODO List
-- Course Mentors
+- ~~Course Mentors~~
     - ~~create LV for CM's that is populated via method in course editor activity like the termSpinner.~~
     - ~~just names~~
 - ~~Add button to view CM details~~

@@ -24,6 +24,7 @@
         android:textAlignment="textEnd"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
         android:textStyle="italic" />
 
     <TextView
@@ -48,5 +49,6 @@
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
         android:textStyle="italic" />
 </LinearLayout>

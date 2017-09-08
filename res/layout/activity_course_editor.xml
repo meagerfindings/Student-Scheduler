@@ -195,30 +195,13 @@
                 android:layout_height="28dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:onClick="openCourseNoteList"
                 android:text="@string/course_notes"
                 android:textAlignment="viewEnd"
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/courseAssessmentsListView" />
-
-            <EditText
-                android:id="@+id/editCourseNotes"
-                android:layout_width="393dp"
-                android:layout_height="133dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
-                android:ems="10"
-                android:hint="@string/course_notes_hint"
-                android:inputType="textMultiLine"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseNotesLabel"
-                app:layout_constraintVertical_bias="0.063" />
 
             <TextView
                 android:id="@+id/courseAlertsLabel"
@@ -231,7 +214,7 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editCourseNotes" />
+                app:layout_constraintTop_toBottomOf="@+id/include_course_notes" />
 
             <TextView
                 android:id="@+id/courseStartAlertLabel"
@@ -287,19 +270,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/courseStartAlertDateTime" />
 
             <Button
-                android:id="@+id/add_course_note_button"
-                style="@android:style/Widget.DeviceDefault.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_note"
-                app:layout_constraintHorizontal_bias="0.904"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/courseNotesLabel"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="8dp" />
-
-            <Button
                 android:id="@+id/add_course_assessment_button"
                 style="@android:style/Widget.DeviceDefault.Light.Button"
                 android:layout_width="wrap_content"
@@ -311,16 +281,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/courseAssessmentsLabel" />
 
-            <!--<ListView-->
-                <!--android:id="@+id/mentorListView"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="0dp"-->
-                <!--app:layout_constraintHorizontal_bias="0.0"-->
-                <!--app:layout_constraintLeft_toLeftOf="parent"-->
-                <!--app:layout_constraintRight_toRightOf="parent"-->
-                <!--app:layout_constraintTop_toBottomOf="@+id/courseMentors" />-->
-
             <include
                 android:id="@+id/include_course_mentors"
                 layout="@layout/activity_course_mentor_screen"
@@ -331,6 +291,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/courseMentors" />
+
+            <include
+                android:id="@+id/include_course_notes"
+                layout="@layout/activity_course_note_screen"
+                android:layout_width="395dp"
+                android:layout_height="164dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/courseNotesLabel" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

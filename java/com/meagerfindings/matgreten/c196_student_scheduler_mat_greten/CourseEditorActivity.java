@@ -46,6 +46,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private String oldEnd;
     private String oldStatus;
     private ListView mentorListView;
+    private ListView courseNoteListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             mentorListView = (ListView) findViewById(R.id.mentorListView);
             mentorListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mentorNames));
 
+            ArrayList<String> courseNoteTitles = getCourseNoteTitles(courseID);
+            courseNoteListView = (ListView) findViewById(R.id.courseNotesListView);
+            courseNoteListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseNoteTitles));
+
 
             assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
 
@@ -151,20 +156,45 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
 
         SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor termCursor = db.rawQuery(queryString, null);
+        Cursor mentorCursor = db.rawQuery(queryString, null);
 
-        if (termCursor.moveToFirst())
-            do mentorNames.add(termCursor.getString(0)); while (termCursor.moveToNext());
+        if (mentorCursor.moveToFirst())
+            do mentorNames.add(mentorCursor.getString(0)); while (mentorCursor.moveToNext());
 
-        termCursor.close();
+        mentorCursor.close();
         db.close();
 
         if (mentorNames.isEmpty()) mentorNames.add("Click COURSE MENTORS label to add a mentor.");
         else if (mentorNames.size() == 1 ) mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
         else if (mentorNames.size() == 2 ) mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
-        else if (mentorNames.size() > 2 ) mentorNames.set(2, "Click COURSE MENTORS label to see full list of mentors.");
+        else if (mentorNames.size() > 2 ) mentorNames.set( 2, "Click COURSE MENTORS label to see full list of mentors.");
 
         return mentorNames;
+    }
+
+    private ArrayList<String> getCourseNoteTitles(String courseID){
+        ArrayList<String> courseNoteTitles = new ArrayList<>();
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+
+        String queryString = "SELECT " + CourseNoteEntry.COURSE_NOTE_TITLE+
+                " FROM " + TABLE_COURSE_NOTES +
+                " WHERE " + CourseNoteEntry.COURSE_NOTE_COURSE_FK+ " = " + courseID;
+
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor courseNoteCursor = db.rawQuery(queryString, null);
+
+        if (courseNoteCursor.moveToFirst())
+            do courseNoteTitles.add(courseNoteCursor.getString(0)); while (courseNoteCursor.moveToNext());
+
+        courseNoteCursor.close();
+        db.close();
+
+        if (courseNoteTitles.isEmpty()) courseNoteTitles.add("Click COURSE NOTES label to add a note.");
+        else if (courseNoteTitles.size() == 1 ) courseNoteTitles.add("Click COURSE NOTES label to see full list of notes.");
+        else if (courseNoteTitles.size() == 2 ) courseNoteTitles.add("Click COURSE NOTES label to see full list of notes.");
+        else if (courseNoteTitles.size() > 2 ) courseNoteTitles.set( 2, "Click COURSE NOTES label to see full list of notes.");
+
+        return courseNoteTitles;
     }
 
     private List<String> getTermTitles(){
@@ -305,6 +335,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     public void openEditorForNewAssessment(View view) {
         Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
+        intent.putExtra("courseTitle", oldTitle);
+        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
+
+    public void openCourseNoteList(View view) {
+        Intent intent = new Intent(this, CourseNoteActivity.class);
         intent.putExtra("courseTitle", oldTitle);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }

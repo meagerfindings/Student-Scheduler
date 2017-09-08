@@ -65,4 +65,7 @@
     <string name="mentor_updated">Updated mentor</string>
     <string name="mentor_deleted">Deleted mentor</string>
     <string name="edit_mentor">Edit Mentor</string>
+    <string name="edit_course_note">Edit Course Note</string>
+    <string name="course_note_updated">Course Note Updated</string>
+    <string name="course_note_deleted">Course Note Deleted</string>
 </resources>
