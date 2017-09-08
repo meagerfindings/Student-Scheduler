@@ -40,7 +40,7 @@
             android:parentActivityName=".TermsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermEditorActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity" />
         </activity>
         <activity
             android:name=".AssessmentActivity"
@@ -48,7 +48,7 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MainActivity" />
         </activity>
         <activity
             android:name=".AssessmentEditorActivity"
@@ -56,7 +56,7 @@
             android:parentActivityName=".AssessmentActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentActivity" />
         </activity>
         <activity
             android:name=".CoursesActivity"
@@ -64,7 +64,7 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursesActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MainActivity" />
         </activity>
         <activity
             android:name=".AssessmentNoteEditorActivity"
@@ -72,7 +72,7 @@
             android:parentActivityName=".AssessmentEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentNoteEditorActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
         </activity>
         <activity
             android:name=".CourseEditorActivity"
@@ -80,7 +80,7 @@
             android:parentActivityName=".CoursesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursesActivity" />
         </activity>
         <activity
             android:name=".MentorActivity"
@@ -88,7 +88,7 @@
             android:parentActivityName=".CourseEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity" />
         </activity>
         <activity
             android:name=".MentorEditorActivity"
@@ -96,7 +96,7 @@
             android:parentActivityName=".MentorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorEditorActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity" />
         </activity>
     </application>
 </manifest>
