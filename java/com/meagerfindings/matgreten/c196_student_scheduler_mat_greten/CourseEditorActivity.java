@@ -159,8 +159,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         termCursor.close();
         db.close();
 
-        if (mentorNames.isEmpty()) mentorNames.add("Click 'Course Mentors' label to add a mentor.");
-        else if (mentorNames.size() > 2 ) mentorNames.set(2, "Click 'Course Mentors' label to see full list of mentors.");
+        if (mentorNames.isEmpty()) mentorNames.add("Click COURSE MENTORS label to add a mentor.");
+        else if (mentorNames.size() == 1 ) mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
+        else if (mentorNames.size() == 2 ) mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
+        else if (mentorNames.size() > 2 ) mentorNames.set(2, "Click COURSE MENTORS label to see full list of mentors.");
 
         return mentorNames;
     }

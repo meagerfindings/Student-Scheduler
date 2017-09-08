@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 public class MentorEditorActivity extends AppCompatActivity{
 
     private String action;
@@ -25,11 +27,16 @@ public class MentorEditorActivity extends AppCompatActivity{
     private String mentorFilter;
     private String oldName;
     private String oldEmail;
+    private String courseID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mentor_editor);
+
+        if (getIntent().getExtras() != null) {
+             courseID = String.valueOf(getIntent().getExtras().getString("courseID"));
+        }
 
         nameEditor = (EditText) findViewById(R.id.editMentorName);
         phoneEditor = (EditText) findViewById(R.id.editPhoneValue);
@@ -37,23 +44,23 @@ public class MentorEditorActivity extends AppCompatActivity{
 
         Intent intent =  getIntent();
 
-        Uri uri = intent.getParcelableExtra(ScheduleContract.MentorEntry.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(MentorEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null){
             action = Intent.ACTION_INSERT;
             setTitle("New Mentor");
         } else {
             action = Intent.ACTION_EDIT;
-            mentorFilter = ScheduleContract.MentorEntry.MENTOR_ID + "=" + uri.getLastPathSegment();
+            mentorFilter = MentorEntry.MENTOR_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, ScheduleContract.MentorEntry.ALL_MENTOR_COLUMNS, mentorFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, MentorEntry.ALL_MENTOR_COLUMNS, mentorFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldName = cursor.getString(cursor.getColumnIndex(ScheduleContract.MentorEntry.MENTOR_NAME));
-            String oldPhone = cursor.getString(cursor.getColumnIndex(ScheduleContract.MentorEntry.MENTOR_PHONE));
-            oldEmail = cursor.getString(cursor.getColumnIndex(ScheduleContract.MentorEntry.MENTOR_EMAIL));
+            oldName = cursor.getString(cursor.getColumnIndex(MentorEntry.MENTOR_NAME));
+            String oldPhone = cursor.getString(cursor.getColumnIndex(MentorEntry.MENTOR_PHONE));
+            oldEmail = cursor.getString(cursor.getColumnIndex(MentorEntry.MENTOR_EMAIL));
 
             nameEditor.setText(oldName);
             phoneEditor.setText(oldPhone);
@@ -78,35 +85,35 @@ public class MentorEditorActivity extends AppCompatActivity{
     }
 
     private void finishEditing(){
-        String newTitle = nameEditor.getText().toString().trim();
-        String newStart = phoneEditor.getText().toString().trim();
-        String newEnd = emailEditor.getText().toString().trim();
+        String newName = nameEditor.getText().toString().trim();
+        String newPhone = phoneEditor.getText().toString().trim();
+        String newEmail = emailEditor.getText().toString().trim();
         switch (action){
             case Intent.ACTION_INSERT:
-                if (newTitle.length() == 0) {
+                if (newName.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newStart.length() == 0){
+                } else if (newPhone.length() == 0){
                     setResult(RESULT_CANCELED);
-                } else if (newEnd.length() == 0){
+                } else if (newEmail.length() == 0){
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertMentor(newTitle, newStart, newEnd);
+                    insertMentor(newName, newPhone, newEmail);
                 }
                 break;
             case Intent.ACTION_EDIT:
-                if (newTitle.length() == 0) {
+                if (newName.length() == 0) {
 //                    deleteMentor();
-                } else if (oldName.equals(newTitle) /*&& oldPhone.equals(newStart) && oldEmail.equals(newEnd)*/){
+                } else if (oldName.equals(newName) /*&& oldPhone.equals(newPhone) && oldEmail.equals(newEmail)*/){
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateMentor(newTitle, newStart, newEnd);
+                    updateMentor(newName, newPhone, newEmail);
                 }
         }
         finish();
     }
 
     private void deleteMentor() {
-        getContentResolver().delete(ScheduleContract.MentorEntry.CONTENT_URI, mentorFilter, null);
+        getContentResolver().delete(MentorEntry.CONTENT_URI, mentorFilter, null);
         Toast.makeText(this, R.string.mentor_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
@@ -114,10 +121,11 @@ public class MentorEditorActivity extends AppCompatActivity{
 
     private void updateMentor(String mentorName, String mentorPhone, String mentorEmail) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.MentorEntry.MENTOR_NAME, mentorName);
-        values.put(ScheduleContract.MentorEntry.MENTOR_PHONE, mentorPhone);
-        values.put(ScheduleContract.MentorEntry.MENTOR_EMAIL, mentorEmail);
-        getContentResolver().update(ScheduleContract.MentorEntry.CONTENT_URI, values, mentorFilter, null);
+        values.put(MentorEntry.MENTOR_NAME, mentorName);
+        values.put(MentorEntry.MENTOR_PHONE, mentorPhone);
+        values.put(MentorEntry.MENTOR_EMAIL, mentorEmail);
+//        values.put(MentorEntry.MENTOR_COURSE_ID_FK, courseID);
+        getContentResolver().update(MentorEntry.CONTENT_URI, values, mentorFilter, null);
 
         Toast.makeText(this, R.string.mentor_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
@@ -125,10 +133,11 @@ public class MentorEditorActivity extends AppCompatActivity{
 
     private void insertMentor(String mentorName, String mentorPhone, String mentorEmail) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.MentorEntry.MENTOR_NAME, mentorName);
-        values.put(ScheduleContract.MentorEntry.MENTOR_PHONE, mentorPhone);
-        values.put(ScheduleContract.MentorEntry.MENTOR_EMAIL, mentorEmail);
-        getContentResolver().insert(ScheduleContract.MentorEntry.CONTENT_URI, values);
+        values.put(MentorEntry.MENTOR_NAME, mentorName);
+        values.put(MentorEntry.MENTOR_PHONE, mentorPhone);
+        values.put(MentorEntry.MENTOR_EMAIL, mentorEmail);
+        values.put(MentorEntry.MENTOR_COURSE_ID_FK, courseID);
+        getContentResolver().insert(MentorEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }
 

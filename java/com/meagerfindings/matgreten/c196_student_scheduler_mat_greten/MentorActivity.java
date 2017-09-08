@@ -26,6 +26,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 public class MentorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EDITOR_REQUEST_CODE = 7000;
     private CursorAdapter mentorCursorAdapter;
+    private String courseID = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,6 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
         setContentView(R.layout.activity_mentor_screen);
 
         mentorCursorAdapter = new MentorCursorAdapter(this,R.layout.activity_mentor_screen, null, 0);
-
-        String courseID = "-1";
 
         if (getIntent().getExtras() != null) {
             String courseTitle = String.valueOf(getIntent().getExtras().getString("courseTitle"));
@@ -46,6 +45,8 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
 
         String sqlQuery = "SELECT * FROM " + TABLE_MENTORS +
                 " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
+
+        System.out.println(sqlQuery);
 
         Cursor mentorCursor = db.rawQuery(sqlQuery, null);
 
@@ -63,6 +64,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
                 Intent intent = new Intent(MentorActivity.this, MentorEditorActivity.class);
                 Uri uri = Uri.parse(MentorEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(MentorEntry.CONTENT_ITEM_TYPE, uri);
+                intent.putExtra("courseID", courseID);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
@@ -177,7 +179,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
 
     public void openEditorForNewMentor(View view) {
         Intent intent = new Intent(this, MentorEditorActivity.class);
-
+        intent.putExtra("courseID", courseID);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 

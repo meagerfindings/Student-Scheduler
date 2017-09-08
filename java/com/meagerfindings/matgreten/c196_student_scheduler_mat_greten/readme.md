@@ -4,8 +4,8 @@
 - Course Mentors
     - ~~create LV for CM's that is populated via method in course editor activity like the termSpinner.~~
     - ~~just names~~
-- Add button to view CM details
-    - this button will actually be the real MentorActivity view, filtered for the class and allow for the actual editing.
+- ~~Add button to view CM details~~
+    - ~~this button will actually be the real MentorActivit view, filtered for the class and allow for the actual editing.~~
 - Course Notes
     - create LV for Notes's that is populated via method in course editor activity like the termSpinner. 
     - just titles
