@@ -20,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_TERMS;
+
 public class MentorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EDITOR_REQUEST_CODE = 7000;
     private CursorAdapter mentorCursorAdapter;
@@ -31,38 +34,62 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
 
         mentorCursorAdapter = new MentorCursorAdapter(this,R.layout.activity_mentor_screen, null, 0);
 
+        String courseID = "-1";
+
+        if (getIntent().getExtras() != null) {
+            String courseTitle = String.valueOf(getIntent().getExtras().getString("courseTitle"));
+            courseID = getCourseKey(courseTitle);
+        }
+
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor mentorCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_MENTORS, null);
 
-        ListView mentorListView = (ListView) findViewById(R.id.mentorListView);
+        String sqlQuery = "SELECT * FROM " + TABLE_MENTORS +
+                " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
+
+        Cursor mentorCursor = db.rawQuery(sqlQuery, null);
+
+        ListView detailedMentorListView = (ListView) findViewById(R.id.detailedMentorListView);
 
         MentorCursorAdapter mentorAdapter = new MentorCursorAdapter(this, R.layout.activity_mentor_screen, mentorCursor, 0);
-        mentorListView.setAdapter(mentorAdapter);
+        detailedMentorListView.setAdapter(mentorAdapter);
         mentorAdapter.changeCursor(mentorCursor);
 
         getLoaderManager().initLoader(0, null, this);
 
-        mentorListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        detailedMentorListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Intent intent = new Intent(MentorActivity.this, MentorEditorActivity.class);
-                Uri uri = Uri.parse(ScheduleContract.MentorEntry.CONTENT_URI + "/" + id);
-                intent.putExtra(ScheduleContract.MentorEntry.CONTENT_ITEM_TYPE, uri);
+                Uri uri = Uri.parse(MentorEntry.CONTENT_URI + "/" + id);
+                intent.putExtra(MentorEntry.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Mentors");
+    }
 
+    private String getCourseKey(String courseTitle) {
+        String courseKey = "-1";
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        String queryString = "SELECT " + CourseEntry.COURSE_ID+ " FROM " + TABLE_COURSES + " WHERE " +
+                CourseEntry.COURSE_TITLE+ " = " + "'" + courseTitle + "'";
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor courseCursor = db.rawQuery(queryString, null);
+        if (courseCursor.moveToFirst())
+            courseKey = String.valueOf(courseCursor.getInt(0));
+        courseCursor.close();
+        db.close();
+
+        return courseKey;
     }
 
     public void insertMentor(String mentorName) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.MentorEntry.MENTOR_NAME, mentorName);
-        Uri mentorUri = getContentResolver().insert(ScheduleContract.MentorEntry.CONTENT_URI, values);
+        values.put(MentorEntry.MENTOR_NAME, mentorName);
+        Uri mentorUri = getContentResolver().insert(MentorEntry.CONTENT_URI, values);
 
         assert mentorUri != null;
         Log.d("MentorScreenActivity", "Inserted mentor " + mentorUri.getLastPathSegment());
@@ -101,7 +128,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
                         if (button == DialogInterface.BUTTON_POSITIVE) {
 
                             //Insert Data management code here
-                            getContentResolver().delete(ScheduleContract.MentorEntry.CONTENT_URI, null, null);
+                            getContentResolver().delete(MentorEntry.CONTENT_URI, null, null);
                             restartLoader();
 
                             Toast.makeText(MentorActivity.this,
@@ -135,7 +162,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.MentorEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, MentorEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override

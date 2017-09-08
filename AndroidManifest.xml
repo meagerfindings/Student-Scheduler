@@ -82,6 +82,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity" />
         </activity>
+        <activity
+            android:name=".MentorActivity"
+            android:label="@string/course_mentors"
+            android:parentActivityName=".CourseEditorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity" />
+        </activity>
+        <activity
+            android:name=".MentorEditorActivity"
+            android:label="@string/edit_mentor"
+            android:parentActivityName=".MentorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorEditorActivity" />
+        </activity>
     </application>
-
 </manifest>

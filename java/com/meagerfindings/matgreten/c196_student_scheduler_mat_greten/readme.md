@@ -2,8 +2,8 @@
 
 ## New TODO List
 - Course Mentors
-    - create LV for CM's that is populated via method in course editor activity like the termSpinner. 
-    - just titles
+    - ~~create LV for CM's that is populated via method in course editor activity like the termSpinner.~~
+    - ~~just names~~
 - Add button to view CM details
     - this button will actually be the real MentorActivity view, filtered for the class and allow for the actual editing.
 - Course Notes
@@ -11,6 +11,7 @@
     - just titles
 - Add button to view Note details
     - this button will actually be the real Course Notes Activity view, filtered for the class and allow for the actual editing.
+- Is it the androidmanifests list that is making my weird navigate back loops???!!?!?!?!
     
 ## TODO List
 

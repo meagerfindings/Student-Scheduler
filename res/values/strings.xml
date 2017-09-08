@@ -64,4 +64,5 @@
     <string name="phone">Phone:</string>
     <string name="mentor_updated">Updated mentor</string>
     <string name="mentor_deleted">Deleted mentor</string>
+    <string name="edit_mentor">Edit Mentor</string>
 </resources>

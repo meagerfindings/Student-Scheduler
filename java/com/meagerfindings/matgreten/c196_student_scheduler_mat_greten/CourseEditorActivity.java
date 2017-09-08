@@ -105,21 +105,9 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
             loadTermSpinnerData();
 
-            /*ArrayList<String> mentorNames = getMentorNames(courseID);
-            ArrayAdapter<String> mentorAdapter;
-            mentorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mentorNames);
-            ListView mentorListView = (ListView) findViewById(R.id.mentorListView);
-            mentorListView.setAdapter(mentorAdapter);*/
-
-            /*ArrayList<Mentor> mentorArray = Mentor.getMentors(courseID);
-            CourseMentorAdapter mentorAdapter = new CourseMentorAdapter(this, mentorArray);
-            ListView mentorListView = (ListView) findViewById(R.id.mentorListView);
-            mentorListView.setAdapter(mentorAdapter);*/
-
             ArrayList<String> mentorNames = getMentorNames(courseID);
-
             mentorListView = (ListView) findViewById(R.id.mentorListView);
-            mentorListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mentorNames));
+            mentorListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mentorNames));
 
 
             assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
@@ -155,74 +143,27 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     private ArrayList<String> getMentorNames(String courseID){
-
         ArrayList<String> mentorNames = new ArrayList<>();
-//        mentorNames[0] = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
+
         String queryString = "SELECT " + MentorEntry.MENTOR_NAME +
                 " FROM " + TABLE_MENTORS +
                 " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
+
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
-        if (termCursor.moveToFirst()) {
+
+        if (termCursor.moveToFirst())
             do mentorNames.add(termCursor.getString(0)); while (termCursor.moveToNext());
-        }
+
         termCursor.close();
         db.close();
 
-        if (mentorNames.isEmpty()) {
-            mentorNames.add("Click to add a mentor.");
-        } else if (mentorNames.size() > 2 ){
-            mentorNames.set(2, "Click to see full list of mentors.");
-
-        }
+        if (mentorNames.isEmpty()) mentorNames.add("Click 'Course Mentors' label to add a mentor.");
+        else if (mentorNames.size() > 2 ) mentorNames.set(2, "Click 'Course Mentors' label to see full list of mentors.");
 
         return mentorNames;
     }
-
-    /*private String[] getMentorNames(String courseID){
-
-        String[] mentorNames = new String[256];
-        mentorNames[0] = "";
-        ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + MentorEntry.MENTOR_NAME +
-                " FROM " + TABLE_MENTORS +
-                " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
-        SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor termCursor = db.rawQuery(queryString, null);
-        if (termCursor.moveToFirst()) {
-            int i = 0;
-            do {
-
-                mentorNames[i] = termCursor.getString(0);
-                i += 1;
-            } while (termCursor.moveToNext());
-        }
-        termCursor.close();
-        db.close();
-
-        if (mentorNames[0].isEmpty()) {
-            mentorNames[0] = "No Course Mentors have been added yet.";
-            mentorNames[1] = "Black canvas Slippers";
-            mentorNames[2] = "Third time's a charm.";
-        }
-
-        return mentorNames;
-    }*/
-
-//    private void loadMentorListViewData(String courseID) {
-//        List<String> mentorNames = getMentorNames(courseID);
-//        ArrayAdapter<String> mentorNamesAdapter = new ArrayAdapter<>(this, R.layout.item_mentor_names, mentorNames);
-////        mentorNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mentorListView.setAdapter(mentorNamesAdapter);
-//
-////        for(int i = 0; i < mentorNamesAdapter.getCount();  i++){
-////            if (Objects.equals(termSpinner.getItemAtPosition(i), oldTerm)){
-////                termSpinner.setSelection(i);
-////                break;
-////            }
-////        }
-//    }
 
     private List<String> getTermTitles(){
         ArrayList<String> termTitles = new ArrayList<>();
@@ -366,6 +307,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 
+    public void openMentorsList(View view){
+        Intent intent = new Intent(this, MentorActivity.class);
+        intent.putExtra("courseTitle", oldTitle);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed(){
         finishEditing();
@@ -373,9 +320,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        if (action.equals(Intent.ACTION_EDIT)){
-            getMenuInflater().inflate(R.menu.menu_editor, menu);
-        }
+        if (action.equals(Intent.ACTION_EDIT)) getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
 

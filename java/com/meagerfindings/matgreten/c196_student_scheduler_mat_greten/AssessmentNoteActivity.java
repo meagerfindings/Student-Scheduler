@@ -16,8 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class AssessmentNoteActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
@@ -42,7 +40,7 @@ public class AssessmentNoteActivity extends AppCompatActivity implements android
 
     }
 
-    public void insertAssessment(String assessmentNoteText) {
+    public void insertAssessmentNote(String assessmentNoteText) {
         ContentValues values = new ContentValues();
         values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteText);
         Uri assessmentURI = getContentResolver().insert(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, values);
@@ -103,8 +101,8 @@ public class AssessmentNoteActivity extends AppCompatActivity implements android
     }
 
     private void insertSampleData() {
-        insertAssessment("Simple Assessment Note");
-        insertAssessment("Multi-line\nAssessment Note");
+        insertAssessmentNote("Simple Assessment Note");
+        insertAssessmentNote("Multi-line\nAssessment Note");
 
         restartLoader();
     }
