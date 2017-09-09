@@ -73,4 +73,7 @@
     <string name="assessment_alert_deleted">Assessment Alert Deleted</string>
     <string name="assessment_alert_updated">Assessment Alert Updated</string>
     <string name="edit_assessment_alert">Edit Assessment Alert</string>
+    <string name="photo_deleted">Photo Deleted</string>
+    <string name="photo_updated">Photo Updated</string>
+    <string name="selected_photo">Selected Photo</string>
 </resources>
