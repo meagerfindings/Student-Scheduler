@@ -164,14 +164,12 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseStatus" />
+                app:layout_constraintTop_toBottomOf="@+id/courseEndAlertDateTime" />
 
             <TextView
                 android:id="@+id/courseAssessmentsLabel"
                 android:layout_width="133dp"
                 android:layout_height="28dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/assessments"
@@ -217,7 +215,7 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseAssessmentsListView" />
+                app:layout_constraintTop_toBottomOf="@+id/courseStatusSpinner" />
 
             <TextView
                 android:id="@+id/courseStartAlertLabel"
