@@ -10,7 +10,7 @@
     tools:layout_editor_absoluteX="0dp">
 
     <ListView
-        android:id="@+id/courseNotesListView"
+        android:id="@+id/courseNoteListView"
         android:layout_width="395dp"
         android:layout_height="587dp"
         tools:layout_constraintRight_creator="1"

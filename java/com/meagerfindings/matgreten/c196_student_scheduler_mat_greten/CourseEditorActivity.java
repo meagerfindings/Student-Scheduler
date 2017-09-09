@@ -111,7 +111,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             mentorListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mentorNames));
 
             ArrayList<String> courseNoteTitles = getCourseNoteTitles(courseID);
-            courseNoteListView = (ListView) findViewById(R.id.courseNotesListView);
+            courseNoteListView = (ListView) findViewById(R.id.courseNoteListView);
             courseNoteListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseNoteTitles));
 
 

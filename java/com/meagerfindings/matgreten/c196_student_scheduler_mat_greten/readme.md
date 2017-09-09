@@ -12,6 +12,7 @@
 - Add button to view Note details
     - this button will actually be the real Course Notes Activity view, filtered for the class and allow for the actual editing.
 - ~~Is it the androidmanifests list that is making my weird navigate back loops???!!?!?!?!~~ IT WAS!
+- validate for and remove *'* s from inputs!
     
 ## TODO List
 
