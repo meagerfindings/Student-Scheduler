@@ -30,9 +30,9 @@ public class CourseNoteActivity extends AppCompatActivity implements android.app
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_note_screen);
+        setContentView(R.layout.activity_note_screen);
 
-        courseNoteCursorAdapter = new CourseNotesCursorAdapter(this, R.layout.activity_course_note_screen, null, 0);
+        courseNoteCursorAdapter = new CourseNotesCursorAdapter(this, R.layout.activity_note_screen, null, 0);
 
         if (getIntent().getExtras() != null) {
             String courseTitle = String.valueOf(getIntent().getExtras().getString("courseTitle"));
@@ -43,21 +43,21 @@ public class CourseNoteActivity extends AppCompatActivity implements android.app
         SQLiteDatabase db = handler.getWritableDatabase();
 
         String sqlQuery = "SELECT * FROM " + TABLE_COURSE_NOTES +
-                " WHERE " + CourseNoteEntry.COURSE_NOTE_COURSE_FK+ " = " + courseID;
+                " WHERE " + CourseNoteEntry.COURSE_NOTE_COURSE_FK + " = " + courseID;
 
         Cursor courseNoteCursor = db.rawQuery(sqlQuery, null);
 
         System.out.println(sqlQuery);
 
-        ListView courseNoteListView = (ListView) findViewById(R.id.courseNoteListView);
+        ListView detailedCourseNoteListView = (ListView) findViewById(R.id.detailedCourseNoteListView);
 
-        CourseNotesCursorAdapter courseNoteAdapter = new CourseNotesCursorAdapter(this, R.layout.activity_course_note_screen, courseNoteCursor, 0);
-        courseNoteListView.setAdapter(courseNoteAdapter);
+        CourseNotesCursorAdapter courseNoteAdapter = new CourseNotesCursorAdapter(this, R.layout.activity_note_screen, courseNoteCursor, 0);
+        detailedCourseNoteListView.setAdapter(courseNoteAdapter);
         courseNoteAdapter.changeCursor(courseNoteCursor);
 
         getLoaderManager().initLoader(0, null, this);
 
-        courseNoteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        detailedCourseNoteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(CourseNoteActivity.this, CourseNoteEditorActivity.class);

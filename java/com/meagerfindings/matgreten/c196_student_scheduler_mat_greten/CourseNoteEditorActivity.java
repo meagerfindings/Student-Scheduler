@@ -3,7 +3,6 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
     private String oldText;
     private String oldStart;
     private String oldCourse;
-    private String courseKey;
+    private String courseID;
 
 
 
@@ -39,7 +38,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
 
         titleEditor = (EditText) findViewById(R.id.editCourseNoteTitleValue);
         textEditor = (EditText) findViewById(R.id.editCourseNoteTextValue);
-        courseKey = String.valueOf(getIntent().getExtras().getString("courseKey"));
+        courseID = String.valueOf(getIntent().getExtras().getString("courseID"));
 
         Intent intent = getIntent();
 
@@ -120,7 +119,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(CourseNoteEntry.COURSE_NOTE_TITLE, courseNoteTitle);
         values.put(CourseNoteEntry.COURSE_NOTE_TEXT, courseNoteText);
-        values.put(CourseNoteEntry.COURSE_NOTE_COURSE_FK, courseKey);
+        values.put(CourseNoteEntry.COURSE_NOTE_COURSE_FK, courseID);
         getContentResolver().update(CourseNoteEntry.CONTENT_URI, values, courseNoteFilter, null);
 
         Toast.makeText(this, R.string.course_note_updated, Toast.LENGTH_SHORT).show();
@@ -131,7 +130,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(CourseNoteEntry.COURSE_NOTE_TITLE, courseNoteTitle);
         values.put(CourseNoteEntry.COURSE_NOTE_TEXT, courseNoteText);
-        values.put(CourseNoteEntry.COURSE_NOTE_COURSE_FK, courseKey);
+        values.put(CourseNoteEntry.COURSE_NOTE_COURSE_FK, courseID);
 
         getContentResolver().insert(CourseNoteEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
