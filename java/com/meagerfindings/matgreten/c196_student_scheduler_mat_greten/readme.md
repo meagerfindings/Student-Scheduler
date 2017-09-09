@@ -1,36 +1,17 @@
 # MOBILE APPLICATIONS DEVELOPMENT
-
-## New TODO List
-- ~~Course Mentors~~
-    - ~~create LV for CM's that is populated via method in course editor activity like the termSpinner.~~
-    - ~~just names~~
-- ~~Add button to view CM details~~
-    - ~~this button will actually be the real MentorActivit view, filtered for the class and allow for the actual editing.~~
-- ~~Course Notes~~
-    - ~~create LV for Notes's that is populated via method in course editor activity like the termSpinner.~~
-    - ~~just titles~~
-- ~~Add button to view Note details~~
-    - ~~this button will actually be the real Course Notes Activity view, filtered for the class and allow for the actual editing.~~
-- ~~Is it the androidmanifests list that is making my weird navigate back loops???!!?!?!?!~~ IT WAS!
-- validate for and remove *'* s from inputs!
-    
+  
 ## TODO List
 
 - Add validation throughout...
-- Courses
-    - make cm listview for courses. Adding the activity did not work like I hoped it would...
-- Assessments
-    - Add the rest of the data points into creation/editing of assessments.
-        - Assessments Alerts Listview
-            - build
-            - add to edit assessments
-    - ~~hook up `Add Notes` button~~
+    - validate for and remove *'* s from inputs!
+
+- Assessments Alerts fake listview like CM's and CN's
+    - build
+    - add to edit assessments
 - Add `save` and `cancel` buttons througout the application
 - Assessment Notes:
     - add photo list view
         - completely implement photos....
-- Add `No notes added` or similar messages to every listview for when they are viewed for the first time
-- ~~FIGURE OUT WHY NOTES ARE ADDING TO THE WRONG ASSESSMENTS... I THINK `off by one`? Maybe? Trying to visulize DB to check actual values~~
 
 
 ### Competencies:

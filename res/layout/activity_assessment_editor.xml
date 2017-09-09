@@ -158,15 +158,15 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentDueDateLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/include_assessment_alerts" />
 
             <include
                 android:id="@+id/include_notes"
                 layout="@layout/content_assessment_note_activity_screen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                app:layout_constraintHorizontal_bias="0.454"
+                android:layout_marginTop="8dp"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assessmentNotesLabel" />
@@ -180,36 +180,23 @@
                 android:text="@string/assessment_alert"
                 android:textAlignment="textEnd"
                 android:textAllCaps="false"
+                android:textColor="@android:color/holo_blue_dark"
+                android:onClick="openAssessmentAlertsList"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include_notes" />
+                app:layout_constraintTop_toBottomOf="@+id/editAssessmentDueDateValue" />
 
-            <EditText
-                android:id="@+id/assessmentAlertDateTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <include
+                android:id="@+id/include_assessment_alerts"
+                layout="@layout/activity_assessment_alert_titles_screen"
+                android:layout_width="395dp"
+                android:layout_height="164dp"
                 android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="@string/example_date_time_hint"
-                android:inputType="datetime"
-                app:layout_constraintLeft_toRightOf="@+id/assessmentAlertLabel"
-                app:layout_constraintTop_toBottomOf="@+id/include_notes" />
-
-            <Button
-                android:id="@+id/add_assessment_note_button"
-                style="@android:style/Widget.DeviceDefault.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:onClick="openEditorForNewAssessmentNote"
-                android:text="@string/add_note"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                app:layout_constraintHorizontal_bias="0.88"
-                app:layout_constraintLeft_toRightOf="@+id/assessmentNotesLabel"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentDueDateLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentAlertLabel" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

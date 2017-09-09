@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_NOTES;
+
 /**
  * Created by matgreten on 8/29/17.
  */
@@ -46,6 +49,8 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private String oldCourse;
     private Spinner courseSpinner;
     private String assessmentKeyID = "-1";
+    private ListView assessmentAlertListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
         Intent intent = getIntent();
 
-        Uri uri = intent.getParcelableExtra(ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
 
 
         if (uri == null) {
@@ -71,19 +76,17 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             loadCourseSpinnerData();
         } else {
             action = Intent.ACTION_EDIT;
-            assessmentFilter = ScheduleContract.AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
+            assessmentFilter = AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
 
-            final Cursor cursor = getContentResolver().query(uri, ScheduleContract.AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
+            final Cursor cursor = getContentResolver().query(uri, AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
-            oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
-            oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
-            assessmentKeyID = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_ID));
-
-//            System.out.println("ASSESSMENT ID = " + assessmentKeyID);
+            oldText = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TITLE));
+            oldStart = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TARGET_DATE));
+            oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
+            assessmentKeyID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -101,13 +104,13 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
             assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, null, 0);
 
-            String assessmentID = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentEntry.ASSESSMENT_ID));
+            String assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
 
-            String queryString = "SELECT * FROM " + ScheduleContract.AssessmentNoteEntry.TABLE_NAME + " WHERE " +
-                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
+            String queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
+                    AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
 
             Cursor notesCursor = db.rawQuery(queryString, null);
 
@@ -124,19 +127,55 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                     Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
-                    Uri uri = Uri.parse(ScheduleContract.AssessmentNoteEntry.CONTENT_URI + "/" + id);
-                    intent.putExtra(ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE, uri);
+                    Uri uri = Uri.parse(AssessmentNoteEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(AssessmentNoteEntry.CONTENT_ITEM_TYPE, uri);
                     intent.putExtra("assessmentKey", assessmentKeyID);
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
+
+            ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentKeyID);
+            assessmentAlertListView = (ListView) findViewById(R.id.assessmentAlertListView);
+            assessmentAlertListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, assessmentAlertTitles));
         }
+    }
+
+    private ArrayList<String> getAssessmentAlertTitles(String assessmentKeyID) {
+        ArrayList<String> assessmentAlertTitles = new ArrayList<>();
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+
+        String queryString = "SELECT " + AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE +
+                " FROM " + TABLE_ASSESSMENT_ALERTS +
+                " WHERE " + AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " + assessmentKeyID;
+
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor assessmentAlertCursor = db.rawQuery(queryString, null);
+
+        if (assessmentAlertCursor.moveToFirst())
+            do assessmentAlertTitles.add(assessmentAlertCursor.getString(0));
+            while (assessmentAlertCursor.moveToNext());
+
+        assessmentAlertCursor.close();
+        db.close();
+
+        if (assessmentAlertTitles.isEmpty())
+            assessmentAlertTitles.add("Click ASSESSMENT ALERT label to add an alert.");
+        else if (assessmentAlertTitles.size() == 1)
+            assessmentAlertTitles.add("Click ASSESSMENT ALERT label to see full list of alerts.");
+        else if (assessmentAlertTitles.size() == 2)
+            assessmentAlertTitles.add("Click ASSESSMENT ALERT label to see full list of alerts.");
+        else if (assessmentAlertTitles.size() > 2)
+            assessmentAlertTitles.set(2, "Click ASSESSMENT ALERT label to see full list of alerts.");
+
+        System.out.println("Course note tiltes =" + assessmentAlertTitles);
+
+        return assessmentAlertTitles;
     }
 
     public List<String> getCourseTitles() {
         ArrayList<String> courseTitles = new ArrayList<>();
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_TITLE + " FROM " + ScheduleContract.TABLE_COURSES;
+        String queryString = "SELECT " + CourseEntry.COURSE_TITLE + " FROM " + TABLE_COURSES;
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
@@ -165,8 +204,8 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     public int getCourseKey(String searchCourseString) {
         int courseKey = -1;
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_ID + " FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
-                ScheduleContract.CourseEntry.COURSE_TITLE + " = " + "'" + searchCourseString + "'";
+        String queryString = "SELECT " + CourseEntry.COURSE_ID + " FROM " + TABLE_COURSES + " WHERE " +
+                CourseEntry.COURSE_TITLE + " = " + "'" + searchCourseString + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
@@ -180,8 +219,8 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     public String courseTitleFromKey(String searchKey) {
         String courseTitle = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_TITLE + " FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
-                ScheduleContract.CourseEntry.COURSE_ID + " = " + "'" + searchKey + "'";
+        String queryString = "SELECT " + CourseEntry.COURSE_TITLE + " FROM " + TABLE_COURSES + " WHERE " +
+                CourseEntry.COURSE_ID + " = " + "'" + searchKey + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
@@ -197,9 +236,9 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     public String getCourseDueDate() {
         String courseDueDate = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_END +
-                " FROM " + ScheduleContract.TABLE_COURSES +
-                " WHERE " + ScheduleContract.CourseEntry.COURSE_ID + " = " + getCourseKey(courseSpinner.getSelectedItem().toString());
+        String queryString = "SELECT " + CourseEntry.COURSE_END +
+                " FROM " + TABLE_COURSES +
+                " WHERE " + CourseEntry.COURSE_ID + " = " + getCourseKey(courseSpinner.getSelectedItem().toString());
 
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
@@ -253,7 +292,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     }
 
     private void deleteAssessment() {
-        getContentResolver().delete(ScheduleContract.AssessmentEntry.CONTENT_URI, assessmentFilter, null);
+        getContentResolver().delete(AssessmentEntry.CONTENT_URI, assessmentFilter, null);
         Toast.makeText(this, R.string.assessment_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
@@ -261,10 +300,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     private void updateAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
-        getContentResolver().update(ScheduleContract.AssessmentEntry.CONTENT_URI, values, assessmentFilter, null);
+        values.put(AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
+        values.put(AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
+        values.put(AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
+        getContentResolver().update(AssessmentEntry.CONTENT_URI, values, assessmentFilter, null);
 
         Toast.makeText(this, R.string.assessment_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
@@ -272,10 +311,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     private void insertAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
-        values.put(ScheduleContract.AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
-        getContentResolver().insert(ScheduleContract.AssessmentEntry.CONTENT_URI, values);
+        values.put(AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
+        values.put(AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
+        values.put(AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
+        getContentResolver().insert(AssessmentEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }
 
@@ -300,7 +339,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.AssessmentNoteEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, AssessmentNoteEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
@@ -324,5 +363,11 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
             restartLoader();
         }
+    }
+
+    public void openAssessmentAlertsList(View view) {
+        Intent intent = new Intent(this, AssessmentAlertActivity.class);
+        intent.putExtra("assessmentTitle", oldText);
+        startActivity(intent);
     }
 }

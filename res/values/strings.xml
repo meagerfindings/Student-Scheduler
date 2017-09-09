@@ -68,4 +68,9 @@
     <string name="edit_course_note">Edit Course Note</string>
     <string name="course_note_updated">Course Note Updated</string>
     <string name="course_note_deleted">Course Note Deleted</string>
+    <string name="alert_title">Alert Title:</string>
+    <string name="alert_time">Alert Time:</string>
+    <string name="assessment_alert_deleted">Assessment Alert Deleted</string>
+    <string name="assessment_alert_updated">Assessment Alert Updated</string>
+    <string name="edit_assessment_alert">Edit Assessment Alert</string>
 </resources>

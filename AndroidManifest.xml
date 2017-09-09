@@ -98,7 +98,6 @@
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity" />
-
         <activity
             android:name=".CourseNoteActivity"
             android:label="@string/course_notes"
@@ -114,6 +113,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseNoteActivity" />
+        </activity>
+        <activity
+            android:name=".AssessmentAlertActivity"
+            android:label="@string/assessment_alert"
+            android:parentActivityName=".AssessmentEditorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
+        </activity>
+        <activity
+            android:name=".AssessmentAlertEditorActivity"
+            android:label="@string/edit_assessment_alert"
+            android:parentActivityName=".AssessmentAlertActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentAlertActivity" />
         </activity>
     </application>
 </manifest>
