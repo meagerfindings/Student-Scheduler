@@ -6,11 +6,11 @@
     - ~~just names~~
 - ~~Add button to view CM details~~
     - ~~this button will actually be the real MentorActivit view, filtered for the class and allow for the actual editing.~~
-- Course Notes
-    - create LV for Notes's that is populated via method in course editor activity like the termSpinner. 
-    - just titles
-- Add button to view Note details
-    - this button will actually be the real Course Notes Activity view, filtered for the class and allow for the actual editing.
+- ~~Course Notes~~
+    - ~~create LV for Notes's that is populated via method in course editor activity like the termSpinner.~~
+    - ~~just titles~~
+- ~~Add button to view Note details~~
+    - ~~this button will actually be the real Course Notes Activity view, filtered for the class and allow for the actual editing.~~
 - ~~Is it the androidmanifests list that is making my weird navigate back loops???!!?!?!?!~~ IT WAS!
 - validate for and remove *'* s from inputs!
     

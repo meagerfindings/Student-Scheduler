@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,7 +29,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 8/29/17.
  */
 
-public class CourseEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class CourseEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private CourseAssessmentCursorAdapter assessmentAdapter;
     private static final int EDITOR_REQUEST_CODE = 3011;
     private String action;
@@ -64,11 +63,11 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         startEditor = (EditText) findViewById(R.id.editCourseStartDate);
         endEditor = (EditText) findViewById(R.id.editCourseEndDate);
 
-        Intent intent =  getIntent();
+        Intent intent = getIntent();
 
         Uri uri = intent.getParcelableExtra(CourseEntry.CONTENT_ITEM_TYPE);
 
-        if (uri == null){
+        if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Course");
             loadTermSpinnerData();
@@ -97,8 +96,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             startEditor.setText(oldStart);
             endEditor.setText(oldEnd);
 
-            for(int i = 0; i < statusArrayAdapter.getCount();  i++){
-                if (Objects.equals(statusArrayAdapter.getItem(i).toString(), oldStatus)){
+            for (int i = 0; i < statusArrayAdapter.getCount(); i++) {
+                if (Objects.equals(statusArrayAdapter.getItem(i).toString(), oldStatus)) {
                     statusSpinner.setSelection(i);
                     break;
                 }
@@ -134,9 +133,9 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
             getLoaderManager().initLoader(0, null, this);
 
-            assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
                     Uri uri = Uri.parse(AssessmentEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
@@ -147,7 +146,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
     }
 
-    private ArrayList<String> getMentorNames(String courseID){
+    private ArrayList<String> getMentorNames(String courseID) {
         ArrayList<String> mentorNames = new ArrayList<>();
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
 
@@ -165,39 +164,49 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         db.close();
 
         if (mentorNames.isEmpty()) mentorNames.add("Click COURSE MENTORS label to add a mentor.");
-        else if (mentorNames.size() == 1 ) mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
-        else if (mentorNames.size() == 2 ) mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
-        else if (mentorNames.size() > 2 ) mentorNames.set( 2, "Click COURSE MENTORS label to see full list of mentors.");
+        else if (mentorNames.size() == 1)
+            mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
+        else if (mentorNames.size() == 2)
+            mentorNames.add("Click COURSE MENTORS label to see full list of mentors.");
+        else if (mentorNames.size() > 2)
+            mentorNames.set(2, "Click COURSE MENTORS label to see full list of mentors.");
 
         return mentorNames;
     }
 
-    private ArrayList<String> getCourseNoteTitles(String courseID){
+    private ArrayList<String> getCourseNoteTitles(String courseID) {
         ArrayList<String> courseNoteTitles = new ArrayList<>();
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
 
-        String queryString = "SELECT " + CourseNoteEntry.COURSE_NOTE_TITLE+
+        String queryString = "SELECT " + CourseNoteEntry.COURSE_NOTE_TITLE +
                 " FROM " + TABLE_COURSE_NOTES +
-                " WHERE " + CourseNoteEntry.COURSE_NOTE_COURSE_FK+ " = " + courseID;
+                " WHERE " + CourseNoteEntry.COURSE_NOTE_COURSE_FK + " = " + courseID;
 
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor courseNoteCursor = db.rawQuery(queryString, null);
 
         if (courseNoteCursor.moveToFirst())
-            do courseNoteTitles.add(courseNoteCursor.getString(0)); while (courseNoteCursor.moveToNext());
+            do courseNoteTitles.add(courseNoteCursor.getString(0));
+            while (courseNoteCursor.moveToNext());
 
         courseNoteCursor.close();
         db.close();
 
-        if (courseNoteTitles.isEmpty()) courseNoteTitles.add("Click COURSE NOTES label to add a note.");
-        else if (courseNoteTitles.size() == 1 ) courseNoteTitles.add("Click COURSE NOTES label to see full list of notes.");
-        else if (courseNoteTitles.size() == 2 ) courseNoteTitles.add("Click COURSE NOTES label to see full list of notes.");
-        else if (courseNoteTitles.size() > 2 ) courseNoteTitles.set( 2, "Click COURSE NOTES label to see full list of notes.");
+        if (courseNoteTitles.isEmpty())
+            courseNoteTitles.add("Click COURSE NOTES label to add a note.");
+        else if (courseNoteTitles.size() == 1)
+            courseNoteTitles.add("Click COURSE NOTES label to see full list of notes.");
+        else if (courseNoteTitles.size() == 2)
+            courseNoteTitles.add("Click COURSE NOTES label to see full list of notes.");
+        else if (courseNoteTitles.size() > 2)
+            courseNoteTitles.set(2, "Click COURSE NOTES label to see full list of notes.");
+
+        System.out.println("Course note tiltes =" + courseNoteTitles);
 
         return courseNoteTitles;
     }
 
-    private List<String> getTermTitles(){
+    private List<String> getTermTitles() {
         ArrayList<String> termTitles = new ArrayList<>();
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         String queryString = "SELECT " + TermEntry.TERM_TITLE + " FROM " + TABLE_TERMS;
@@ -217,18 +226,18 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         termTitlesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         termSpinner.setAdapter(termTitlesAdapter);
 
-        for(int i = 0; i < termTitlesAdapter.getCount();  i++){
-            if (Objects.equals(termSpinner.getItemAtPosition(i), oldTerm)){
+        for (int i = 0; i < termTitlesAdapter.getCount(); i++) {
+            if (Objects.equals(termSpinner.getItemAtPosition(i), oldTerm)) {
                 termSpinner.setSelection(i);
                 break;
             }
         }
     }
 
-    private int getTermKey(String searchTerm){
+    private int getTermKey(String searchTerm) {
         int termKey = -1;
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + TermEntry.TERM_ID+ " FROM " + TABLE_TERMS + " WHERE " +
+        String queryString = "SELECT " + TermEntry.TERM_ID + " FROM " + TABLE_TERMS + " WHERE " +
                 TermEntry.TERM_TITLE + " = " + "'" + searchTerm + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
@@ -240,10 +249,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return termKey;
     }
 
-    private String termTitleFromKey(String searchKey){
+    private String termTitleFromKey(String searchKey) {
         String termTile = "";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + TermEntry.TERM_TITLE+ " FROM " + TABLE_TERMS + " WHERE " +
+        String queryString = "SELECT " + TermEntry.TERM_TITLE + " FROM " + TABLE_TERMS + " WHERE " +
                 TermEntry.TERM_ID + " = " + "'" + searchKey + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery(queryString, null);
@@ -258,10 +267,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finishEditing();
                 break;
@@ -272,19 +281,19 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return true;
     }
 
-    private void finishEditing(){
+    private void finishEditing() {
         String newTitle = titleEditor.getText().toString().trim();
         String newStart = startEditor.getText().toString().trim();
         String newEnd = endEditor.getText().toString().trim();
         String newStatus = statusSpinner.getSelectedItem().toString();
         int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
-        switch (action){
+        switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newStart.length() == 0){
+                } else if (newStart.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newEnd.length() == 0){
+                } else if (newEnd.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
                     insertCourse(newTitle, newStart, newEnd, newStatus, newTermID);
@@ -293,7 +302,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteCourse();
-                } else if (oldTitle.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)){
+                } else if (oldTitle.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateCourse(newTitle, newStart, newEnd, newStatus, newTermID);
@@ -345,25 +354,25 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 
-    public void openMentorsList(View view){
+    public void openMentorsList(View view) {
         Intent intent = new Intent(this, MentorActivity.class);
         intent.putExtra("courseTitle", oldTitle);
         startActivity(intent);
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finishEditing();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         if (action.equals(Intent.ACTION_EDIT)) getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
 
     @Override
-    public android.content.Loader<Cursor>  onCreateLoader(int id, Bundle args) {
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
     }
 

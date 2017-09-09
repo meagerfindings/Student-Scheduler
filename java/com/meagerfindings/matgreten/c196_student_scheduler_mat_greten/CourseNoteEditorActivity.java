@@ -22,13 +22,10 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
     private String action;
     private EditText titleEditor;
     private EditText textEditor;
-    private TextView courseDueDateValue;
     private String courseNoteFilter;
     private String oldText;
     private String oldStart;
-    private String oldCourse;
     private String courseID;
-
 
 
     @Override
