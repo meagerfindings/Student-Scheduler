@@ -5,10 +5,7 @@
 - Add validation throughout...
     - validate for and remove *'* s from inputs!
 
-- Assessments Alerts fake listview like CM's and CN's
-    - build
-    - add to edit assessments
-- Add `save` and `cancel` buttons througout the application
+- Add `save` and `cancel` buttons throughout the application
 - Assessment Notes:
     - add photo list view
         - completely implement photos....

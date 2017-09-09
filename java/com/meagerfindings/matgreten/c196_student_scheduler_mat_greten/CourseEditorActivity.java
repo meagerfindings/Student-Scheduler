@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -43,9 +44,18 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private String oldTerm;
     private String oldStart;
     private String oldEnd;
+    private EditText startAlertTimeEditor;
+    private EditText endAlertTimeEditor;
+    private String oldStartAlertTime;
+    private String oldEndAlertTime;
+    private String oldStartAlertStatus;
+    private String oldEndAlertStatus;
     private String oldStatus;
     private ListView mentorListView;
     private ListView courseNoteListView;
+    private CheckBox startStatusEditor;
+    private CheckBox endStatusEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +72,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         titleEditor = (EditText) findViewById(R.id.editCourseTitle);
         startEditor = (EditText) findViewById(R.id.editCourseStartDate);
         endEditor = (EditText) findViewById(R.id.editCourseEndDate);
+        startAlertTimeEditor = (EditText) findViewById(R.id.courseStartAlertDateTime);
+        endAlertTimeEditor = (EditText) findViewById(R.id.courseEndAlertDateTime);
+        startStatusEditor = (CheckBox) findViewById(R.id.startAlertCheckBox);
+        endStatusEditor = (CheckBox) findViewById(R.id.endAlertCheckBox);
 
         Intent intent = getIntent();
 
@@ -86,15 +100,25 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             oldStart = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START));
             oldEnd = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END));
             oldStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_STATUS));
+            oldStartAlertTime = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START_ALERT_TIME));
+            oldEndAlertTime = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END_ALERT_TIME));
+            oldStartAlertStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START_ALERT_STATUS));
+            oldEndAlertStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END_ALERT_STATUS));
 
             if (oldTitle == null) oldTitle = "";
             if (oldStart == null) oldStart = "";
             if (oldEnd == null) oldEnd = "";
             if (oldStatus == null || oldStatus.isEmpty()) oldStatus = "Planned";
+            if (oldStartAlertTime == null) oldStartAlertTime = "";
+            if (oldEndAlertTime == null) oldEndAlertTime = "";
+            if (Objects.equals(oldStartAlertStatus, "active")) startStatusEditor.setChecked(true);
+            if (Objects.equals(oldEndAlertStatus, "active")) endStatusEditor.setChecked(true);
 
             titleEditor.setText(oldTitle);
             startEditor.setText(oldStart);
             endEditor.setText(oldEnd);
+            startAlertTimeEditor.setText(oldStartAlertTime);
+            endAlertTimeEditor.setText(oldEndAlertTime);
 
             for (int i = 0; i < statusArrayAdapter.getCount(); i++) {
                 if (Objects.equals(statusArrayAdapter.getItem(i).toString(), oldStatus)) {
@@ -261,7 +285,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         termCursor.close();
         db.close();
 
-        System.out.println(termTile);
+//        System.out.println(termTile);
 
         return termTile;
     }
@@ -287,6 +311,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         String newEnd = endEditor.getText().toString().trim();
         String newStatus = statusSpinner.getSelectedItem().toString();
         int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
+        String newStartAlertTime = startAlertTimeEditor.getText().toString().trim();
+        String newEndAlertTime = endAlertTimeEditor.getText().toString().trim();
+        String newStartStatus = "inactive";
+        if (startStatusEditor.isChecked()) newStartStatus = "active";
+        String newEndStatus = "inactive";
+        if (endStatusEditor.isChecked()) newEndStatus = "active";
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
@@ -296,7 +326,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 } else if (newEnd.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertCourse(newTitle, newStart, newEnd, newStatus, newTermID);
+                    insertCourse(newTitle, newStart, newEnd, newStatus, newTermID, newStartAlertTime, newEndAlertTime, newStartStatus, newEndStatus);
                 }
                 break;
             case Intent.ACTION_EDIT:
@@ -305,7 +335,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 } else if (oldTitle.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateCourse(newTitle, newStart, newEnd, newStatus, newTermID);
+                    updateCourse(newTitle, newStart, newEnd, newStatus, newTermID, newStartAlertTime, newEndAlertTime, newStartStatus, newEndStatus);
                 }
         }
         finish();
@@ -318,26 +348,36 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         finish();
     }
 
-    private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID) {
+    private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID, String startAlertTime,
+                              String endAlertTime, String startAlertStatus, String endAlertStatus) {
         ContentValues values = new ContentValues();
         values.put(CourseEntry.COURSE_TITLE, courseTitle);
         values.put(CourseEntry.COURSE_START, courseStart);
         values.put(CourseEntry.COURSE_END, courseEnd);
         values.put(CourseEntry.COURSE_STATUS, courseStatus);
         values.put(CourseEntry.COURSE_TERM_ID_FK, termID);
+        values.put(CourseEntry.COURSE_START_ALERT_TIME, startAlertTime);
+        values.put(CourseEntry.COURSE_END_ALERT_TIME, endAlertTime);
+        values.put(CourseEntry.COURSE_START_ALERT_STATUS, startAlertStatus);
+        values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().update(CourseEntry.CONTENT_URI, values, courseFilter, null);
 
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
-    private void insertCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID) {
+    private void insertCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID, String startAlertTime,
+                              String endAlertTime, String startAlertStatus, String endAlertStatus) {
         ContentValues values = new ContentValues();
         values.put(CourseEntry.COURSE_TITLE, courseTitle);
         values.put(CourseEntry.COURSE_START, courseStart);
         values.put(CourseEntry.COURSE_END, courseEnd);
         values.put(CourseEntry.COURSE_STATUS, courseStatus);
         values.put(CourseEntry.COURSE_TERM_ID_FK, termID);
+        values.put(CourseEntry.COURSE_START_ALERT_TIME, startAlertTime);
+        values.put(CourseEntry.COURSE_END_ALERT_TIME, endAlertTime);
+        values.put(CourseEntry.COURSE_START_ALERT_STATUS, startAlertStatus);
+        values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().insert(CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }

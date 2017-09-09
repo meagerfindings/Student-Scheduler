@@ -63,9 +63,13 @@ public class ScheduleContract {
         static final String COURSE_TITLE = "courseTitle";
         static final String COURSE_START= "courseStart";
         static final String COURSE_END= "courseEnd";
+        static final String COURSE_START_ALERT_TIME = "courseStartAlertTime";
+        static final String COURSE_END_ALERT_TIME = "courseEndAlertTime";
+        static final String COURSE_START_ALERT_STATUS = "courseStartAlertStatus";
+        static final String COURSE_END_ALERT_STATUS = "courseEndAlertStatus";
         static final String COURSE_STATUS= "courseStatus";
         static final String COURSE_CREATED = "courseCreated";
-        static final String[] ALL_COURSE_COLUMNS = {COURSE_ID, COURSE_TERM_ID_FK, COURSE_TITLE, COURSE_START, COURSE_END, COURSE_STATUS, COURSE_CREATED};
+        static final String[] ALL_COURSE_COLUMNS = {COURSE_ID, COURSE_TERM_ID_FK, COURSE_TITLE, COURSE_START, COURSE_END, COURSE_START_ALERT_TIME, COURSE_END_ALERT_TIME, COURSE_START_ALERT_STATUS, COURSE_END_ALERT_STATUS, COURSE_STATUS, COURSE_CREATED};
 
         public static Uri buildCourseUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);

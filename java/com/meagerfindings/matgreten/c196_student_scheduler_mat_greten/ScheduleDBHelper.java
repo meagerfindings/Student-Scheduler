@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ScheduleDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "schedule.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public ScheduleDBHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
@@ -32,6 +32,10 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
                     ScheduleContract.CourseEntry.COURSE_TITLE + " TEXT, " +
                     ScheduleContract.CourseEntry.COURSE_START + " TEXT, " +
                     ScheduleContract.CourseEntry.COURSE_END + " TEXT, " +
+                    ScheduleContract.CourseEntry.COURSE_START_ALERT_TIME + " TEXT, " +
+                    ScheduleContract.CourseEntry.COURSE_END_ALERT_TIME + " TEXT, " +
+                    ScheduleContract.CourseEntry.COURSE_START_ALERT_STATUS + " TEXT, " +
+                    ScheduleContract.CourseEntry.COURSE_END_ALERT_STATUS + " TEXT, " +
                     ScheduleContract.CourseEntry.COURSE_STATUS + " TEXT, " +
                     ScheduleContract.CourseEntry.COURSE_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";
 
