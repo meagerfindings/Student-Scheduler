@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-files-path
+        name="images"
+        path="Pictures" />
+
+    <!--TODO CITE: https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher-->
+</paths>

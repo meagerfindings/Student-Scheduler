@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,16 +18,23 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name=".ScheduleProvider"
             android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten"
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="file_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:resource="@xml/file_provider" />
+        </provider>
 
         <activity
             android:name=".TermsActivity"
@@ -98,6 +108,7 @@
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity" />
+
         <activity
             android:name=".CourseNoteActivity"
             android:label="@string/course_notes"
@@ -129,6 +140,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentAlertActivity" />
+        </activity>
+        <activity
+            android:name=".AssessmentPhotoActivity"
+            android:label="@string/assessment_note_photos"
+            android:parentActivityName=".AssessmentNoteEditorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentNoteEditorActivity" />
+        </activity>
+        <activity
+            android:name=".AssessmentPhotoEditorActivity"
+            android:label="@string/photo"
+            android:parentActivityName=".AssessmentPhotoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentPhotoActivity" />
         </activity>
     </application>
 </manifest>

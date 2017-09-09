@@ -76,4 +76,7 @@
     <string name="photo_deleted">Photo Deleted</string>
     <string name="photo_updated">Photo Updated</string>
     <string name="selected_photo">Selected Photo</string>
+    <string name="assessment_note_photos">Assessment Note Photos</string>
+    <string name="photo">Photo</string>
+    <string name="take_new_photo">Take new photo</string>
 </resources>
