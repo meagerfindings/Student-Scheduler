@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">C196_student_scheduler_mat_greten</string>
+    <string name="app_name">Student Scheduler</string>
     <string name="action_settings">Settings</string>
     <string name="create_sample_data">Create Sample Data</string>
     <string name="delete_all_notes">Delete All Notes</string>
