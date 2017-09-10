@@ -6,9 +6,6 @@
     - validate for and remove *'* s from inputs!
 
 - Add `save` and `cancel` buttons throughout the application
-- Course Notes:
-    - add photo list view
-    - implement photos
 
 
 ### Competencies:

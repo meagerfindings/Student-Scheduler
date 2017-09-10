@@ -1,14 +1,21 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +25,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 8/29/17.
  */
 
-public class CourseNoteEditorActivity extends AppCompatActivity {
+public class CourseNoteEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private String action;
     private EditText titleEditor;
     private EditText textEditor;
@@ -26,6 +33,9 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
     private String oldText;
     private String oldStart;
     private String courseID;
+    private String courseNoteKey;
+    private static final int EDITOR_REQUEST_CODE = 11011;
+    private CursorAdapter coursePhotoCursorAdapter;
 
 
     @Override
@@ -55,6 +65,8 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
 
             oldText = cursor.getString(cursor.getColumnIndex(CourseNoteEntry.COURSE_NOTE_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(CourseNoteEntry.COURSE_NOTE_TEXT));
+            courseNoteKey = cursor.getString(cursor.getColumnIndex(CourseNoteEntry.COURSE_NOTE_ID));
+
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -62,6 +74,37 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
             titleEditor.setText(oldText);
             textEditor.setText(oldStart);
 
+            coursePhotoCursorAdapter = new CoursePhotoCursorAdapter(this, R.layout.activity_course_photo_screen, null, 0);
+
+            ScheduleDBHelper handler = new ScheduleDBHelper(this);
+            SQLiteDatabase db = handler.getWritableDatabase();
+
+            String sqlQuery = "SELECT * FROM " + TABLE_COURSE_PHOTOS +
+                    " WHERE " + CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " = " + courseNoteKey;
+
+            System.out.println(sqlQuery);
+
+            Cursor coursePhotoCursor = db.rawQuery(sqlQuery, null);
+
+            ListView testPhotoListView = (ListView) findViewById(R.id.detailedCoursePhotoListView);
+
+            CoursePhotoCursorAdapter coursePhotoAdapter;
+            coursePhotoAdapter = new CoursePhotoCursorAdapter(this, R.layout.activity_course_photo_screen, coursePhotoCursor, 0);
+            testPhotoListView.setAdapter(coursePhotoAdapter);
+            coursePhotoAdapter.changeCursor(coursePhotoCursor);
+
+            getLoaderManager().initLoader(0, null, this);
+
+            testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                    Intent intent = new Intent(CourseNoteEditorActivity.this, CoursePhotoEditorActivity.class);
+                    Uri uri = Uri.parse(CoursePhotoEntry.CONTENT_URI + "/" + id);
+                    intent.putExtra(CoursePhotoEntry.CONTENT_ITEM_TYPE, uri);
+                    intent.putExtra("courseNoteKey", courseNoteKey);
+                    startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                }
+            });
         }
     }
 
@@ -144,5 +187,26 @@ public class CourseNoteEditorActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;
+    }
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, CoursePhotoEntry.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        coursePhotoCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        coursePhotoCursorAdapter.swapCursor(null);
+    }
+
+    public void openEditorForNewCoursePhoto(View view) {
+        Intent intent = new Intent(this, CoursePhotoEditorActivity.class);
+        intent.putExtra("courseNoteKey", courseNoteKey);
+        startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 }

@@ -30,14 +30,6 @@
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
-        <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.fileprovider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data android:resource="@xml/fileprovider" />-->
-        <!--</provider>-->
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.fileprovider"
@@ -47,7 +39,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
-
 
         <activity
             android:name=".TermsActivity"
@@ -169,6 +160,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentPhotoActivity" />
+        </activity>
+        <activity
+            android:name=".CoursePhotoActivity"
+            android:label="@string/course_note_photos1"
+            android:parentActivityName=".CourseNoteEditorActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseNoteEditorActivity" />
+        </activity>
+        <activity
+            android:name=".CoursePhotoEditorActivity"
+            android:label="@string/photo"
+            android:parentActivityName=".CoursePhotoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursePhotoActivity" />
         </activity>
     </application>
 </manifest>
