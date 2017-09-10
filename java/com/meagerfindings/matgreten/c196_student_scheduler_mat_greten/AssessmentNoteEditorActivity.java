@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 /**
  * Created by matgreten on 8/29/17.
  */
@@ -44,27 +46,30 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentNoteTitleValue);
         textEditor = (EditText) findViewById(R.id.editAssessmentNoteTextValue);
-        assessmentKey = String.valueOf(getIntent().getExtras().getString("assessmentKey"));
+
+        if (getIntent().getExtras() != null){
+            assessmentKey = String.valueOf(getIntent().getExtras().getString("assessmentKey"));
+        }
 
         Intent intent = getIntent();
 
-        Uri uri = intent.getParcelableExtra(ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE);
+        Uri uri = intent.getParcelableExtra(AssessmentNoteEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Assessment Note");
         } else {
             action = Intent.ACTION_EDIT;
-            assessmentNoteFilter = ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ID + "=" + uri.getLastPathSegment();
+            assessmentNoteFilter = AssessmentNoteEntry.ASSESSMENT_NOTE_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, ScheduleContract.AssessmentNoteEntry.ALL_ASSESSMENT_NOTE_COLUMNS, assessmentNoteFilter, null, null);
+            Cursor cursor = getContentResolver().query(uri, AssessmentNoteEntry.ALL_ASSESSMENT_NOTE_COLUMNS, assessmentNoteFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
-            oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
-            assessmentNoteKey = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ID));
+            oldText = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
+            oldStart = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
+            assessmentNoteKey = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_ID));
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -78,9 +83,9 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
     public int getAssessmentKey(String searchTitleString) {
         int assessmentKey = -1;
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + ScheduleContract.AssessmentEntry.ASSESSMENT_ID +
-                " FROM " + ScheduleContract.TABLE_ASSESSMENTS + " WHERE " +
-                ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE + " = " + "'" + searchTitleString + "'";
+        String queryString = "SELECT " + AssessmentEntry.ASSESSMENT_ID +
+                " FROM " + TABLE_ASSESSMENTS + " WHERE " +
+                AssessmentEntry.ASSESSMENT_TITLE + " = " + "'" + searchTitleString + "'";
 
         System.out.println("ASSESSMENT KEY SEARCH QUERY BY TITLE");
         System.out.println(queryString);
@@ -145,7 +150,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
     }
 
     private void deleteAssessmentNote() {
-        getContentResolver().delete(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, assessmentNoteFilter, null);
+        getContentResolver().delete(AssessmentNoteEntry.CONTENT_URI, assessmentNoteFilter, null);
         Toast.makeText(this, R.string.assessment_note_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
@@ -153,10 +158,10 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
 
     private void updateAssessmentNote(String assessmentNoteTitle, String assessmentNoteText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
-        getContentResolver().update(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, values, assessmentNoteFilter, null);
+        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
+        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
+        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
+        getContentResolver().update(AssessmentNoteEntry.CONTENT_URI, values, assessmentNoteFilter, null);
 
         Toast.makeText(this, R.string.assessment_note_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
@@ -164,11 +169,11 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
 
     private void insertAssessmentNote(String assessmentNoteTitle, String assessmentNoteText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
-        values.put(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
+        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
+        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
+        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
 
-        getContentResolver().insert(ScheduleContract.AssessmentNoteEntry.CONTENT_URI, values);
+        getContentResolver().insert(AssessmentNoteEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
     }
 

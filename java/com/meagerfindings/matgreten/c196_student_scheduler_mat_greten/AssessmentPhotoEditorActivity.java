@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,11 +29,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.R.attr.data;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentPhotoEntry;
 
 public class AssessmentPhotoEditorActivity extends AppCompatActivity {
@@ -40,12 +43,14 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
     private String action;
     private ImageView fileEditor;
     private String assessmentPhotoFilter;
-    private String oldFile;
+//    private String oldFile;
+    private byte[] oldFile;
     private String assessmentNoteID;
     private Uri bmpUri;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
+    private Uri photoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_assessment_photo_editor);
 
         if (getIntent().getExtras() != null)
-            assessmentNoteID = String.valueOf(getIntent().getExtras().getString("assessmentNoteID"));
+            assessmentNoteID = String.valueOf(getIntent().getExtras().getString("assessmentNoteKey"));
 
         fileEditor = (ImageView) findViewById(R.id.editAssessmentPhotoFile);
 
@@ -72,9 +77,11 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldFile = cursor.getString(cursor.getColumnIndex(AssessmentPhotoEntry.ASSESSMENT_PHOTO));
+            oldFile = cursor.getBlob(cursor.getColumnIndex(AssessmentPhotoEntry.ASSESSMENT_PHOTO));
 //            fileEditor.setImageURI(oldFile);
             fileEditor.setImageURI(uri);
+
+            //TODO ADD METHOD FOR DISPLAYING CURRENT PHOTO FOR EDITING!
 
 
         }
@@ -86,7 +93,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-//                finishEditing();
+                finishEditing();
                 break;
             case R.id.action_delete:
                 deleteAssessmentPhoto();
@@ -96,27 +103,31 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         return true;
     }
 
-//    private void finishEditing(){
-//        String newFile = fileEditor.;
-//        switch (action){
-//            case Intent.ACTION_INSERT:
+//    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
+    private void finishEditing(){
+        Bitmap bitmap = ((BitmapDrawable)fileEditor.getDrawable()).getBitmap();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        byte[] newFile = bos.toByteArray();
+
+        switch (action){
+            case Intent.ACTION_INSERT:
 //                if (newFile.length() == 0) {
 //                    setResult(RESULT_CANCELED);
 //                } else {
-//                    insertAssessmentPhoto(newFile);
+                System.out.println("about to insert photo");
+                    insertAssessmentPhoto(newFile);
 //                }
-//                break;
-//            case Intent.ACTION_EDIT:
-//                if (newFile.length() == 0) {
-////                    deleteAssessmentPhoto();
-//                } else if (oldFile.equals(newFile)){
-//                    setResult(RESULT_CANCELED);
-//                } else {
-//                    updateAssessmentPhoto(newFile);
-//                }
-//        }
-//        finish();
-//    }
+                break;
+            case Intent.ACTION_EDIT:
+                if (newFile == oldFile) {
+                    setResult(RESULT_CANCELED);
+                } else {
+                    updateAssessmentPhoto(newFile);
+                }
+        }
+        finish();
+    }
 
     // TODO CITE: https://developer.android.com/training/camera/photobasics.html#TaskCaptureIntent
 
@@ -168,7 +179,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         finish();
     }
 
-    private void updateAssessmentPhoto(String assessmentPhotoFile) {
+    private void updateAssessmentPhoto(byte[] assessmentPhotoFile) {
         ContentValues values = new ContentValues();
         values.put(AssessmentPhotoEntry.ASSESSMENT_PHOTO, assessmentPhotoFile);
         getContentResolver().update(AssessmentPhotoEntry.CONTENT_URI, values, assessmentPhotoFilter, null);
@@ -177,17 +188,18 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         setResult(RESULT_OK);
     }
 
-    private void insertAssessmentPhoto(String assessmentPhotoFile) {
+    private void insertAssessmentPhoto(byte[] assessmentPhotoFile) {
         ContentValues values = new ContentValues();
         values.put(AssessmentPhotoEntry.ASSESSMENT_PHOTO, assessmentPhotoFile);
         values.put(AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK, assessmentNoteID);
         getContentResolver().insert(AssessmentPhotoEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
+        System.out.println("inserted....");
     }
 
     @Override
     public void onBackPressed() {
-//        finishEditing();
+        finishEditing();
     }
 
     @Override
@@ -372,7 +384,6 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
 
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DONT ALLOW",
                 new DialogInterface.OnClickListener() {
-
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         //finish();
@@ -458,12 +469,39 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            photoUri = (Uri) extras.get("get");
+//            System.out.println(photoUri.toString());
             System.out.println("LINE459LINE459LINE459LINE459LINE459LINE459LINE459LINE459LINE459LINE459LINE459LINE459");
             fileEditor.setImageBitmap(imageBitmap);
+//            setPic();
             System.out.println("AL:SKkl;ajsakl;sdjgakl;sjdgklajsdio78901728903471=2903847128903741890237489012748971234");
 
         }
     }
+
+//    private void setPic() {
+//        // Get the dimensions of the View
+//        int targetW = fileEditor.getWidth();
+//        int targetH = fileEditor.getHeight();
+//
+//        // Get the dimensions of the bitmap
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(photoUri.toString(), bmOptions);
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//
+//        // Determine how much to scale down the image
+//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+//
+//        // Decode the image file into a Bitmap sized to fill the View
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//        bmOptions.inPurgeable = true;
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(photoUri.toString(), bmOptions);
+//        fileEditor.setImageBitmap(bitmap);
+//    }
 
 
 

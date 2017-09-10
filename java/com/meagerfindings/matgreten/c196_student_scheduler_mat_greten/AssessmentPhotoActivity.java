@@ -35,11 +35,10 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_photo_screen);
 
-        assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this,R.layout.activity_assessment_photo_screen, null, 0);
+        assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, null, 0);
 
-        if (getIntent().getExtras() != null) {
-             assessmentNoteKey = String.valueOf(getIntent().getExtras().getString("assessmentNoteKey"));
-        }
+        if (getIntent().getExtras() != null)
+            assessmentNoteKey = String.valueOf(getIntent().getExtras().getString("assessmentNoteKey"));
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -51,15 +50,16 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
 
         Cursor assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
 
-        ListView detailedAssessmentPhotoListView = (ListView) findViewById(R.id.detailedAssessmentPhotoListView);
+        ListView testPhotoListView = (ListView) findViewById(R.id.detailedAssessmentPhotoListView);
 
-        AssessmentPhotoCursorAdapter assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, assessmentPhotoCursor, 0);
-        detailedAssessmentPhotoListView.setAdapter(assessmentPhotoAdapter);
+        AssessmentPhotoCursorAdapter assessmentPhotoAdapter;
+        assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, assessmentPhotoCursor, 0);
+        testPhotoListView.setAdapter(assessmentPhotoAdapter);
         assessmentPhotoAdapter.changeCursor(assessmentPhotoCursor);
 
         getLoaderManager().initLoader(0, null, this);
 
-        detailedAssessmentPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Intent intent = new Intent(AssessmentPhotoActivity.this, AssessmentPhotoEditorActivity.class);
@@ -70,23 +70,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getSupportActionBar().setTitle("AssessmentPhotos");
-    }
-
-    private String getCourseKey(String assessmentNoteTitle) {
-        String assessmentNoteKey = "-1";
-        ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + AssessmentNoteEntry.ASSESSMENT_NOTE_ID+ " FROM " + TABLE_ASSESSMENT_NOTES + " WHERE " +
-                AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE+ " = " + "'" + assessmentNoteTitle + "'";
-        SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor assessmentNoteCursor = db.rawQuery(queryString, null);
-        if (assessmentNoteCursor.moveToFirst())
-            assessmentNoteKey = String.valueOf(assessmentNoteCursor.getInt(0));
-        assessmentNoteCursor.close();
-        db.close();
-
-        return assessmentNoteKey;
     }
 
     public void insertAssessmentPhoto(String assessmentPhotoName) {
