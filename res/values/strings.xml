@@ -79,4 +79,5 @@
     <string name="assessment_note_photos">Assessment Note Photos</string>
     <string name="photo">Photo</string>
     <string name="take_new_photo">Take new photo</string>
+    <string name="add_assessment_note">Add Assessment Note</string>
 </resources>
