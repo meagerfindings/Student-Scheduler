@@ -37,8 +37,6 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
     private String assessmentKey;
     private String assessmentNoteKey;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,29 +76,6 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
             textEditor.setText(oldStart);
 
         }
-    }
-
-    public int getAssessmentKey(String searchTitleString) {
-        int assessmentKey = -1;
-        ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + AssessmentEntry.ASSESSMENT_ID +
-                " FROM " + TABLE_ASSESSMENTS + " WHERE " +
-                AssessmentEntry.ASSESSMENT_TITLE + " = " + "'" + searchTitleString + "'";
-
-        System.out.println("ASSESSMENT KEY SEARCH QUERY BY TITLE");
-        System.out.println(queryString);
-
-        SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor assessmentNoteCursor = db.rawQuery(queryString, null);
-        if (assessmentNoteCursor.moveToFirst())
-            assessmentKey = assessmentNoteCursor.getInt(0);
-        assessmentNoteCursor.close();
-        db.close();
-
-        System.out.println("ASSESSMENT KEY RESULT:");
-        System.out.println(assessmentKey);
-
-        return assessmentKey;
     }
 
     @Override

@@ -66,7 +66,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         Uri uri = intent.getParcelableExtra(AssessmentPhotoEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
-            action = Intent.ACTION_INSERT;
+        action = Intent.ACTION_INSERT;
             setTitle("New AssessmentPhoto");
         } else {
             action = Intent.ACTION_EDIT;
@@ -77,12 +77,9 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldFile = cursor.getBlob(cursor.getColumnIndex(AssessmentPhotoEntry.ASSESSMENT_PHOTO));
-//            fileEditor.setImageURI(oldFile);
-            fileEditor.setImageURI(uri);
-
-            //TODO ADD METHOD FOR DISPLAYING CURRENT PHOTO FOR EDITING!
-
+            oldFile = cursor.getBlob(cursor.getColumnIndexOrThrow(AssessmentPhotoEntry.ASSESSMENT_PHOTO));
+            Bitmap bitmap = BitmapFactory.decodeByteArray(oldFile, 0, oldFile.length);
+            fileEditor.setImageBitmap(bitmap);
 
         }
     }
