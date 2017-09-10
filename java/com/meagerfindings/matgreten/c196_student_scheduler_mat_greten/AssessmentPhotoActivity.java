@@ -28,7 +28,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 public class AssessmentPhotoActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EDITOR_REQUEST_CODE = 9000;
     private CursorAdapter assessmentPhotoCursorAdapter;
-    private String assessmentNoteID = "-1";
+    private String assessmentNoteKey = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,14 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
         assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this,R.layout.activity_assessment_photo_screen, null, 0);
 
         if (getIntent().getExtras() != null) {
-            String assessmentNoteTitle = String.valueOf(getIntent().getExtras().getString("assessmentNoteTitle"));
-            assessmentNoteID = getCourseKey(assessmentNoteTitle);
+             assessmentNoteKey = String.valueOf(getIntent().getExtras().getString("assessmentNoteKey"));
         }
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
 
         String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_PHOTOS +
-                " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteID;
+                " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteKey;
 
         System.out.println(sqlQuery);
 
@@ -66,7 +65,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
                 Intent intent = new Intent(AssessmentPhotoActivity.this, AssessmentPhotoEditorActivity.class);
                 Uri uri = Uri.parse(AssessmentPhotoEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(AssessmentPhotoEntry.CONTENT_ITEM_TYPE, uri);
-                intent.putExtra("assessmentNoteID", assessmentNoteID);
+                intent.putExtra("assessmentNoteKey", assessmentNoteKey);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
@@ -180,7 +179,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
 
     public void openEditorForNewAssessmentPhoto(View view) {
         Intent intent = new Intent(this, AssessmentPhotoEditorActivity.class);
-        intent.putExtra("assessmentNoteID", assessmentNoteID);
+        intent.putExtra("assessmentNoteKey", assessmentNoteKey);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 

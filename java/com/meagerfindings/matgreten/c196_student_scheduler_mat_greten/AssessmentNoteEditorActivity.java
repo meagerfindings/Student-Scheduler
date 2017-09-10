@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -31,8 +32,8 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
     private String assessmentNoteFilter;
     private String oldText;
     private String oldStart;
-    private String oldCourse;
     private String assessmentKey;
+    private String assessmentNoteKey;
 
 
 
@@ -63,6 +64,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
 
             oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
+            assessmentNoteKey = cursor.getString(cursor.getColumnIndex(ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ID));
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -80,7 +82,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
                 " FROM " + ScheduleContract.TABLE_ASSESSMENTS + " WHERE " +
                 ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE + " = " + "'" + searchTitleString + "'";
 
-        System.out.println("ASSESSMENT KEY SEARCH QUERY BY TTILE");
+        System.out.println("ASSESSMENT KEY SEARCH QUERY BY TITLE");
         System.out.println(queryString);
 
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -134,6 +136,12 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity {
                 }
         }
         finish();
+    }
+
+    public void openAssessmentPhotosList(View view) {
+        Intent intent = new Intent(this, AssessmentPhotoActivity.class);
+        intent.putExtra("assessmentNoteKey", assessmentNoteKey);
+        startActivity(intent);
     }
 
     private void deleteAssessmentNote() {

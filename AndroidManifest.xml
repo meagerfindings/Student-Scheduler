@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
     <application
         android:allowBackup="true"
@@ -28,13 +30,24 @@
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.fileprovider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--<meta-data android:resource="@xml/fileprovider" />-->
+        <!--</provider>-->
+
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="file_provider"
+            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-data android:resource="@xml/file_provider" />
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
         </provider>
+
 
         <activity
             android:name=".TermsActivity"
