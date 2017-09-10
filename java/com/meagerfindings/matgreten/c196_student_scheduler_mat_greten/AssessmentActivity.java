@@ -20,8 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
 
 public class AssessmentActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {

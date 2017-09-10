@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,22 +19,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract;
-import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleDBHelper;
-import com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_NOTES;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_ALERTS;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
 
 /**
  * Created by matgreten on 8/29/17.
  */
 
-public class AssessmentEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class AssessmentEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 4011;
     private AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
 
@@ -123,9 +122,9 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
             getLoaderManager().initLoader(0, null, this);
 
-            assessmentNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            assessmentNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
                     Uri uri = Uri.parse(AssessmentNoteEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(AssessmentNoteEntry.CONTENT_ITEM_TYPE, uri);
@@ -243,7 +242,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor assessmentCourseCursor = db.rawQuery(queryString, null);
         if (assessmentCourseCursor.moveToFirst())
-          courseDueDate = assessmentCourseCursor.getString(0);
+            courseDueDate = assessmentCourseCursor.getString(0);
         assessmentCourseCursor.close();
         db.close();
 
@@ -360,7 +359,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }

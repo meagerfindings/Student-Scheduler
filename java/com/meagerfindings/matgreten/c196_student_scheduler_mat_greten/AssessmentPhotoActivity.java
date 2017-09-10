@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,12 +19,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentPhotoEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_PHOTOS;
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_NOTES;
 
-public class AssessmentPhotoActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class AssessmentPhotoActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
     private CursorAdapter assessmentPhotoCursorAdapter;
     private String assessmentNoteKey = "-1";
@@ -59,9 +56,9 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
 
         getLoaderManager().initLoader(0, null, this);
 
-        testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AssessmentPhotoActivity.this, AssessmentPhotoEditorActivity.class);
                 Uri uri = Uri.parse(AssessmentPhotoEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(AssessmentPhotoEntry.CONTENT_ITEM_TYPE, uri);
@@ -136,7 +133,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
     private void insertSampleData() {
         insertAssessmentPhoto("First AssessmentPhoto");
         insertAssessmentPhoto("Second AssessmentPhoto");
-        
+
         restartLoader();
     }
 
@@ -169,7 +166,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements androi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }

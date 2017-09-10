@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,12 +19,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENTS;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_ALERTS;
 
-public class AssessmentAlertActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class AssessmentAlertActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
     private CursorAdapter assessmentAlertCursorAdapter;
     private String assessmentID = "-1";
@@ -35,7 +34,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements androi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_alert_screen);
 
-        assessmentAlertCursorAdapter = new AssessmentAlertCursorAdapter(this,R.layout.activity_assessment_alert_screen, null, 0);
+        assessmentAlertCursorAdapter = new AssessmentAlertCursorAdapter(this, R.layout.activity_assessment_alert_screen, null, 0);
 
         if (getIntent().getExtras() != null) {
             String assessmentTitle = String.valueOf(getIntent().getExtras().getString("assessmentTitle"));
@@ -60,9 +59,9 @@ public class AssessmentAlertActivity extends AppCompatActivity implements androi
 
         getLoaderManager().initLoader(0, null, this);
 
-        detailedAssessmentAlertListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        detailedAssessmentAlertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AssessmentAlertActivity.this, AssessmentAlertEditorActivity.class);
                 Uri uri = Uri.parse(AssessmentAlertEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(AssessmentAlertEntry.CONTENT_ITEM_TYPE, uri);
@@ -153,7 +152,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements androi
     private void insertSampleData() {
         insertAssessmentAlert("First AssessmentAlert");
         insertAssessmentAlert("Second AssessmentAlert");
-        
+
         restartLoader();
     }
 
@@ -186,7 +185,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements androi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }

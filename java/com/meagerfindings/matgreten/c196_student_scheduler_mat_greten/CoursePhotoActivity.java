@@ -22,7 +22,7 @@ import android.widget.Toast;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CoursePhotoEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_PHOTOS;
 
-public class CoursePhotoActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class CoursePhotoActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
     private CursorAdapter coursePhotoCursorAdapter;
     private String courseNoteKey = "-1";
@@ -56,9 +56,9 @@ public class CoursePhotoActivity extends AppCompatActivity implements android.ap
 
         getLoaderManager().initLoader(0, null, this);
 
-        testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(CoursePhotoActivity.this, CoursePhotoEditorActivity.class);
                 Uri uri = Uri.parse(CoursePhotoEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(CoursePhotoEntry.CONTENT_ITEM_TYPE, uri);
@@ -159,7 +159,7 @@ public class CoursePhotoActivity extends AppCompatActivity implements android.ap
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }

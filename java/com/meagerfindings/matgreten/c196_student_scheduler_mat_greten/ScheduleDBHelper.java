@@ -13,7 +13,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "schedule.db";
     private static final int DB_VERSION = 2;
 
-    public ScheduleDBHelper(Context context){
+    public ScheduleDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -87,7 +87,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
                     ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " INTEGER, " +
                     ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE + " TEXT, " +
                     ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT + " TEXT, " +
-                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_CREATED+ " TEXT default CURRENT_TIMESTAMP" + ")";
+                    ScheduleContract.AssessmentNoteEntry.ASSESSMENT_NOTE_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";
 
     private static final String CREATE_TABLE_COURSE_PHOTOS =
             "CREATE TABLE " + ScheduleContract.CoursePhotoEntry.TABLE_NAME + " (" +
@@ -101,7 +101,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
                     ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " INTEGER, " +
                     ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO + " BLOB, " +
-                    ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_CREATED+ " TEXT default CURRENT_TIMESTAMP" + ")";
+                    ScheduleContract.AssessmentPhotoEntry.ASSESSMENT_PHOTO_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";
 
     @Override
     public void onCreate(SQLiteDatabase db) {

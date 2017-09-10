@@ -16,16 +16,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseNoteEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CoursePhotoEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_PHOTOS;
 
 /**
  * Created by matgreten on 8/29/17.
  */
 
-public class CourseNoteEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class CourseNoteEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private String action;
     private EditText titleEditor;
     private EditText textEditor;
@@ -95,9 +96,9 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
             getLoaderManager().initLoader(0, null, this);
 
-            testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(CourseNoteEditorActivity.this, CoursePhotoEditorActivity.class);
                     Uri uri = Uri.parse(CoursePhotoEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(CoursePhotoEntry.CONTENT_ITEM_TYPE, uri);

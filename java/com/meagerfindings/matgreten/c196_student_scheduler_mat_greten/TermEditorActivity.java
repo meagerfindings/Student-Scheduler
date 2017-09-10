@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class TermEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class TermEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EDITOR_REQUEST_CODE = 1011;
     private TermCourseCursorAdapter termCourseCursorAdapter;
@@ -38,11 +38,11 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
         startEditor = (EditText) findViewById(R.id.editTermStartDate);
         endEditor = (EditText) findViewById(R.id.editTermEndDate);
 
-        Intent intent =  getIntent();
+        Intent intent = getIntent();
 
         Uri uri = intent.getParcelableExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE);
 
-        if (uri == null){
+        if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Term");
         } else {
@@ -72,7 +72,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
             SQLiteDatabase db = handler.getWritableDatabase();
 
             String queryString = "SELECT * FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
-                                 ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + courseFK;
+                    ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + courseFK;
 
             Cursor courseCursor = db.rawQuery(queryString, null);
 
@@ -84,9 +84,9 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
             getLoaderManager().initLoader(0, null, this);
 
-            courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(TermEditorActivity.this, CourseEditorActivity.class);
                     Uri uri = Uri.parse(ScheduleContract.CourseEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE, uri);
@@ -97,10 +97,10 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finishEditing();
                 break;
@@ -112,17 +112,17 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
         return true;
     }
 
-    private void finishEditing(){
+    private void finishEditing() {
         String newTitle = titleEditor.getText().toString().trim();
         String newStart = startEditor.getText().toString().trim();
         String newEnd = endEditor.getText().toString().trim();
-        switch (action){
+        switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newStart.length() == 0){
+                } else if (newStart.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newEnd.length() == 0){
+                } else if (newEnd.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
                     insertTerm(newTitle, newStart, newEnd);
@@ -131,7 +131,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteTerm();
-                } else if (oldText.equals(newTitle) /*&& oldStart.equals(newStart) && oldEnd.equals(newEnd)*/){
+                } else if (oldText.equals(newTitle) /*&& oldStart.equals(newStart) && oldEnd.equals(newEnd)*/) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateTerm(newTitle, newStart, newEnd);
@@ -174,13 +174,13 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finishEditing();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        if (action.equals(Intent.ACTION_EDIT)){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;

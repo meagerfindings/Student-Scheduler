@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +19,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseNoteEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_NOTES;
 
 public class CourseNoteActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 8010;
@@ -146,8 +148,8 @@ public class CourseNoteActivity extends AppCompatActivity implements android.app
     private String getCourseKey(String courseTitle) {
         String courseKey = "-1";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + CourseEntry.COURSE_ID+ " FROM " + TABLE_COURSES + " WHERE " +
-                CourseEntry.COURSE_TITLE+ " = " + "'" + courseTitle + "'";
+        String queryString = "SELECT " + CourseEntry.COURSE_ID + " FROM " + TABLE_COURSES + " WHERE " +
+                CourseEntry.COURSE_TITLE + " = " + "'" + courseTitle + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor courseCursor = db.rawQuery(queryString, null);
         if (courseCursor.moveToFirst())

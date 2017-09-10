@@ -16,17 +16,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    public void openTerms(View view){
+    public void openTerms(View view) {
         Intent intent = new Intent(this, TermsActivity.class);
         startActivity(intent);
     }
 
-    public void openCourses(View view){
+    public void openCourses(View view) {
         Intent intent = new Intent(this, CoursesActivity.class);
         startActivity(intent);
     }
 
-    public void openAssessments(View view){
+    public void openAssessments(View view) {
         Intent intent = new Intent(this, AssessmentActivity.class);
         startActivity(intent);
     }

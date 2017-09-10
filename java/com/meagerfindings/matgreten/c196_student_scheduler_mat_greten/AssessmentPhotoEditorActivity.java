@@ -14,15 +14,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,12 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import static android.R.attr.data;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentPhotoEntry;
 
 public class AssessmentPhotoEditorActivity extends AppCompatActivity {
@@ -63,7 +55,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         Uri uri = intent.getParcelableExtra(AssessmentPhotoEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
-        action = Intent.ACTION_INSERT;
+            action = Intent.ACTION_INSERT;
             setTitle("New AssessmentPhoto");
         } else {
             action = Intent.ACTION_EDIT;
@@ -95,16 +87,16 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         return true;
     }
 
-//    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
-    private void finishEditing(){
-        Bitmap bitmap = ((BitmapDrawable)fileEditor.getDrawable()).getBitmap();
+    //    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
+    private void finishEditing() {
+        Bitmap bitmap = ((BitmapDrawable) fileEditor.getDrawable()).getBitmap();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
         byte[] newFile = bos.toByteArray();
 
-        switch (action){
+        switch (action) {
             case Intent.ACTION_INSERT:
-                    insertAssessmentPhoto(newFile);
+                insertAssessmentPhoto(newFile);
                 break;
             case Intent.ACTION_EDIT:
                 if (newFile == oldFile) {
@@ -267,6 +259,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(i);
     }
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void openCamera() {

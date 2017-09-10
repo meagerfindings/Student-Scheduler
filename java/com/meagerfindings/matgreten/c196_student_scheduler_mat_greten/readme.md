@@ -7,7 +7,6 @@
 
 - Add `save` and `cancel` buttons throughout the application
 
-
 ### Competencies:
 - 4026.1.1: Introduction to Mobile Application Development - The graduate explains mobile development, develops a simple mobile application using IDE, documents debugging the mobile application, and describes how to use an emulator.
 - 4026.1.2: Activity Lifecycle - The graduate describes the Activity lifecycle in the mobile application, and creates and links an activity.

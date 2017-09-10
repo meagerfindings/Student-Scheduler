@@ -1,24 +1,19 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.MentorEntry;
 
-public class MentorEditorActivity extends AppCompatActivity{
+public class MentorEditorActivity extends AppCompatActivity {
 
     private String action;
     private EditText nameEditor;
@@ -35,18 +30,18 @@ public class MentorEditorActivity extends AppCompatActivity{
         setContentView(R.layout.activity_mentor_editor);
 
         if (getIntent().getExtras() != null) {
-             courseID = String.valueOf(getIntent().getExtras().getString("courseID"));
+            courseID = String.valueOf(getIntent().getExtras().getString("courseID"));
         }
 
         nameEditor = (EditText) findViewById(R.id.editMentorName);
         phoneEditor = (EditText) findViewById(R.id.editPhoneValue);
         emailEditor = (EditText) findViewById(R.id.editEmailValue);
 
-        Intent intent =  getIntent();
+        Intent intent = getIntent();
 
         Uri uri = intent.getParcelableExtra(MentorEntry.CONTENT_ITEM_TYPE);
 
-        if (uri == null){
+        if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Mentor");
         } else {
@@ -69,10 +64,10 @@ public class MentorEditorActivity extends AppCompatActivity{
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finishEditing();
                 break;
@@ -84,17 +79,17 @@ public class MentorEditorActivity extends AppCompatActivity{
         return true;
     }
 
-    private void finishEditing(){
+    private void finishEditing() {
         String newName = nameEditor.getText().toString().trim();
         String newPhone = phoneEditor.getText().toString().trim();
         String newEmail = emailEditor.getText().toString().trim();
-        switch (action){
+        switch (action) {
             case Intent.ACTION_INSERT:
                 if (newName.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newPhone.length() == 0){
+                } else if (newPhone.length() == 0) {
                     setResult(RESULT_CANCELED);
-                } else if (newEmail.length() == 0){
+                } else if (newEmail.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
                     insertMentor(newName, newPhone, newEmail);
@@ -103,7 +98,7 @@ public class MentorEditorActivity extends AppCompatActivity{
             case Intent.ACTION_EDIT:
                 if (newName.length() == 0) {
 //                    deleteMentor();
-                } else if (oldName.equals(newName) /*&& oldPhone.equals(newPhone) && oldEmail.equals(newEmail)*/){
+                } else if (oldName.equals(newName) /*&& oldPhone.equals(newPhone) && oldEmail.equals(newEmail)*/) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateMentor(newName, newPhone, newEmail);
@@ -142,13 +137,13 @@ public class MentorEditorActivity extends AppCompatActivity{
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finishEditing();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        if (action.equals(Intent.ACTION_EDIT)){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;

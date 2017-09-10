@@ -22,16 +22,16 @@ import android.widget.Toast;
 
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
-public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 100;
-    private CursorAdapter  termCursorAdapter;
+    private CursorAdapter termCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_screen);
 
-        termCursorAdapter = new TermCursorAdapter(this,R.layout.activity_term_screen, null, 0);
+        termCursorAdapter = new TermCursorAdapter(this, R.layout.activity_term_screen, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -45,9 +45,9 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
         getLoaderManager().initLoader(0, null, this);
 
-        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(TermsActivity.this, TermEditorActivity.class);
                 Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
@@ -125,7 +125,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     private void insertSampleData() {
         insertTerm("First Term");
         insertTerm("Second Term");
-        
+
         restartLoader();
     }
 
@@ -158,7 +158,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }

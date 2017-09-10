@@ -55,7 +55,7 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         Uri uri = intent.getParcelableExtra(CoursePhotoEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
-        action = Intent.ACTION_INSERT;
+            action = Intent.ACTION_INSERT;
             setTitle("New CoursePhoto");
         } else {
             action = Intent.ACTION_EDIT;
@@ -87,16 +87,16 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         return true;
     }
 
-//    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
-    private void finishEditing(){
-        Bitmap bitmap = ((BitmapDrawable)fileEditor.getDrawable()).getBitmap();
+    //    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
+    private void finishEditing() {
+        Bitmap bitmap = ((BitmapDrawable) fileEditor.getDrawable()).getBitmap();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
         byte[] newFile = bos.toByteArray();
 
-        switch (action){
+        switch (action) {
             case Intent.ACTION_INSERT:
-                    insertCoursePhoto(newFile);
+                insertCoursePhoto(newFile);
                 break;
             case Intent.ACTION_EDIT:
                 if (newFile == oldFile) {
@@ -259,6 +259,7 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(i);
     }
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void openCamera() {

@@ -34,7 +34,7 @@ public class ScheduleProvider extends ContentProvider {
     private static final int ASSESSMENT_NOTE_ID = 801;
     private static final int COURSE_PHOTOS = 900;
     private static final int COURSE_PHOTO_ID = 901;
-    private static final int ASSESSMENT_PHOTOS= 1000;
+    private static final int ASSESSMENT_PHOTOS = 1000;
     private static final int ASSESSMENT_PHOTO_ID = 1001;
 
     private static final UriMatcher stringUriMatcher = buildUriMatcher();
@@ -86,7 +86,7 @@ public class ScheduleProvider extends ContentProvider {
 
         //TODO figure out why line 74 is failing out. Currently our URI is: content://com.meagerfindings.matgreten.c196_student_scheduler_mat_greten/terms and we are failing to convert this to a long... which makes sense
 
-        switch (stringUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)) {
             case TERM:
                 returnedCursor = db.query(
                         ScheduleContract.TermEntry.TABLE_NAME,
@@ -328,7 +328,7 @@ public class ScheduleProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        switch (stringUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)) {
             case TERM:
                 return ScheduleContract.TermEntry.CONTENT_TYPE;
             case TERM_ID:
@@ -370,7 +370,7 @@ public class ScheduleProvider extends ContentProvider {
             case COURSE_PHOTO_ID:
                 return ScheduleContract.CoursePhotoEntry.CONTENT_ITEM_TYPE;
             default:
-                throw  new UnsupportedOperationException("Unknown uri: " + uri); // TODO citation for: https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
+                throw new UnsupportedOperationException("Unknown uri: " + uri); // TODO citation for: https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
         }
     }
 
@@ -381,10 +381,10 @@ public class ScheduleProvider extends ContentProvider {
         long _id;
         Uri returnUri;
 
-        switch (stringUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)) {
             case TERM:
                 _id = db.insert(ScheduleContract.TermEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.TermEntry.buildTermUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -392,7 +392,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE:
                 _id = db.insert(ScheduleContract.CourseEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.CourseEntry.buildCourseUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -400,7 +400,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case MENTOR:
                 _id = db.insert(ScheduleContract.MentorEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.MentorEntry.buildMentorUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -408,7 +408,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT:
                 _id = db.insert(ScheduleContract.AssessmentEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.AssessmentEntry.buildAssessmentUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -416,7 +416,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE_ALERT:
                 _id = db.insert(ScheduleContract.CourseAlertEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.CourseAlertEntry.buildCourseAlertUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -424,7 +424,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT_ALERT:
                 _id = db.insert(ScheduleContract.AssessmentAlertEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.AssessmentAlertEntry.buildAssessmentAlertUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -432,7 +432,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE_NOTES:
                 _id = db.insert(ScheduleContract.CourseNoteEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.CourseNoteEntry.buildCourseNoteUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -440,7 +440,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT_NOTES:
                 _id = db.insert(ScheduleContract.AssessmentNoteEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.AssessmentNoteEntry.buildAssessmentNoteUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -448,7 +448,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE_PHOTOS:
                 _id = db.insert(ScheduleContract.CoursePhotoEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.CoursePhotoEntry.buildCoursePhotoUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -456,7 +456,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT_PHOTOS:
                 _id = db.insert(ScheduleContract.AssessmentPhotoEntry.TABLE_NAME, null, contentValues);
-                if(_id > 0) {
+                if (_id > 0) {
                     returnUri = ScheduleContract.AssessmentPhotoEntry.buildAssessmentPhotoUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
@@ -476,7 +476,7 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = matchedUriOpenHelper.getWritableDatabase();
         int rows;
 
-        switch(stringUriMatcher.match(uri)){
+        switch (stringUriMatcher.match(uri)) {
             case TERM:
                 rows = db.update(ScheduleContract.TermEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
@@ -511,16 +511,17 @@ public class ScheduleProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if(rows != 0) getContext().getContentResolver().notifyChange(uri, null);
+        if (rows != 0) getContext().getContentResolver().notifyChange(uri, null);
 
         return rows;
     }
+
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         final SQLiteDatabase db = matchedUriOpenHelper.getWritableDatabase();
         int rows; // Number of rows effected
 
-        switch(stringUriMatcher.match(uri)) {
+        switch (stringUriMatcher.match(uri)) {
             case TERM:
                 rows = db.delete(ScheduleContract.TermEntry.TABLE_NAME, selection, selectionArgs);
                 break;
@@ -555,7 +556,8 @@ public class ScheduleProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if(selection == null || rows != 0) getContext().getContentResolver().notifyChange(uri, null);
+        if (selection == null || rows != 0)
+            getContext().getContentResolver().notifyChange(uri, null);
 
         return rows;
     }

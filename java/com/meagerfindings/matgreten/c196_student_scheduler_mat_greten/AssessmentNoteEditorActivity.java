@@ -14,24 +14,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentPhotoEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_PHOTOS;
 
 /**
  * Created by matgreten on 8/29/17.
  */
 
-public class AssessmentNoteEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class AssessmentNoteEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private String action;
     private EditText titleEditor;
     private EditText textEditor;
@@ -45,7 +41,6 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     private CursorAdapter assessmentPhotoCursorAdapter;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +49,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         titleEditor = (EditText) findViewById(R.id.editAssessmentNoteTitleValue);
         textEditor = (EditText) findViewById(R.id.editAssessmentNoteTextValue);
 
-        if (getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
             assessmentKey = String.valueOf(getIntent().getExtras().getString("assessmentKey"));
         }
 
@@ -105,9 +100,9 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
 
             getLoaderManager().initLoader(0, null, this);
 
-            testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(AssessmentNoteEditorActivity.this, AssessmentPhotoEditorActivity.class);
                     Uri uri = Uri.parse(AssessmentPhotoEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(AssessmentPhotoEntry.CONTENT_ITEM_TYPE, uri);

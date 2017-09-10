@@ -20,10 +20,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_TERMS;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.MentorEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_MENTORS;
 
-public class MentorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+public class MentorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 7000;
     private CursorAdapter mentorCursorAdapter;
     private String courseID = "-1";
@@ -33,7 +35,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mentor_screen);
 
-        mentorCursorAdapter = new MentorCursorAdapter(this,R.layout.activity_mentor_screen, null, 0);
+        mentorCursorAdapter = new MentorCursorAdapter(this, R.layout.activity_mentor_screen, null, 0);
 
         if (getIntent().getExtras() != null) {
             String courseTitle = String.valueOf(getIntent().getExtras().getString("courseTitle"));
@@ -58,9 +60,9 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
 
         getLoaderManager().initLoader(0, null, this);
 
-        detailedMentorListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        detailedMentorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MentorActivity.this, MentorEditorActivity.class);
                 Uri uri = Uri.parse(MentorEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(MentorEntry.CONTENT_ITEM_TYPE, uri);
@@ -76,8 +78,8 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
     private String getCourseKey(String courseTitle) {
         String courseKey = "-1";
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        String queryString = "SELECT " + CourseEntry.COURSE_ID+ " FROM " + TABLE_COURSES + " WHERE " +
-                CourseEntry.COURSE_TITLE+ " = " + "'" + courseTitle + "'";
+        String queryString = "SELECT " + CourseEntry.COURSE_ID + " FROM " + TABLE_COURSES + " WHERE " +
+                CourseEntry.COURSE_TITLE + " = " + "'" + courseTitle + "'";
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor courseCursor = db.rawQuery(queryString, null);
         if (courseCursor.moveToFirst())
@@ -152,7 +154,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
     private void insertSampleData() {
         insertMentor("First Mentor");
         insertMentor("Second Mentor");
-        
+
         restartLoader();
     }
 
@@ -185,7 +187,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
     }
