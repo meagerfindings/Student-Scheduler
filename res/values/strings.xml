@@ -82,4 +82,6 @@
     <string name="add_assessment_note">Add Assessment Note</string>
     <string name="course_note_photos">Course Note Photos:</string>
     <string name="course_note_photos1">Course Note Photos</string>
+    <string name="share_note_amp_photos"><![CDATA[Share Note & Photos]]></string>
+    <string name="share_note">Share Note</string>
 </resources>

@@ -1,6 +1,13 @@
 # MOBILE APPLICATIONS DEVELOPMENT
   
-## TODO List
+## TODO LIST
+
+#### Required to have:
+- menus
+- ability to highlight terms to delete them
+- deletion protection for terms with courses 
+
+#### Nice to have:
 
 - Add validation throughout...
     - validate for and remove *'* s from inputs!

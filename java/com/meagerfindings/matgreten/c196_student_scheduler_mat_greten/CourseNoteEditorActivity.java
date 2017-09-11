@@ -6,8 +6,11 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,8 +21,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseNoteEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CoursePhotoEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_PHOTOS;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_PHOTOS;
 
 /**
@@ -188,6 +194,59 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
             getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;
+    }
+
+    public void shareNoteText(View view) {
+        String textContents = "Note Title: " + titleEditor.getText() +
+                "\nNote Text: " + textEditor.getText();
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, textContents);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+
+    public void shareWholeNote(View view) {
+        String textContents = "Note Title: " + titleEditor.getText() +
+                "\nNote Text: " + textEditor.getText();
+
+        ArrayList<Uri> imageUris = new ArrayList<>();
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+
+        String sqlQuery = "SELECT * FROM " + TABLE_COURSE_PHOTOS +
+                " WHERE " + CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " = " + courseNoteKey;
+
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor photoCursor = db.rawQuery(sqlQuery, null);
+
+        if (photoCursor.moveToFirst()) {
+            do {
+//              TODO Cite: https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
+
+                byte[] coursePhoto = photoCursor.getBlob(photoCursor.getColumnIndexOrThrow(CoursePhotoEntry.COURSE_PHOTO));
+                Bitmap bitmap = BitmapFactory.decodeByteArray(coursePhoto, 0, coursePhoto.length);
+
+                System.out.println("looping through");
+
+                String temporaryPhotoPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Course Note Photo", null);
+                Uri photoUri = Uri.parse(temporaryPhotoPath);
+
+                imageUris.add(photoUri);
+
+            } while (photoCursor.moveToNext());
+        }
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, textContents);
+        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+
+        shareIntent.setType("image/*");
+        startActivity(Intent.createChooser(shareIntent, "Share images to.."));
+
+        photoCursor.close();
+        db.close();
     }
 
     @Override

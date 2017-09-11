@@ -6,8 +6,11 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -16,9 +19,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+
+import static android.R.attr.id;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentPhotoEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_PHOTOS;
@@ -31,15 +37,13 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     private String action;
     private EditText titleEditor;
     private EditText textEditor;
-    private TextView courseDueDateValue;
     private String assessmentNoteFilter;
+    private String oldTitle;
     private String oldText;
-    private String oldStart;
     private String assessmentKey;
     private String assessmentNoteKey;
     private static final int EDITOR_REQUEST_CODE = 10011;
     private CursorAdapter assessmentPhotoCursorAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +53,10 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         titleEditor = (EditText) findViewById(R.id.editAssessmentNoteTitleValue);
         textEditor = (EditText) findViewById(R.id.editAssessmentNoteTextValue);
 
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null)
             assessmentKey = String.valueOf(getIntent().getExtras().getString("assessmentKey"));
-        }
 
         Intent intent = getIntent();
-
         Uri uri = intent.getParcelableExtra(AssessmentNoteEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
@@ -69,15 +71,15 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldText = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
-            oldStart = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
+            oldTitle = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE));
+            oldText = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT));
             assessmentNoteKey = cursor.getString(cursor.getColumnIndex(AssessmentNoteEntry.ASSESSMENT_NOTE_ID));
 
+            if (oldTitle == null) oldTitle = "";
             if (oldText == null) oldText = "";
-            if (oldStart == null) oldStart = "";
 
-            titleEditor.setText(oldText);
-            textEditor.setText(oldStart);
+            titleEditor.setText(oldTitle);
+            textEditor.setText(oldText);
 
             assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, null, 0);
 
@@ -144,7 +146,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
 //                    deleteAssessmentNote();
-                } else if (oldText.equals(newTitle) && oldStart.equals(newText)) {
+                } else if (oldTitle.equals(newTitle) && oldText.equals(newText)) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateAssessmentNote(newTitle, newText);
@@ -185,6 +187,59 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
 
         getContentResolver().insert(AssessmentNoteEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
+    }
+
+    public void shareNoteText(View view) {
+        String textContents = "Note Title: " + titleEditor.getText() +
+                "\nNote Text: " + textEditor.getText();
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, textContents);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+
+    public void shareWholeNote(View view) {
+        String textContents = "Note Title: " + titleEditor.getText() +
+                "\nNote Text: " + textEditor.getText();
+
+        ArrayList<Uri> imageUris = new ArrayList<>();
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+
+        String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_PHOTOS +
+                " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteKey;
+
+        SQLiteDatabase db = handler.getWritableDatabase();
+        Cursor photoCursor = db.rawQuery(sqlQuery, null);
+
+        if (photoCursor.moveToFirst()) {
+            do {
+//              TODO Cite: https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
+
+                byte[] assessmentPhoto = photoCursor.getBlob(photoCursor.getColumnIndexOrThrow(AssessmentPhotoEntry.ASSESSMENT_PHOTO));
+                Bitmap bitmap = BitmapFactory.decodeByteArray(assessmentPhoto, 0, assessmentPhoto.length);
+
+                System.out.println("looping through");
+
+                String temporaryPhotoPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Assessment Note Photo", null);
+                Uri photoUri = Uri.parse(temporaryPhotoPath);
+
+                imageUris.add(photoUri);
+
+            } while (photoCursor.moveToNext());
+        }
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, textContents);
+        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+
+        shareIntent.setType("image/*");
+        startActivity(Intent.createChooser(shareIntent, "Share images to.."));
+
+        photoCursor.close();
+        db.close();
     }
 
     @Override

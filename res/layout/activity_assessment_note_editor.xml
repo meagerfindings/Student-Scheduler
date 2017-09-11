@@ -69,14 +69,13 @@
         android:id="@+id/assessmentPhotosLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/assessment_note_photos"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editAssessmentNoteTextValue"
+        app:layout_constraintTop_toBottomOf="@+id/shareNoteTextButton"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp" />
 
@@ -92,5 +91,31 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assessmentPhotosLabel" />
+
+    <Button
+        android:id="@+id/shareNoteTextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="shareNoteText"
+        android:text="@string/share_note"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editAssessmentNoteTextValue"
+        app:layout_constraintRight_toLeftOf="@+id/shareNoteAllButton" />
+
+    <Button
+        android:id="@+id/shareNoteAllButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="shareWholeNote"
+        android:text="@string/share_note_amp_photos"
+        app:layout_constraintLeft_toRightOf="@+id/shareNoteTextButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editAssessmentNoteTextValue" />
 
 </android.support.constraint.ConstraintLayout>
