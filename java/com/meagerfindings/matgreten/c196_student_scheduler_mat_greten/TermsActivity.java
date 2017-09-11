@@ -20,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import static android.R.attr.id;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
 public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
@@ -35,7 +38,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor termCursor = db.rawQuery("SELECT * FROM " + ScheduleContract.TABLE_TERMS, null);
+        Cursor termCursor = db.rawQuery("SELECT * FROM " + TABLE_TERMS, null);
 
         ListView termListView = (ListView) findViewById(R.id.termListView);
 
@@ -49,11 +52,45 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(TermsActivity.this, TermEditorActivity.class);
-                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
-                intent.putExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE, uri);
+                Uri uri = Uri.parse(TermEntry.CONTENT_URI + "/" + id);
+                intent.putExtra(TermEntry.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
+
+//        termListView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View view) {
+//                deleteTerm();
+//                return false;
+//            }
+//        });
+
+        termListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int row, long arg3) {
+                Uri uri = Uri.parse(TermEntry.CONTENT_URI + "/" + arg3);
+//                deleteTerm(uri);
+                deleteTerm(String.valueOf(arg3));
+
+                return false;
+            }
+        });
+
+//        termListView.setOnLongClickListener(new AdapterView.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View view) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
+//                deleteTerm(uri);
+//                return false;
+//            }
+//        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -63,11 +100,66 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
     public void insertTerm(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(ScheduleContract.TermEntry.TERM_TITLE, noteText);
-        Uri noteUri = getContentResolver().insert(ScheduleContract.TermEntry.CONTENT_URI, values);
+        values.put(TermEntry.TERM_TITLE, noteText);
+        Uri noteUri = getContentResolver().insert(TermEntry.CONTENT_URI, values);
 
         assert noteUri != null;
         Log.d("TermScreenActivity", "Inserted term " + noteUri.getLastPathSegment());
+    }
+
+    private void deleteTerm(final String termID) {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            if (termHasCourses(termID)){
+
+                                Toast.makeText(TermsActivity.this,
+                                        getString(R.string.cannot_delete_term),
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                getContentResolver().delete(TermEntry.CONTENT_URI, TermEntry.TERM_ID + "=" + termID, null);
+                                restartLoader();
+
+                                Toast.makeText(TermsActivity.this,
+                                        getString(R.string.deleted_term),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
+                .show();
+    }
+
+    private boolean termHasCourses(String termID) {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String queryString = "SELECT " + CourseEntry.COURSE_TERM_ID_FK + " FROM " + TABLE_COURSES +
+                " WHERE " + CourseEntry.COURSE_TERM_ID_FK + " = " + termID;
+
+        Cursor courseCursor = db.rawQuery(queryString, null);
+
+        if (courseCursor.moveToFirst()) {
+            String termKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+
+            if (termID.equals(termKey)){
+                courseCursor.close();
+                db.close();
+                return true;
+            }
+        }
+
+        courseCursor.close();
+        db.close();
+
+        return false;
     }
 
     @Override
@@ -103,7 +195,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
                         if (button == DialogInterface.BUTTON_POSITIVE) {
 
                             //Insert Data management code here
-                            getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, null, null);
+                            getContentResolver().delete(TermEntry.CONTENT_URI, null, null);
                             restartLoader();
 
                             Toast.makeText(TermsActivity.this,
@@ -137,7 +229,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.TermEntry.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, TermEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override

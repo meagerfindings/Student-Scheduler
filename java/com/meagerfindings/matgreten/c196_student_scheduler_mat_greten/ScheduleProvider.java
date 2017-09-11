@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 /**
  * Created by matgreten on 8/21/17.
  */
@@ -47,31 +49,31 @@ public class ScheduleProvider extends ContentProvider {
     }
 
     private static UriMatcher buildUriMatcher() {
-        String path = ScheduleContract.AUTHORITY;
+        String path = AUTHORITY;
 
         // Default to failed uri match
         UriMatcher matched_uri = new UriMatcher(UriMatcher.NO_MATCH);
 
-        matched_uri.addURI(path, ScheduleContract.TABLE_TERMS, TERM);
-        matched_uri.addURI(path, ScheduleContract.TABLE_TERMS + "/#", TERM_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSES, COURSE);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSES + "/#", COURSE_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_MENTORS, MENTOR);
-        matched_uri.addURI(path, ScheduleContract.TABLE_MENTORS + "/#", MENTOR_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENTS, ASSESSMENT);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENTS + "/#", ASSESSMENT_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSE_ALERTS, COURSE_ALERT);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSE_ALERTS + "/#", COURSE_ALERT_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENT_ALERTS, ASSESSMENT_ALERT);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENT_ALERTS + "/#", ASSESSMENT_ALERT_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSE_NOTES, COURSE_NOTES);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSE_NOTES + "/#", COURSE_NOTE_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENT_NOTES, ASSESSMENT_NOTES);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENT_NOTES + "/#", ASSESSMENT_NOTE_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSE_PHOTOS, COURSE_PHOTOS);
-        matched_uri.addURI(path, ScheduleContract.TABLE_COURSE_PHOTOS + "/#", COURSE_PHOTO_ID);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENT_PHOTOS, ASSESSMENT_PHOTOS);
-        matched_uri.addURI(path, ScheduleContract.TABLE_ASSESSMENT_PHOTOS + "/#", ASSESSMENT_PHOTO_ID);
+        matched_uri.addURI(path, TABLE_TERMS, TERM);
+        matched_uri.addURI(path, TABLE_TERMS + "/#", TERM_ID);
+        matched_uri.addURI(path, TABLE_COURSES, COURSE);
+        matched_uri.addURI(path, TABLE_COURSES + "/#", COURSE_ID);
+        matched_uri.addURI(path, TABLE_MENTORS, MENTOR);
+        matched_uri.addURI(path, TABLE_MENTORS + "/#", MENTOR_ID);
+        matched_uri.addURI(path, TABLE_ASSESSMENTS, ASSESSMENT);
+        matched_uri.addURI(path, TABLE_ASSESSMENTS + "/#", ASSESSMENT_ID);
+        matched_uri.addURI(path, TABLE_COURSE_ALERTS, COURSE_ALERT);
+        matched_uri.addURI(path, TABLE_COURSE_ALERTS + "/#", COURSE_ALERT_ID);
+        matched_uri.addURI(path, TABLE_ASSESSMENT_ALERTS, ASSESSMENT_ALERT);
+        matched_uri.addURI(path, TABLE_ASSESSMENT_ALERTS + "/#", ASSESSMENT_ALERT_ID);
+        matched_uri.addURI(path, TABLE_COURSE_NOTES, COURSE_NOTES);
+        matched_uri.addURI(path, TABLE_COURSE_NOTES + "/#", COURSE_NOTE_ID);
+        matched_uri.addURI(path, TABLE_ASSESSMENT_NOTES, ASSESSMENT_NOTES);
+        matched_uri.addURI(path, TABLE_ASSESSMENT_NOTES + "/#", ASSESSMENT_NOTE_ID);
+        matched_uri.addURI(path, TABLE_COURSE_PHOTOS, COURSE_PHOTOS);
+        matched_uri.addURI(path, TABLE_COURSE_PHOTOS + "/#", COURSE_PHOTO_ID);
+        matched_uri.addURI(path, TABLE_ASSESSMENT_PHOTOS, ASSESSMENT_PHOTOS);
+        matched_uri.addURI(path, TABLE_ASSESSMENT_PHOTOS + "/#", ASSESSMENT_PHOTO_ID);
 
         return matched_uri;
     }
@@ -89,7 +91,7 @@ public class ScheduleProvider extends ContentProvider {
         switch (stringUriMatcher.match(uri)) {
             case TERM:
                 returnedCursor = db.query(
-                        ScheduleContract.TermEntry.TABLE_NAME,
+                        TermEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -101,9 +103,9 @@ public class ScheduleProvider extends ContentProvider {
             case TERM_ID:
                 long _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.TermEntry.TABLE_NAME,
+                        TermEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.TermEntry._ID + " = ?",
+                        TermEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -112,7 +114,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE:
                 returnedCursor = db.query(
-                        ScheduleContract.CourseEntry.TABLE_NAME,
+                        CourseEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -124,9 +126,9 @@ public class ScheduleProvider extends ContentProvider {
             case COURSE_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.CourseEntry.TABLE_NAME,
+                        CourseEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.CourseEntry._ID + " = ?",
+                        CourseEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -135,7 +137,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case MENTOR:
                 returnedCursor = db.query(
-                        ScheduleContract.MentorEntry.TABLE_NAME,
+                        MentorEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -147,9 +149,9 @@ public class ScheduleProvider extends ContentProvider {
             case MENTOR_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.MentorEntry.TABLE_NAME,
+                        MentorEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.MentorEntry._ID + " = ?",
+                        MentorEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -158,7 +160,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT:
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentEntry.TABLE_NAME,
+                        AssessmentEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -170,9 +172,9 @@ public class ScheduleProvider extends ContentProvider {
             case ASSESSMENT_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentEntry.TABLE_NAME,
+                        AssessmentEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.AssessmentEntry._ID + " = ?",
+                        AssessmentEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -181,7 +183,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE_ALERT:
                 returnedCursor = db.query(
-                        ScheduleContract.CourseAlertEntry.TABLE_NAME,
+                        CourseAlertEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -193,9 +195,9 @@ public class ScheduleProvider extends ContentProvider {
             case COURSE_ALERT_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.CourseAlertEntry.TABLE_NAME,
+                        CourseAlertEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.CourseAlertEntry._ID + " = ?",
+                        CourseAlertEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -204,7 +206,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT_ALERT:
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentAlertEntry.TABLE_NAME,
+                        AssessmentAlertEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -216,9 +218,9 @@ public class ScheduleProvider extends ContentProvider {
             case ASSESSMENT_ALERT_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentAlertEntry.TABLE_NAME,
+                        AssessmentAlertEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.AssessmentAlertEntry._ID + " = ?",
+                        AssessmentAlertEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -227,7 +229,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE_NOTES:
                 returnedCursor = db.query(
-                        ScheduleContract.CourseNoteEntry.TABLE_NAME,
+                        CourseNoteEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -239,9 +241,9 @@ public class ScheduleProvider extends ContentProvider {
             case COURSE_NOTE_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.CourseNoteEntry.TABLE_NAME,
+                        CourseNoteEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.CourseNoteEntry._ID + " = ?",
+                        CourseNoteEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -250,7 +252,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT_NOTES:
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentNoteEntry.TABLE_NAME,
+                        AssessmentNoteEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -262,9 +264,9 @@ public class ScheduleProvider extends ContentProvider {
             case ASSESSMENT_NOTE_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentNoteEntry.TABLE_NAME,
+                        AssessmentNoteEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.AssessmentNoteEntry._ID + " = ?",
+                        AssessmentNoteEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -273,7 +275,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case COURSE_PHOTOS:
                 returnedCursor = db.query(
-                        ScheduleContract.CoursePhotoEntry.TABLE_NAME,
+                        CoursePhotoEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -285,9 +287,9 @@ public class ScheduleProvider extends ContentProvider {
             case COURSE_PHOTO_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.CoursePhotoEntry.TABLE_NAME,
+                        CoursePhotoEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.CoursePhotoEntry._ID + " = ?",
+                        CoursePhotoEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -296,7 +298,7 @@ public class ScheduleProvider extends ContentProvider {
                 break;
             case ASSESSMENT_PHOTOS:
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentPhotoEntry.TABLE_NAME,
+                        AssessmentPhotoEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -308,9 +310,9 @@ public class ScheduleProvider extends ContentProvider {
             case ASSESSMENT_PHOTO_ID:
                 _id = ContentUris.parseId(uri);
                 returnedCursor = db.query(
-                        ScheduleContract.AssessmentPhotoEntry.TABLE_NAME,
+                        AssessmentPhotoEntry.TABLE_NAME,
                         projection,
-                        ScheduleContract.AssessmentPhotoEntry._ID + " = ?",
+                        AssessmentPhotoEntry._ID + " = ?",
                         new String[]{String.valueOf(_id)},
                         null,
                         null,
@@ -330,45 +332,45 @@ public class ScheduleProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         switch (stringUriMatcher.match(uri)) {
             case TERM:
-                return ScheduleContract.TermEntry.CONTENT_TYPE;
+                return TermEntry.CONTENT_TYPE;
             case TERM_ID:
-                return ScheduleContract.TermEntry.CONTENT_ITEM_TYPE;
+                return TermEntry.CONTENT_ITEM_TYPE;
             case COURSE:
-                return ScheduleContract.CourseEntry.CONTENT_TYPE;
+                return CourseEntry.CONTENT_TYPE;
             case COURSE_ID:
-                return ScheduleContract.CourseEntry.CONTENT_ITEM_TYPE;
+                return CourseEntry.CONTENT_ITEM_TYPE;
             case MENTOR:
-                return ScheduleContract.MentorEntry.CONTENT_TYPE;
+                return MentorEntry.CONTENT_TYPE;
             case MENTOR_ID:
-                return ScheduleContract.MentorEntry.CONTENT_ITEM_TYPE;
+                return MentorEntry.CONTENT_ITEM_TYPE;
             case ASSESSMENT:
-                return ScheduleContract.AssessmentEntry.CONTENT_TYPE;
+                return AssessmentEntry.CONTENT_TYPE;
             case ASSESSMENT_ID:
-                return ScheduleContract.AssessmentEntry.CONTENT_ITEM_TYPE;
+                return AssessmentEntry.CONTENT_ITEM_TYPE;
             case COURSE_ALERT:
-                return ScheduleContract.CourseAlertEntry.CONTENT_TYPE;
+                return CourseAlertEntry.CONTENT_TYPE;
             case COURSE_ALERT_ID:
-                return ScheduleContract.CourseAlertEntry.CONTENT_ITEM_TYPE;
+                return CourseAlertEntry.CONTENT_ITEM_TYPE;
             case ASSESSMENT_ALERT:
-                return ScheduleContract.AssessmentAlertEntry.CONTENT_TYPE;
+                return AssessmentAlertEntry.CONTENT_TYPE;
             case ASSESSMENT_ALERT_ID:
-                return ScheduleContract.AssessmentAlertEntry.CONTENT_ITEM_TYPE;
+                return AssessmentAlertEntry.CONTENT_ITEM_TYPE;
             case ASSESSMENT_NOTES:
-                return ScheduleContract.AssessmentNoteEntry.CONTENT_TYPE;
+                return AssessmentNoteEntry.CONTENT_TYPE;
             case ASSESSMENT_NOTE_ID:
-                return ScheduleContract.AssessmentNoteEntry.CONTENT_ITEM_TYPE;
+                return AssessmentNoteEntry.CONTENT_ITEM_TYPE;
             case ASSESSMENT_PHOTOS:
-                return ScheduleContract.AssessmentPhotoEntry.CONTENT_TYPE;
+                return AssessmentPhotoEntry.CONTENT_TYPE;
             case ASSESSMENT_PHOTO_ID:
-                return ScheduleContract.AssessmentPhotoEntry.CONTENT_ITEM_TYPE;
+                return AssessmentPhotoEntry.CONTENT_ITEM_TYPE;
             case COURSE_NOTES:
-                return ScheduleContract.CourseNoteEntry.CONTENT_TYPE;
+                return CourseNoteEntry.CONTENT_TYPE;
             case COURSE_NOTE_ID:
-                return ScheduleContract.CourseNoteEntry.CONTENT_ITEM_TYPE;
+                return CourseNoteEntry.CONTENT_ITEM_TYPE;
             case COURSE_PHOTOS:
-                return ScheduleContract.CoursePhotoEntry.CONTENT_TYPE;
+                return CoursePhotoEntry.CONTENT_TYPE;
             case COURSE_PHOTO_ID:
-                return ScheduleContract.CoursePhotoEntry.CONTENT_ITEM_TYPE;
+                return CoursePhotoEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri); // TODO citation for: https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
         }
@@ -383,81 +385,81 @@ public class ScheduleProvider extends ContentProvider {
 
         switch (stringUriMatcher.match(uri)) {
             case TERM:
-                _id = db.insert(ScheduleContract.TermEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(TermEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.TermEntry.buildTermUri(_id);
+                    returnUri = TermEntry.buildTermUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case COURSE:
-                _id = db.insert(ScheduleContract.CourseEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(CourseEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.CourseEntry.buildCourseUri(_id);
+                    returnUri = CourseEntry.buildCourseUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case MENTOR:
-                _id = db.insert(ScheduleContract.MentorEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(MentorEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.MentorEntry.buildMentorUri(_id);
+                    returnUri = MentorEntry.buildMentorUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case ASSESSMENT:
-                _id = db.insert(ScheduleContract.AssessmentEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(AssessmentEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.AssessmentEntry.buildAssessmentUri(_id);
+                    returnUri = AssessmentEntry.buildAssessmentUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case COURSE_ALERT:
-                _id = db.insert(ScheduleContract.CourseAlertEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(CourseAlertEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.CourseAlertEntry.buildCourseAlertUri(_id);
+                    returnUri = CourseAlertEntry.buildCourseAlertUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case ASSESSMENT_ALERT:
-                _id = db.insert(ScheduleContract.AssessmentAlertEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(AssessmentAlertEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.AssessmentAlertEntry.buildAssessmentAlertUri(_id);
+                    returnUri = AssessmentAlertEntry.buildAssessmentAlertUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case COURSE_NOTES:
-                _id = db.insert(ScheduleContract.CourseNoteEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(CourseNoteEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.CourseNoteEntry.buildCourseNoteUri(_id);
+                    returnUri = CourseNoteEntry.buildCourseNoteUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case ASSESSMENT_NOTES:
-                _id = db.insert(ScheduleContract.AssessmentNoteEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(AssessmentNoteEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.AssessmentNoteEntry.buildAssessmentNoteUri(_id);
+                    returnUri = AssessmentNoteEntry.buildAssessmentNoteUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case COURSE_PHOTOS:
-                _id = db.insert(ScheduleContract.CoursePhotoEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(CoursePhotoEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.CoursePhotoEntry.buildCoursePhotoUri(_id);
+                    returnUri = CoursePhotoEntry.buildCoursePhotoUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
                 break;
             case ASSESSMENT_PHOTOS:
-                _id = db.insert(ScheduleContract.AssessmentPhotoEntry.TABLE_NAME, null, contentValues);
+                _id = db.insert(AssessmentPhotoEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0) {
-                    returnUri = ScheduleContract.AssessmentPhotoEntry.buildAssessmentPhotoUri(_id);
+                    returnUri = AssessmentPhotoEntry.buildAssessmentPhotoUri(_id);
                 } else {
                     throw new UnsupportedOperationException("Unable to insert rows into: " + uri);
                 }
@@ -478,34 +480,34 @@ public class ScheduleProvider extends ContentProvider {
 
         switch (stringUriMatcher.match(uri)) {
             case TERM:
-                rows = db.update(ScheduleContract.TermEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(TermEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case COURSE:
-                rows = db.update(ScheduleContract.CourseEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(CourseEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case MENTOR:
-                rows = db.update(ScheduleContract.MentorEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(MentorEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case ASSESSMENT:
-                rows = db.update(ScheduleContract.AssessmentEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(AssessmentEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case COURSE_ALERT:
-                rows = db.update(ScheduleContract.CourseAlertEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(CourseAlertEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case ASSESSMENT_ALERT:
-                rows = db.update(ScheduleContract.AssessmentAlertEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(AssessmentAlertEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case COURSE_NOTES:
-                rows = db.update(ScheduleContract.CourseNoteEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(CourseNoteEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case ASSESSMENT_NOTES:
-                rows = db.update(ScheduleContract.AssessmentNoteEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(AssessmentNoteEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case COURSE_PHOTOS:
-                rows = db.update(ScheduleContract.CoursePhotoEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(CoursePhotoEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             case ASSESSMENT_PHOTOS:
-                rows = db.update(ScheduleContract.AssessmentPhotoEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+                rows = db.update(AssessmentPhotoEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -523,34 +525,34 @@ public class ScheduleProvider extends ContentProvider {
 
         switch (stringUriMatcher.match(uri)) {
             case TERM:
-                rows = db.delete(ScheduleContract.TermEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(TermEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case COURSE:
-                rows = db.delete(ScheduleContract.CourseEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(CourseEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case MENTOR:
-                rows = db.delete(ScheduleContract.MentorEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(MentorEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ASSESSMENT:
-                rows = db.delete(ScheduleContract.AssessmentEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(AssessmentEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case COURSE_ALERT:
-                rows = db.delete(ScheduleContract.CourseAlertEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(CourseAlertEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ASSESSMENT_ALERT:
-                rows = db.delete(ScheduleContract.AssessmentAlertEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(AssessmentAlertEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case COURSE_NOTES:
-                rows = db.delete(ScheduleContract.CourseNoteEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(CourseNoteEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ASSESSMENT_NOTES:
-                rows = db.delete(ScheduleContract.AssessmentNoteEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(AssessmentNoteEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case COURSE_PHOTOS:
-                rows = db.delete(ScheduleContract.CoursePhotoEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(CoursePhotoEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ASSESSMENT_PHOTOS:
-                rows = db.delete(ScheduleContract.CoursePhotoEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(CoursePhotoEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
