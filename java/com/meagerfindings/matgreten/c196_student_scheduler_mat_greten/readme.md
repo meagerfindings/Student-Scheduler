@@ -4,14 +4,12 @@
 
 #### Required to have:
 
-- menus
 - ability to highlight terms to delete them
     - switch delete to select, and add select to the action bar options
 - ~~deletion protection for terms with courses~~
 - ~~find out what this requirement means: `an intent class`~~
     - satisfied by passing information between activities using the built in _intent class_
         - call this out in the readme.md when finishing up documentation.
-- find out what this requirement means: `a menu`
 - find out what this requirement means: `action bar`
 - notifications or alerts
     - hook up to:
@@ -21,6 +19,7 @@
 - portrait and landscape modes
 - written portions of assignment
 - document this is targeted at API 26
+- FINALLY FIX THE RESTART LOADER METHOD.... again.
 
 #### Nice to have:
 

@@ -58,38 +58,13 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
             }
         });
 
-//        termListView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                deleteTerm();
-//                return false;
-//            }
-//        });
-
         termListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int row, long arg3) {
-                Uri uri = Uri.parse(TermEntry.CONTENT_URI + "/" + arg3);
-//                deleteTerm(uri);
                 deleteTerm(String.valueOf(arg3));
-
                 return false;
             }
         });
-
-//        termListView.setOnLongClickListener(new AdapterView.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Uri uri = Uri.parse(ScheduleContract.TermEntry.CONTENT_URI + "/" + id);
-//                deleteTerm(uri);
-//                return false;
-//            }
-//        });
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

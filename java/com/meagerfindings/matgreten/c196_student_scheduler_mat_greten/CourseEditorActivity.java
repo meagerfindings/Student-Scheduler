@@ -1,6 +1,8 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.NotificationManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -137,7 +141,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             courseNoteListView = (ListView) findViewById(R.id.courseNoteListView);
             courseNoteListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseNoteTitles));
 
-
             assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
@@ -166,6 +169,21 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
+
+            startStatusEditor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                  int notificationID = 1;
+                  String notificationBody = "Start alert for " + titleEditor.getText();
+                  String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
+
+                  if (startStatusEditor.isChecked()) {
+                      setNotification(notificationID, notificationText, notificationBody);
+                  } else {
+                      cancelNotification(notificationID);
+                  }
+              }}
+            );
 
         }
     }
@@ -285,9 +303,22 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         termCursor.close();
         db.close();
 
-//        System.out.println(termTile);
-
         return termTile;
+    }
+
+    private void setNotification(int notificationID, String notificationText, String notificationBody) {
+        android.support.v4.app.NotificationCompat.Builder notificationMessage = new NotificationCompat.Builder(CourseEditorActivity.this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(notificationText)
+                .setContentText(notificationBody);
+
+        NotificationManager notificationManagerHelper = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerHelper.notify(notificationID, notificationMessage.build());
+    }
+
+    private void cancelNotification(int notificationID) {
+        NotificationManager notificationManagerHelper = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerHelper.cancel(notificationID);
     }
 
     @Override
@@ -331,7 +362,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-//                    deleteCourse();
                 } else if (oldTitle.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)) {
                     setResult(RESULT_CANCELED);
                 } else {
