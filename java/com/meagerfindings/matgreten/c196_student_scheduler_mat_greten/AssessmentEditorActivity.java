@@ -1,5 +1,7 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +44,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     private String action;
     private EditText titleEditor;
-    private EditText startEditor;
+    private TextView dueDateEditor;
     private TextView courseDueDateValue;
     private String assessmentFilter;
     private String oldText;
@@ -49,6 +53,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private Spinner courseSpinner;
     private String assessmentKeyID = "-1";
     private ListView assessmentAlertListView;
+    private Calendar calendar;
+    private int year;
+    private int month;
+    private int day;
 
 
     @Override
@@ -57,7 +65,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         setContentView(R.layout.activity_assessment_editor);
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentTitle);
-        startEditor = (EditText) findViewById(R.id.editAssessmentDueDateValue);
+        dueDateEditor = (TextView) findViewById(R.id.editAssessmentDueDateValue);
 
         courseSpinner = (Spinner) findViewById(R.id.assessmentCourseSpinner);
 
@@ -65,6 +73,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
         Uri uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
 
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         if (uri == null) {
             action = Intent.ACTION_INSERT;
@@ -91,7 +103,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             if (oldStart == null) oldStart = "";
 
             titleEditor.setText(oldText);
-            startEditor.setText(oldStart);
+            dueDateEditor.setText(oldStart);
 
             loadCourseSpinnerData();
 
@@ -266,7 +278,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     private void finishEditing() {
         String newTitle = titleEditor.getText().toString().trim();
-        String newTargetEndDate = startEditor.getText().toString().trim();
+        String newTargetEndDate = dueDateEditor.getText().toString().trim();
         int newCourseID = getCourseKey(courseSpinner.getSelectedItem().toString());
         switch (action) {
             case Intent.ACTION_INSERT:
@@ -368,5 +380,27 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         Intent intent = new Intent(this, AssessmentAlertActivity.class);
         intent.putExtra("assessmentTitle", oldText);
         startActivity(intent);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setAssessmentDueDate(View view) {
+        showDialog(701);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == 701) return new DatePickerDialog(this, startDateListener, year, month, day);
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            showDate(year, month + 1, day);
+        }
+    };
+
+    private void showDate(int year, int month, int day) {
+        dueDateEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
     }
 }

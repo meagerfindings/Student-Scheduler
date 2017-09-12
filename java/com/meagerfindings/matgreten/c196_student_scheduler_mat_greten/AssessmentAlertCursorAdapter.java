@@ -49,7 +49,11 @@ public class AssessmentAlertCursorAdapter extends ResourceCursorAdapter {
         tvAssessmentAlertTitle.setText(assessmentAlertTitle);
 
         TextView tvAssessmentAlertTime = view.findViewById(R.id.tvAssessmentAlertTime);
-        String assessmentAlertEmail = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
-        tvAssessmentAlertTime.setText(assessmentAlertEmail);
+        String assessmentAlertTime = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
+        tvAssessmentAlertTime.setText(assessmentAlertTime);
+
+        TextView tvAssessmentAlertDate = view.findViewById(R.id.tvAssessmentAlertDate);
+        String assessmentAlertDate = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE));
+        tvAssessmentAlertDate.setText(assessmentAlertDate);
     }
 }

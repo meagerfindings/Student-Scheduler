@@ -25,7 +25,7 @@
     <string name="hyphen">  -  </string>
     <string name="course_updated">Course udpated</string>
     <string name="course_deleted">Course deleted</string>
-    <string name="example_date">Ex: 08/23/1987</string>
+    <string name="date_hint">Ex: 08/23/1987</string>
     <string name="course_mentors">Course Mentors</string>
     <string name="assessments">Assessments</string>
     <string name="course_notes">Course Notes</string>
@@ -51,7 +51,7 @@
     <string name="assessment_updated">Assessment Updated</string>
     <string name="assessment_due_date">Assessment Due Date:</string>
     <string name="assessment_alert">Assessment Alert:</string>
-    <string name="example_date_time_hint">Ex: 09/02/2017 5:00 PM</string>
+    <string name="time_hint">Ex:15:00</string>
     <string name="assessment_term">Assessment Term</string>
     <string name="course">Course:</string>
     <string name="note_title">Note Title:</string>
@@ -86,4 +86,11 @@
     <string name="share_note">Share Note</string>
     <string name="deleted_term">Term Deleted</string>
     <string name="cannot_delete_term">Cannot delete terms with courses.</string>
+    <string name="alert_date">Alert Date:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="title">Title:</string>
+    <string name="new_assessment_alert">New Assessment Alert</string>
+    <string name="assessment_editor">Assessment Editor</string>
+    <string name="edit_assessment_note">Edit Assessment Note</string>
 </resources>

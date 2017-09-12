@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:onClick="setTermStartDate"
         android:text="@string/start_date"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
@@ -41,6 +42,7 @@
         android:layout_marginLeft="26dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="16dp"
+        android:onClick="setTermEndDate"
         android:text="@string/end_date"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
@@ -52,6 +54,7 @@
         android:id="@+id/editTermTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -59,32 +62,44 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="top"
+        android:hint="@string/new_term"
         android:inputType="textAutoComplete"
-        app:layout_constraintHorizontal_bias="0.436"
+        app:layout_constraintBottom_toBottomOf="@+id/termLabel"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintLeft_toRightOf="@+id/termLabel"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTermStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
         android:ems="10"
-        android:hint="@string/example_date"
-        android:inputType="date"
+        android:hint="@string/date_hint"
+        android:onClick="setTermStartDate"
         android:selectAllOnFocus="false"
-        app:layout_constraintHorizontal_bias="0.456"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/termStartLabel"
         app:layout_constraintLeft_toLeftOf="@+id/editTermTitle"
         app:layout_constraintTop_toBottomOf="@+id/editTermTitle" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTermEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
         android:ems="10"
-        android:hint="@string/example_date"
-        android:inputType="date"
-        app:layout_constraintHorizontal_bias="0.436"
+        android:hint="@string/date_hint"
+        android:onClick="setTermEndDate"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/termEndLabel"
         app:layout_constraintLeft_toLeftOf="@+id/editTermStartDate"
         app:layout_constraintTop_toBottomOf="@+id/editTermStartDate"
         tools:ignore="LabelFor" />
@@ -122,19 +137,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/termCoursesLabel" />
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:keyboardNavigationCluster="false"-->
-    <!--android:onClick="openEditorForNewCourse"-->
-    <!--app:backgroundTint="@android:color/darker_gray"-->
-    <!--app:elevation="0dp"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintRight_toRightOf="parent"-->
-    <!--app:srcCompat="@android:drawable/ic_input_add" />-->
 
 </android.support.constraint.ConstraintLayout>

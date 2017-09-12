@@ -11,6 +11,7 @@
     - satisfied by passing information between activities using the built in _intent class_
         - call this out in the readme.md when finishing up documentation.
 - find out what this requirement means: `action bar`
+- ~~implement [date & time pickers](https://www.tutorialspoint.com/android/android_datepicker_control.htm)~~
 - notifications or alerts
     - hook up to:
        - course start alert
@@ -23,12 +24,13 @@
 
 #### Nice to have:
 
-- Calendar inputs for date
-- Clock inputs for times
 - Add validation throughout...
     - validate for and remove *'* s from inputs!
-
-- Add `save` and `cancel` buttons throughout the application
+- make editors/previewers
+    - `copy` editors, change references to previewers
+    - `paste` editors
+    -  link editors to `edit` buttons in previewers 
+    - Add `save` and `cancel` buttons to editors
 
 ### Competencies:
 - 4026.1.1: Introduction to Mobile Application Development - The graduate explains mobile development, develops a simple mobile application using IDE, documents debugging the mobile application, and describes how to use an emulator.

@@ -84,9 +84,7 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = matchedUriOpenHelper.getWritableDatabase();
         Cursor returnedCursor;
 
-        System.out.println(uri.toString());
-
-        //TODO figure out why line 74 is failing out. Currently our URI is: content://com.meagerfindings.matgreten.c196_student_scheduler_mat_greten/terms and we are failing to convert this to a long... which makes sense
+//        System.out.println(uri.toString());
 
         switch (stringUriMatcher.match(uri)) {
             case TERM:

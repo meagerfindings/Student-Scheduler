@@ -1,6 +1,9 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.NotificationManager;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -18,12 +21,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,8 +46,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private static final int EDITOR_REQUEST_CODE = 3011;
     private String action;
     private EditText titleEditor;
-    private EditText startEditor;
-    private EditText endEditor;
+    private TextView startEditor;
+    private TextView endEditor;
     private Spinner termSpinner;
     private Spinner statusSpinner;
     private String courseFilter;
@@ -48,8 +55,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private String oldTerm;
     private String oldStart;
     private String oldEnd;
-    private EditText startAlertTimeEditor;
-    private EditText endAlertTimeEditor;
+    private TextView startAlertTimeEditor;
+    private TextView endAlertTimeEditor;
     private String oldStartAlertTime;
     private String oldEndAlertTime;
     private String oldStartAlertStatus;
@@ -59,6 +66,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private ListView courseNoteListView;
     private CheckBox startStatusEditor;
     private CheckBox endStatusEditor;
+    private Calendar calendar;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
 
 
     @Override
@@ -74,15 +87,19 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         termSpinner = (Spinner) findViewById(R.id.courseTermSpinner);
 
         titleEditor = (EditText) findViewById(R.id.editCourseTitle);
-        startEditor = (EditText) findViewById(R.id.editCourseStartDate);
-        endEditor = (EditText) findViewById(R.id.editCourseEndDate);
-        startAlertTimeEditor = (EditText) findViewById(R.id.courseStartAlertDateTime);
-        endAlertTimeEditor = (EditText) findViewById(R.id.courseEndAlertDateTime);
+        startEditor = (TextView) findViewById(R.id.editCourseStartDate);
+        endEditor = (TextView) findViewById(R.id.editCourseEndDate);
+        startAlertTimeEditor = (TextView) findViewById(R.id.courseStartAlertDateTime);
+        endAlertTimeEditor = (TextView) findViewById(R.id.courseEndAlertDateTime);
         startStatusEditor = (CheckBox) findViewById(R.id.startAlertCheckBox);
         endStatusEditor = (CheckBox) findViewById(R.id.endAlertCheckBox);
 
-        Intent intent = getIntent();
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(CourseEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
@@ -171,18 +188,19 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             });
 
             startStatusEditor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-              @Override
-              public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                  int notificationID = 1;
-                  String notificationBody = "Start alert for " + titleEditor.getText();
-                  String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
+                                                             @Override
+                                                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                                 int notificationID = 1;
+                                                                 String notificationBody = "Start alert for " + titleEditor.getText();
+                                                                 String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
 
-                  if (startStatusEditor.isChecked()) {
-                      setNotification(notificationID, notificationText, notificationBody);
-                  } else {
-                      cancelNotification(notificationID);
-                  }
-              }}
+                                                                 if (startStatusEditor.isChecked()) {
+                                                                     setNotification(notificationID, notificationText, notificationBody);
+                                                                 } else {
+                                                                     cancelNotification(notificationID);
+                                                                 }
+                                                             }
+                                                         }
             );
 
         }
@@ -454,5 +472,89 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
         assessmentAdapter.swapCursor(null);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setCourseStartDate(View view) {
+        showDialog(501);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setCourseEndDate(View view) {
+        showDialog(502);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setCourseStartTime(View view) {
+        showDialog(503);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setCourseEndTime(View view) {
+        showDialog(504);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+
+        if (id == 501) return new DatePickerDialog(this, startDateListener, year, month, day);
+        else if (id == 502) return new DatePickerDialog(this, endDateListener, year, month, day);
+        else if (id == 503)
+            return new TimePickerDialog(this, startTimeListener, hour, minute, true);
+        else if (id == 504) return new TimePickerDialog(this, endTimeListener, hour, minute, true);
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            showStartDate(year, month + 1, day);
+        }
+    };
+
+    private DatePickerDialog.OnDateSetListener endDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            showEndDate(year, month + 1, day);
+        }
+    };
+
+    private TimePickerDialog.OnTimeSetListener startTimeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            showStartTime(hour, minute);
+        }
+    };
+
+    private TimePickerDialog.OnTimeSetListener endTimeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            showEndTime(hour, minute);
+        }
+    };
+
+    private void showStartDate(int year, int month, int day) {
+        startEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+    }
+
+    private void showEndDate(int year, int month, int day) {
+        endEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+    }
+
+    private void showStartTime(int hour, int minute) {
+        if (minute <= 9)
+            startAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(0).append(minute));
+        else
+            startAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
+    }
+
+    private void showEndTime(int hour, int minute) {
+        if (minute <= 9)
+            endAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(0).append(minute));
+        else
+            endAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
     }
 }

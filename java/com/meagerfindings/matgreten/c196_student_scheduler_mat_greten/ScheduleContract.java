@@ -124,9 +124,10 @@ public class ScheduleContract {
         static final String COURSE_ALERT_ID = "_id";
         static final String COURSE_ALERT_COURSE_ID_FK = "courseAlertCourseID";
         static final String COURSE_ALERT_TITLE = "courseAlertTitle";
+        static final String COURSE_ALERT_DATE = "courseAlertDate";
         static final String COURSE_ALERT_TIME = "courseAlertTime";
         static final String COURSE_ALERT_CREATED = "courseAlertCreated";
-        static final String[] ALL_COURSE_ALERT_COLUMNS = {COURSE_ALERT_ID, COURSE_ALERT_COURSE_ID_FK, COURSE_ALERT_TITLE, COURSE_ALERT_TIME, COURSE_ALERT_CREATED};
+        static final String[] ALL_COURSE_ALERT_COLUMNS = {COURSE_ALERT_ID, COURSE_ALERT_COURSE_ID_FK, COURSE_ALERT_TITLE, COURSE_ALERT_DATE, COURSE_ALERT_TIME, COURSE_ALERT_CREATED};
 
         public static Uri buildCourseAlertUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -144,9 +145,10 @@ public class ScheduleContract {
         static final String ASSESSMENT_ALERT_ID = "_id";
         static final String ASSESSMENT_ALERT_ASSESSMENT_ID_FK = "assessmentAlertAssessmentID";
         static final String ASSESSMENT_ALERT_TITLE = "assessmentAlertTitle";
+        static final String ASSESSMENT_ALERT_DATE = "assessmentAlertDate";
         static final String ASSESSMENT_ALERT_TIME = "assessmentAlertTime";
         static final String ASSESSMENT_ALERT_CREATED = "assessmentAlertCreated";
-        static final String[] ALL_ASSESSMENT_ALERT_COLUMNS = {ASSESSMENT_ALERT_ID, ASSESSMENT_ALERT_ASSESSMENT_ID_FK, ASSESSMENT_ALERT_TITLE, ASSESSMENT_ALERT_TITLE, ASSESSMENT_ALERT_TIME, ASSESSMENT_ALERT_CREATED};
+        static final String[] ALL_ASSESSMENT_ALERT_COLUMNS = {ASSESSMENT_ALERT_ID, ASSESSMENT_ALERT_ASSESSMENT_ID_FK, ASSESSMENT_ALERT_DATE, ASSESSMENT_ALERT_TITLE, ASSESSMENT_ALERT_TITLE, ASSESSMENT_ALERT_TIME, ASSESSMENT_ALERT_CREATED};
 
         public static Uri buildAssessmentAlertUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

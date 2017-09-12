@@ -22,9 +22,8 @@
 
     <TextView
         android:id="@+id/tvAssessmentAlertTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_width="88dp"
+        android:layout_height="20dp"
         android:layout_weight="1.70"
         android:text="@string/alert_time"
         android:textAlignment="textStart"
@@ -32,6 +31,24 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
+        app:layout_constraintLeft_toRightOf="@+id/tvAssessmentAlertDate"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentAlertTitle" />
+
+    <TextView
+        android:id="@+id/tvAssessmentAlertDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.70"
+        android:text="@string/alert_date"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tvAssessmentAlertTitle" />
 </android.support.constraint.ConstraintLayout>

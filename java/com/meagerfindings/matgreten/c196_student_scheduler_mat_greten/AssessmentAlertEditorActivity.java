@@ -1,5 +1,8 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,8 +11,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
 
@@ -17,10 +26,19 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
 
     private String action;
     private EditText titleEditor;
-    private EditText timeEditor;
+    private TextView dateEditor;
+    private TextView timeEditor;
     private String assessmentAlertFilter;
     private String oldTitle;
+    private String oldTime;
+    private String oldDate;
     private String assessmentID;
+    private Calendar calendar;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +50,15 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
         }
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentAlertTitle);
-        timeEditor = (EditText) findViewById(R.id.editAssessmentAlertTimeValue);
+        dateEditor = (TextView) findViewById(R.id.editAssessmentAlertDateValue);
+        timeEditor = (TextView) findViewById(R.id.editAssessmentAlertTimeValue);
+
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         Intent intent =  getIntent();
-
         Uri uri = intent.getParcelableExtra(AssessmentAlertEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null){
@@ -51,10 +74,12 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
             cursor.moveToFirst();
 
             oldTitle = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE));
-            String oldTime = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
+            oldTime = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
+            oldDate = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE));
 
             titleEditor.setText(oldTitle);
             timeEditor.setText(oldTime);
+            dateEditor.setText(oldDate);
         }
     }
 
@@ -77,6 +102,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
     private void finishEditing(){
         String newTitle = titleEditor.getText().toString().trim();
         String newTime = timeEditor.getText().toString().trim();
+        String newDate = dateEditor.getText().toString().trim();
         switch (action){
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
@@ -84,7 +110,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
                 } else if (newTime.length() == 0){
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertAssessmentAlert(newTitle, newTime);
+                    insertAssessmentAlert(newTitle, newTime, newDate);
                 }
                 break;
             case Intent.ACTION_EDIT:
@@ -93,7 +119,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
                 } else if (oldTitle.equals(newTitle) /*&& oldTime.equals(newTime) && oldEmail.equals(newEmail)*/){
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateAssessmentAlert(newTitle, newTime);
+                    updateAssessmentAlert(newTitle, newTime, newDate);
                 }
         }
         finish();
@@ -106,20 +132,22 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
         finish();
     }
 
-    private void updateAssessmentAlert(String assessmentAlertTitle, String assessmentAlertTime) {
+    private void updateAssessmentAlert(String assessmentAlertTitle, String assessmentAlertTime, String assessmentAlertDate) {
         ContentValues values = new ContentValues();
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE, assessmentAlertTitle);
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME, assessmentAlertTime);
+        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE, assessmentAlertDate);
         getContentResolver().update(AssessmentAlertEntry.CONTENT_URI, values, assessmentAlertFilter, null);
 
         Toast.makeText(this, R.string.assessment_alert_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
-    private void insertAssessmentAlert(String assessmentAlertTitle, String assessmentAlertTime) {
+    private void insertAssessmentAlert(String assessmentAlertTitle, String assessmentAlertTime, String assessmentAlertDate) {
         ContentValues values = new ContentValues();
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE, assessmentAlertTitle);
-        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE, assessmentAlertTime);
+        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME, assessmentAlertTime);
+        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE, assessmentAlertDate);
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK, assessmentID);
         getContentResolver().insert(AssessmentAlertEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
@@ -137,4 +165,52 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity{
         }
         return true;
     }
+
+    @SuppressWarnings("deprecation")
+    public void setAssessmentAlertDate(View view) {
+        showDialog(601);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setAssessmentAlertTime(View view) {
+        showDialog(602);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+
+        if (id == 601) return new DatePickerDialog(this, startDateListener, year, month, day);
+        else if (id == 602)
+            return new TimePickerDialog(this, startTimeListener, hour, minute, true);
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            showDate(year, month + 1, day);
+        }
+    };
+
+    private TimePickerDialog.OnTimeSetListener startTimeListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+            showTime(hour, minute);
+        }
+    };
+
+    private void showDate(int year, int month, int day) {
+        dateEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+    }
+
+    private void showTime(int hour, int minute) {
+        if (minute <= 9)
+            timeEditor.setText(new StringBuilder().append(hour).append(":").append(0).append(minute));
+        else
+            timeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
+    }
+
 }

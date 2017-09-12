@@ -1,5 +1,7 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -12,9 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class TermEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -22,12 +28,16 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     private TermCourseCursorAdapter termCourseCursorAdapter;
     private String action;
     private EditText titleEditor;
-    private EditText startEditor;
-    private EditText endEditor;
+    private TextView startEditor;
+    private TextView endEditor;
     private String termFilter;
     private String oldText;
     private String oldStart;
     private String oldEnd;
+    private Calendar calendar;
+    private int year;
+    private int month;
+    private int day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +45,15 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
         setContentView(R.layout.activity_term_editor);
 
         titleEditor = (EditText) findViewById(R.id.editTermTitle);
-        startEditor = (EditText) findViewById(R.id.editTermStartDate);
-        endEditor = (EditText) findViewById(R.id.editTermEndDate);
+        startEditor = (TextView) findViewById(R.id.editTermStartDate);
+        endEditor = (TextView) findViewById(R.id.editTermEndDate);
+
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         Intent intent = getIntent();
-
         Uri uri = intent.getParcelableExtra(ScheduleContract.TermEntry.CONTENT_ITEM_TYPE);
 
         if (uri == null) {
@@ -200,6 +214,45 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
         termCourseCursorAdapter.swapCursor(null);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setTermStartDate(View view) {
+        showDialog(801);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setTermEndDate(View view) {
+        showDialog(802);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == 801) return new DatePickerDialog(this, startDateListener, year, month, day);
+        else if (id == 802) return new DatePickerDialog(this, endDateListener, year, month, day);
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            showStartDate(year, month + 1, day);
+        }
+    };
+
+    private DatePickerDialog.OnDateSetListener endDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int year, int month, int day) {
+            showEndDate(year, month + 1, day);
+        }
+    };
+
+    private void showStartDate(int year, int month, int day) {
+        startEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+    }
+
+    private void showEndDate(int year, int month, int day) {
+        endEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
     }
 
 
