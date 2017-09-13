@@ -38,6 +38,6 @@ public class AlertHandler extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notificationBuilder.build());
 
-        System.out.println("[--------Alert Displayed-----]");
+        System.out.println("[--------" + notificationID + "Alert Displayed-----]");
     }
 }

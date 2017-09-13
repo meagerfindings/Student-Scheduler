@@ -3,8 +3,6 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -54,6 +52,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private Spinner termSpinner;
     private Spinner statusSpinner;
     private String courseFilter;
+    private Cursor courseCursor;
+    private String courseID;
     private String oldTitle;
     private String oldTerm;
     private String oldStart;
@@ -67,7 +67,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private String oldStatus;
     private ListView mentorListView;
     private ListView courseNoteListView;
-    private CheckBox startStatusEditor;
+    private CheckBox startCheckBoxEditor;
     private CheckBox endStatusEditor;
     private Calendar calendar;
     private int year;
@@ -75,7 +75,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private int day;
     private int hour;
     private int minute;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +93,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         endEditor = (TextView) findViewById(R.id.editCourseEndDate);
         startAlertTimeEditor = (TextView) findViewById(R.id.courseStartAlertDateTime);
         endAlertTimeEditor = (TextView) findViewById(R.id.courseEndAlertDateTime);
-        startStatusEditor = (CheckBox) findViewById(R.id.startAlertCheckBox);
+        startCheckBoxEditor = (CheckBox) findViewById(R.id.startAlertCheckBox);
         endStatusEditor = (CheckBox) findViewById(R.id.endAlertCheckBox);
 
         calendar = Calendar.getInstance();
@@ -102,26 +101,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        startStatusEditor.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        // TODO: 9/12/17 add title term and saved checks before this and time entered
-
-                        if (startStatusEditor.isChecked()) {
-
-                            setCourseStartAlarm();
-                        } else if (!startStatusEditor.isChecked()){
-
-                            // TODO: 9/12/17 add cancel method trigger
-
-                            cancelCourseStartAlarm(1);
-
-                        }
-                    }
-                }
-        );
 
         Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(CourseEntry.CONTENT_ITEM_TYPE);
@@ -134,21 +113,21 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             action = Intent.ACTION_EDIT;
             courseFilter = CourseEntry.COURSE_ID + "=" + uri.getLastPathSegment();
 
-            Cursor cursor = getContentResolver().query(uri, CourseEntry.ALL_COURSE_COLUMNS, courseFilter, null, null);
+            courseCursor = getContentResolver().query(uri, CourseEntry.ALL_COURSE_COLUMNS, courseFilter, null, null);
 
-            assert cursor != null;
-            cursor.moveToFirst();
+            assert courseCursor != null;
+            courseCursor.moveToFirst();
 
-            String courseID = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_ID));
-            oldTitle = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_TITLE));
-            oldTerm = termTitleFromKey(cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK)));
-            oldStart = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START));
-            oldEnd = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END));
-            oldStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_STATUS));
-            oldStartAlertTime = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START_ALERT_TIME));
-            oldEndAlertTime = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END_ALERT_TIME));
-            oldStartAlertStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_START_ALERT_STATUS));
-            oldEndAlertStatus = cursor.getString(cursor.getColumnIndex(CourseEntry.COURSE_END_ALERT_STATUS));
+            courseID = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_ID));
+            oldTitle = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TITLE));
+            oldTerm = termTitleFromKey(courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK)));
+            oldStart = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_START));
+            oldEnd = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_END));
+            oldStatus = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_STATUS));
+            oldStartAlertTime = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_START_ALERT_TIME));
+            oldEndAlertTime = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_END_ALERT_TIME));
+            oldStartAlertStatus = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_START_ALERT_STATUS));
+            oldEndAlertStatus = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_END_ALERT_STATUS));
 
             if (oldTitle == null) oldTitle = "";
             if (oldStart == null) oldStart = "";
@@ -156,7 +135,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             if (oldStatus == null || oldStatus.isEmpty()) oldStatus = "Planned";
             if (oldStartAlertTime == null) oldStartAlertTime = "";
             if (oldEndAlertTime == null) oldEndAlertTime = "";
-            if (Objects.equals(oldStartAlertStatus, "active")) startStatusEditor.setChecked(true);
+            if (Objects.equals(oldStartAlertStatus, "active")) startCheckBoxEditor.setChecked(true);
             if (Objects.equals(oldEndAlertStatus, "active")) endStatusEditor.setChecked(true);
 
             titleEditor.setText(oldTitle);
@@ -210,6 +189,26 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
+
+            startCheckBoxEditor.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                            // TODO: 9/12/17 add title term and saved checks before this and time entered
+
+                            if (startCheckBoxEditor.isChecked()) {
+
+                                setCourseStartAlarm();
+                            } else if (!startCheckBoxEditor.isChecked()){
+
+                                // TODO: 9/12/17 add cancel method trigger
+
+                                cancelCourseStartAlarm(calculateStartAlarmID());
+                            }
+                        }
+                    }
+            );
 
         }
     }
@@ -334,7 +333,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     public void setCourseStartAlarm() {
 
-        int notificationID = 1;
+        int notificationID = calculateStartAlarmID();
         String notificationTitle = "Start alert for " + titleEditor.getText();
         String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
 
@@ -351,16 +350,31 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        System.out.println("[Scheduled Alarm]");
+        System.out.println("[Scheduled Alarm]: " + notificationID);
     }
 
-    private int calculateNotificationID(){
-// TODO: 9/12/17 term + course + start/end key value (not the time, but unique to the method) need to run this at oncreate for class too to get old value and then we can make a new value for any changes made too
-        return 0;
+    private int calculateStartAlarmID(){
+        assert courseCursor != null;
+        courseCursor.moveToFirst();
+
+        String oldTermKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+        String startAlarmString = "51" + oldTermKey + courseID;
+        int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
+        int startAlarmKey = Integer.parseInt(startAlarmString);
+
+        if (Integer.parseInt(oldTermKey) != newTermID){
+            cancelCourseStartAlarm(startAlarmKey);
+            startAlarmString = "51" + newTermID + courseID;
+            startAlarmKey  = Integer.parseInt(startAlarmString);
+        }
+
+        System.out.println("Start Alarm key: " + startAlarmKey);
+
+        return startAlarmKey;
     }
 
     private void cancelCourseStartAlarm(int notificationID) {
-        System.out.println("[Cancelled Alarm]");
+        System.out.println("[Cancelled Alarm]: " + notificationID);
 
         // TODO: 9/12/17 CITE: http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
 
@@ -394,7 +408,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         String newStartAlertTime = startAlertTimeEditor.getText().toString().trim();
         String newEndAlertTime = endAlertTimeEditor.getText().toString().trim();
         String newStartStatus = "inactive";
-        if (startStatusEditor.isChecked()) newStartStatus = "active";
+        if (startCheckBoxEditor.isChecked()) newStartStatus = "active";
         String newEndStatus = "inactive";
         if (endStatusEditor.isChecked()) newEndStatus = "active";
         switch (action) {
@@ -440,6 +454,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(CourseEntry.COURSE_START_ALERT_STATUS, startAlertStatus);
         values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().update(CourseEntry.CONTENT_URI, values, courseFilter, null);
+
+        values = new ContentValues();
 
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
