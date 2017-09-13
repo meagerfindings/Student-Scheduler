@@ -37,5 +37,7 @@ public class AlertHandler extends BroadcastReceiver {
         notificationBuilder.setAutoCancel(true);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notificationBuilder.build());
+
+        System.out.println("[--------Alert Displayed-----]");
     }
 }

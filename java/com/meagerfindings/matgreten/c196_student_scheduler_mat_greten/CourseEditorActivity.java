@@ -116,6 +116,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
                             // TODO: 9/12/17 add cancel method trigger
 
+                            cancelCourseStartAlarm(1);
+
                         }
                     }
                 }
@@ -341,21 +343,31 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         // TODO: 9/11/17 CITE:  http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0158723150
 
         Long alertTime = new GregorianCalendar().getTimeInMillis() + 5 * 1000;
+
         Intent alertIntent = new Intent(this, AlertHandler.class);
-
-
         alertIntent.putExtra("notificationID", notificationID);
         alertIntent.putExtra("notificationTitle", notificationTitle);
         alertIntent.putExtra("notificationText", notificationText);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
+        System.out.println("[Scheduled Alarm]");
     }
 
+    private int calculateNotificationID(){
+// TODO: 9/12/17 term + course + start/end key value (not the time, but unique to the method) need to run this at oncreate for class too to get old value and then we can make a new value for any changes made too
+        return 0;
+    }
 
-    private void cancelNotification(int notificationID) {
-        NotificationManager notificationManagerHelper = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManagerHelper.cancel(notificationID);
+    private void cancelCourseStartAlarm(int notificationID) {
+        System.out.println("[Cancelled Alarm]");
+
+        // TODO: 9/12/17 CITE: http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
+
+        Intent intent = new Intent(getBaseContext(), AlertHandler.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), notificationID, intent, 0);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 
     @Override
