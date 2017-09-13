@@ -1,8 +1,11 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,7 +16,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -98,6 +101,25 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        startStatusEditor.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                        // TODO: 9/12/17 add title term and saved checks before this and time entered
+
+                        if (startStatusEditor.isChecked()) {
+
+                            setCourseStartAlarm();
+                        } else if (!startStatusEditor.isChecked()){
+
+                            // TODO: 9/12/17 add cancel method trigger
+
+                        }
+                    }
+                }
+        );
 
         Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(CourseEntry.CONTENT_ITEM_TYPE);
@@ -186,22 +208,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
-
-            startStatusEditor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                             @Override
-                                                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                                 int notificationID = 1;
-                                                                 String notificationBody = "Start alert for " + titleEditor.getText();
-                                                                 String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
-
-                                                                 if (startStatusEditor.isChecked()) {
-                                                                     setNotification(notificationID, notificationText, notificationBody);
-                                                                 } else {
-                                                                     cancelNotification(notificationID);
-                                                                 }
-                                                             }
-                                                         }
-            );
 
         }
     }
@@ -324,15 +330,28 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return termTile;
     }
 
-    private void setNotification(int notificationID, String notificationText, String notificationBody) {
-        android.support.v4.app.NotificationCompat.Builder notificationMessage = new NotificationCompat.Builder(CourseEditorActivity.this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(notificationText)
-                .setContentText(notificationBody);
+    public void setCourseStartAlarm() {
 
-        NotificationManager notificationManagerHelper = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManagerHelper.notify(notificationID, notificationMessage.build());
+        int notificationID = 1;
+        String notificationTitle = "Start alert for " + titleEditor.getText();
+        String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
+
+        // TODO: 9/12/2017 CITE: http://www.newthinktank.com/2014/12/make-android-apps-19/
+        // TODO: 9/11/17 Cite: http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0224012307
+        // TODO: 9/11/17 CITE:  http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0158723150
+
+        Long alertTime = new GregorianCalendar().getTimeInMillis() + 5 * 1000;
+        Intent alertIntent = new Intent(this, AlertHandler.class);
+
+
+        alertIntent.putExtra("notificationID", notificationID);
+        alertIntent.putExtra("notificationTitle", notificationTitle);
+        alertIntent.putExtra("notificationText", notificationText);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
     }
+
 
     private void cancelNotification(int notificationID) {
         NotificationManager notificationManagerHelper = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -507,6 +526,9 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         else if (id == 504) return new TimePickerDialog(this, endTimeListener, hour, minute, true);
         return null;
     }
+
+//    TODO CITE: https://developer.android.com/guide/topics/ui/controls/pickers.html
+//    TODO CITE: https://www.tutorialspoint.com/android/android_datepicker_control.htm
 
     private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override

@@ -5,7 +5,7 @@
 #### Required to have:
 
 - ability to highlight terms to delete them
-    - switch delete to select, and add select to the action bar options
+    - switch delete to select, and add delete to the action bar options
 - ~~deletion protection for terms with courses~~
 - ~~find out what this requirement means: `an intent class`~~
     - satisfied by passing information between activities using the built in _intent class_
