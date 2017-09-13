@@ -29,11 +29,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.status_array;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
@@ -133,8 +137,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             if (oldStart == null) oldStart = "";
             if (oldEnd == null) oldEnd = "";
             if (oldStatus == null || oldStatus.isEmpty()) oldStatus = "Planned";
-            if (oldStartAlertTime == null) oldStartAlertTime = "";
-            if (oldEndAlertTime == null) oldEndAlertTime = "";
+            if (oldStartAlertTime.isEmpty()) oldStartAlertTime = "12:00";
+            if (oldEndAlertTime.isEmpty()) oldEndAlertTime = "13:00";
             if (Objects.equals(oldStartAlertStatus, "active")) startCheckBoxEditor.setChecked(true);
             if (Objects.equals(oldEndAlertStatus, "active")) endStatusEditor.setChecked(true);
 
@@ -200,7 +204,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                             if (startCheckBoxEditor.isChecked()) {
 
                                 setCourseStartAlarm();
-                            } else if (!startCheckBoxEditor.isChecked()){
+                            } else if (!startCheckBoxEditor.isChecked()) {
 
                                 // TODO: 9/12/17 add cancel method trigger
 
@@ -331,29 +335,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return termTile;
     }
 
-    public void setCourseStartAlarm() {
-
-        int notificationID = calculateStartAlarmID();
-        String notificationTitle = "Start alert for " + titleEditor.getText();
-        String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
-
-        // TODO: 9/12/2017 CITE: http://www.newthinktank.com/2014/12/make-android-apps-19/
-        // TODO: 9/11/17 Cite: http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0224012307
-        // TODO: 9/11/17 CITE:  http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0158723150
-
-        Long alertTime = new GregorianCalendar().getTimeInMillis() + 5 * 1000;
-
-        Intent alertIntent = new Intent(this, AlertHandler.class);
-        alertIntent.putExtra("notificationID", notificationID);
-        alertIntent.putExtra("notificationTitle", notificationTitle);
-        alertIntent.putExtra("notificationText", notificationText);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-
-        System.out.println("[Scheduled Alarm]: " + notificationID);
-    }
-
-    private int calculateStartAlarmID(){
+    private int calculateStartAlarmID() {
         assert courseCursor != null;
         courseCursor.moveToFirst();
 
@@ -362,26 +344,62 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
         int startAlarmKey = Integer.parseInt(startAlarmString);
 
-        if (Integer.parseInt(oldTermKey) != newTermID){
+        if (Integer.parseInt(oldTermKey) != newTermID) {
             cancelCourseStartAlarm(startAlarmKey);
             startAlarmString = "51" + newTermID + courseID;
-            startAlarmKey  = Integer.parseInt(startAlarmString);
+            startAlarmKey = Integer.parseInt(startAlarmString);
         }
 
-        System.out.println("Start Alarm key: " + startAlarmKey);
+//        System.out.println("Start Alarm key: " + startAlarmKey);
 
         return startAlarmKey;
     }
 
-    private void cancelCourseStartAlarm(int notificationID) {
-        System.out.println("[Cancelled Alarm]: " + notificationID);
+    public void setCourseStartAlarm() {
 
+        int notificationID = calculateStartAlarmID();
+        String notificationTitle = "Start alert for " + titleEditor.getText();
+        String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
+        String newStartAlertTime = startAlertTimeEditor.getText().toString().trim();
+        String newStartDate = startEditor.getText().toString().trim();
+
+        String alertTimeString = newStartDate + " " + newStartAlertTime + ":00";
+        String friendlyDT = alertTimeString.substring(0, alertTimeString.length() - 3);
+        String toastMessage = "Scheduled alert for " + friendlyDT;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy HH:mm:ss");
+        Date dateTimeForAlarm = null;
+        try {
+            dateTimeForAlarm = sdf.parse(alertTimeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Long alertTime = dateTimeForAlarm.getTime();
+
+        // TODO: 9/12/2017 CITE: http://www.newthinktank.com/2014/12/make-android-apps-19/
+        // TODO: 9/11/17 Cite: http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0224012307
+        // TODO: 9/11/17 CITE:  http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0158723150
+
+        Intent alertIntent = new Intent(this, AlertHandler.class);
+        alertIntent.putExtra("notificationID", notificationID);
+        alertIntent.putExtra("notificationTitle", notificationTitle);
+        alertIntent.putExtra("notificationText", notificationText);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    private void cancelCourseStartAlarm(int notificationID) {
         // TODO: 9/12/17 CITE: http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
 
         Intent intent = new Intent(getBaseContext(), AlertHandler.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), notificationID, intent, 0);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+
+        Toast.makeText(this, R.string.disabled_notification, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -455,8 +473,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().update(CourseEntry.CONTENT_URI, values, courseFilter, null);
 
-        values = new ContentValues();
-
+        // TODO: 9/12/17 Add set start and end date notifications to this, first check if box is checked
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
@@ -475,6 +492,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().insert(CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
+        // TODO: 9/12/17 Add set start and end date notifications to this, first check if box is checked
     }
 
     public void openEditorForNewAssessment(View view) {

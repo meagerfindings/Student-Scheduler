@@ -22,6 +22,8 @@
 - document this is targeted at API 26
 - FINALLY FIX THE RESTART LOADER METHOD.... again.
 
+`9/13/2017 12:00:00`
+
 #### Nice to have:
 
 - Add validation throughout...

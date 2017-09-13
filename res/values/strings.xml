@@ -93,4 +93,6 @@
     <string name="new_assessment_alert">New Assessment Alert</string>
     <string name="assessment_editor">Assessment Editor</string>
     <string name="edit_assessment_note">Edit Assessment Note</string>
+    <string name="disabled_notification">Disabled Notification</string>
+    <string name="scheduled_notification">Scheduled notification for</string>
 </resources>
