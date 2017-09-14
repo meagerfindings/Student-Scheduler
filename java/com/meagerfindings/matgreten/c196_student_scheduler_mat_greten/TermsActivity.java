@@ -1,6 +1,7 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +28,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
-public class TermsActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class TermsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 100;
     private CursorAdapter termCursorAdapter;
 
@@ -46,7 +49,7 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
         termListView.setAdapter(termAdapter);
         termAdapter.changeCursor(termCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         termListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -197,23 +200,21 @@ public class TermsActivity extends AppCompatActivity implements android.app.Load
     }
 
     private void restartLoader() {
-//        getLoaderManager().initLoader(0, null, TermsActivity.this);
         startActivity(new Intent(this, TermsActivity.class));
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, TermEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         termCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         termCursorAdapter.swapCursor(null);
     }
 

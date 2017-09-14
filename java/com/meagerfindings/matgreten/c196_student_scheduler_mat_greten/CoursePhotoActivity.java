@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +24,7 @@ import android.widget.Toast;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CoursePhotoEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_PHOTOS;
 
-public class CoursePhotoActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class CoursePhotoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
     private CursorAdapter coursePhotoCursorAdapter;
     private String courseNoteKey = "-1";
@@ -54,7 +56,7 @@ public class CoursePhotoActivity extends AppCompatActivity implements android.ap
         testPhotoListView.setAdapter(coursePhotoAdapter);
         coursePhotoAdapter.changeCursor(coursePhotoCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -131,25 +133,39 @@ public class CoursePhotoActivity extends AppCompatActivity implements android.ap
 
 
     private void restartLoader() {
-//        getLoaderManager().initLoader(0, null, CoursePhotosActivity.this);
         startActivity(new Intent(this, CoursePhotoActivity.class));
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, CoursePhotoEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         coursePhotoCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         coursePhotoCursorAdapter.swapCursor(null);
     }
+//
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return new CursorLoader(this, CoursePhotoEntry.CONTENT_URI, null, null, null, null);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+//        coursePhotoCursorAdapter.swapCursor(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+//        coursePhotoCursorAdapter.swapCursor(null);
+//    }
 
     public void openEditorForNewCoursePhoto(View view) {
         Intent intent = new Intent(this, CoursePhotoEditorActivity.class);

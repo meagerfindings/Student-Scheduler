@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class CoursesActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class CoursesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
     private CursorAdapter courseCursorAdapter;
 
@@ -41,7 +43,7 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
         courseListView.setAdapter(courseAdapter);
         courseAdapter.changeCursor(courseCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,21 +134,36 @@ public class CoursesActivity extends AppCompatActivity implements android.app.Lo
         startActivity(new Intent(this, CoursesActivity.class));
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.CourseEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         courseCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         courseCursorAdapter.swapCursor(null);
     }
+
+
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return new CursorLoader(this, ScheduleContract.CourseEntry.CONTENT_URI, null, null, null, null);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+//        courseCursorAdapter.swapCursor(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+//        courseCursorAdapter.swapCursor(null);
+//    }
 
     public void openEditorForNewCourse(View view) {
         Intent intent = new Intent(this, CourseEditorActivity.class);

@@ -11,6 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +29,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENTS;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_ALERTS;
 
-public class AssessmentAlertActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class AssessmentAlertActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
     private CursorAdapter assessmentAlertCursorAdapter;
     private String assessmentID = "-1";
@@ -60,7 +62,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements androi
         detailedAssessmentAlertListView.setAdapter(assessmentAlertAdapter);
         assessmentAlertAdapter.changeCursor(assessmentAlertCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         detailedAssessmentAlertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -164,21 +166,35 @@ public class AssessmentAlertActivity extends AppCompatActivity implements androi
         startActivity(new Intent(this, AssessmentAlertActivity.class));
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, AssessmentAlertEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         assessmentAlertCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         assessmentAlertCursorAdapter.swapCursor(null);
     }
+
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return new CursorLoader(this, AssessmentAlertEntry.CONTENT_URI, null, null, null, null);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+//        assessmentAlertCursorAdapter.swapCursor(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+//        assessmentAlertCursorAdapter.swapCursor(null);
+//    }
 
     public void openEditorForNewAssessmentAlert(View view) {
         Intent intent = new Intent(this, AssessmentAlertEditorActivity.class);

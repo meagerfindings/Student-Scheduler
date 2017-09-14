@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +26,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_NOTES;
 
-public class CourseNoteActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class CourseNoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 8010;
     private CursorAdapter courseNoteCursorAdapter;
     private String courseID = "-1";
@@ -57,7 +59,7 @@ public class CourseNoteActivity extends AppCompatActivity implements android.app
         detailedCourseNoteListView.setAdapter(courseNoteAdapter);
         courseNoteAdapter.changeCursor(courseNoteCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         detailedCourseNoteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -161,19 +163,34 @@ public class CourseNoteActivity extends AppCompatActivity implements android.app
     }
 
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, CourseNoteEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         courseNoteCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         courseNoteCursorAdapter.swapCursor(null);
     }
+
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return new CursorLoader(this, CourseNoteEntry.CONTENT_URI, null, null, null, null);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+//        courseNoteCursorAdapter.swapCursor(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+//        courseNoteCursorAdapter.swapCursor(null);
+//    }
 
     public void openEditorForNewCourseNote(View view) {
         Intent intent = new Intent(this, CourseNoteEditorActivity.class);

@@ -21,6 +21,22 @@
 - written portions of assignment
 - document this is targeted at API 26
 - FINALLY FIX THE RESTART LOADER METHOD.... again.
+```
+@Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        termCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        termCursorAdapter.swapCursor(null);
+    }
+```
 - add delete method to assessment alert edit activity
     - add delete reminder method here
 - add cascading deletions of assessments, cn, an, assessment alerts when deleting course

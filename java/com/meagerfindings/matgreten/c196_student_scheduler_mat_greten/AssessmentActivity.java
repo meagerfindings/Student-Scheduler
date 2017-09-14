@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +24,7 @@ import android.widget.Toast;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
 
-public class AssessmentActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class AssessmentActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
     private CursorAdapter assessmentCursorAdapter;
 
@@ -61,7 +63,7 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
         assessmentListView.setAdapter(assessmentAdapter);
         assessmentAdapter.changeCursor(assessmentCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -148,21 +150,36 @@ public class AssessmentActivity extends AppCompatActivity implements android.app
         startActivity(new Intent(this, AssessmentActivity.class));
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         assessmentCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         assessmentCursorAdapter.swapCursor(null);
     }
+
+
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+//        assessmentCursorAdapter.swapCursor(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+//        assessmentCursorAdapter.swapCursor(null);
+//    }
 
     public void openEditorForNewAssessment(View view) {
         Intent intent = new Intent(AssessmentActivity.this, AssessmentEditorActivity.class);

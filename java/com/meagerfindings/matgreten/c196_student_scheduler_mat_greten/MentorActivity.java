@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +27,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_MENTORS;
 
-public class MentorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class MentorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 7000;
     private CursorAdapter mentorCursorAdapter;
     private String courseID = "-1";
@@ -58,7 +60,7 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
         detailedMentorListView.setAdapter(mentorAdapter);
         mentorAdapter.changeCursor(mentorCursor);
 
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
 
         detailedMentorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -159,25 +161,39 @@ public class MentorActivity extends AppCompatActivity implements android.app.Loa
     }
 
     private void restartLoader() {
-//        getLoaderManager().initLoader(0, null, MentorsActivity.this);
         startActivity(new Intent(this, MentorActivity.class));
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, MentorEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mentorCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         mentorCursorAdapter.swapCursor(null);
     }
+
+//
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        return new CursorLoader(this, MentorEntry.CONTENT_URI, null, null, null, null);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+//        mentorCursorAdapter.swapCursor(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+//        mentorCursorAdapter.swapCursor(null);
+//    }
 
     public void openEditorForNewMentor(View view) {
         Intent intent = new Intent(this, MentorEditorActivity.class);
