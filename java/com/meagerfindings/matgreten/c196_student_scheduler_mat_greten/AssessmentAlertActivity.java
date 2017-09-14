@@ -1,6 +1,9 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;

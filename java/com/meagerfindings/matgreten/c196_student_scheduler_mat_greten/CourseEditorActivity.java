@@ -34,10 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.status_array;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
@@ -72,7 +70,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     private ListView mentorListView;
     private ListView courseNoteListView;
     private CheckBox startCheckBoxEditor;
-    private CheckBox endStatusEditor;
+    private CheckBox endCheckBoxEditor;
     private Calendar calendar;
     private int year;
     private int month;
@@ -98,7 +96,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         startAlertTimeEditor = (TextView) findViewById(R.id.courseStartAlertDateTime);
         endAlertTimeEditor = (TextView) findViewById(R.id.courseEndAlertDateTime);
         startCheckBoxEditor = (CheckBox) findViewById(R.id.startAlertCheckBox);
-        endStatusEditor = (CheckBox) findViewById(R.id.endAlertCheckBox);
+        endCheckBoxEditor = (CheckBox) findViewById(R.id.endAlertCheckBox);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -140,7 +138,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             if (oldStartAlertTime.isEmpty()) oldStartAlertTime = "12:00";
             if (oldEndAlertTime.isEmpty()) oldEndAlertTime = "13:00";
             if (Objects.equals(oldStartAlertStatus, "active")) startCheckBoxEditor.setChecked(true);
-            if (Objects.equals(oldEndAlertStatus, "active")) endStatusEditor.setChecked(true);
+            if (Objects.equals(oldEndAlertStatus, "active")) endCheckBoxEditor.setChecked(true);
 
             titleEditor.setText(oldTitle);
             startEditor.setText(oldStart);
@@ -198,18 +196,20 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (startCheckBoxEditor.isChecked()) setCourseStartAlarm();
+                            else if (!startCheckBoxEditor.isChecked())
+                                cancelCourseAlarm(calculateStartAlarmID());
+                        }
+                    }
+            );
 
-                            // TODO: 9/12/17 add title term and saved checks before this and time entered
-
-                            if (startCheckBoxEditor.isChecked()) {
-
-                                setCourseStartAlarm();
-                            } else if (!startCheckBoxEditor.isChecked()) {
-
-                                // TODO: 9/12/17 add cancel method trigger
-
-                                cancelCourseStartAlarm(calculateStartAlarmID());
-                            }
+            endCheckBoxEditor.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (endCheckBoxEditor.isChecked()) setCourseEndAlarm();
+                            else if (!endCheckBoxEditor.isChecked())
+                                cancelCourseAlarm(calculateEndAlarmID());
                         }
                     }
             );
@@ -345,14 +345,30 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         int startAlarmKey = Integer.parseInt(startAlarmString);
 
         if (Integer.parseInt(oldTermKey) != newTermID) {
-            cancelCourseStartAlarm(startAlarmKey);
+            cancelCourseAlarm(startAlarmKey);
             startAlarmString = "51" + newTermID + courseID;
             startAlarmKey = Integer.parseInt(startAlarmString);
         }
 
-//        System.out.println("Start Alarm key: " + startAlarmKey);
-
         return startAlarmKey;
+    }
+
+    private int calculateEndAlarmID() {
+        assert courseCursor != null;
+        courseCursor.moveToFirst();
+
+        String oldTermKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+        String endAlarmString = "52" + oldTermKey + courseID;
+        int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
+        int endAlarmKey = Integer.parseInt(endAlarmString);
+
+        if (Integer.parseInt(oldTermKey) != newTermID) {
+            cancelCourseAlarm(endAlarmKey);
+            endAlarmString = "52" + newTermID + courseID;
+            endAlarmKey = Integer.parseInt(endAlarmString);
+        }
+
+        return endAlarmKey;
     }
 
     public void setCourseStartAlarm() {
@@ -391,7 +407,39 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    private void cancelCourseStartAlarm(int notificationID) {
+    public void setCourseEndAlarm() {
+
+        int notificationID = calculateEndAlarmID();
+        String notificationTitle = "End alert for " + titleEditor.getText();
+        String notificationText = "Today is your last day in " + titleEditor.getText() + "!";
+        String newEndAlertTime = endAlertTimeEditor.getText().toString().trim();
+        String newEndDate = endEditor.getText().toString().trim();
+
+        String alertTimeString = newEndDate + " " + newEndAlertTime + ":00";
+        String friendlyDT = alertTimeString.substring(0, alertTimeString.length() - 3);
+        String toastMessage = "Scheduled alert for " + friendlyDT;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy HH:mm:ss");
+        Date dateTimeForAlarm = null;
+        try {
+            dateTimeForAlarm = sdf.parse(alertTimeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Long alertTime = dateTimeForAlarm.getTime();
+
+        Intent alertIntent = new Intent(this, AlertHandler.class);
+        alertIntent.putExtra("notificationID", notificationID);
+        alertIntent.putExtra("notificationTitle", notificationTitle);
+        alertIntent.putExtra("notificationText", notificationText);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    private void cancelCourseAlarm(int notificationID) {
         // TODO: 9/12/17 CITE: http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
 
         Intent intent = new Intent(getBaseContext(), AlertHandler.class);
@@ -428,7 +476,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         String newStartStatus = "inactive";
         if (startCheckBoxEditor.isChecked()) newStartStatus = "active";
         String newEndStatus = "inactive";
-        if (endStatusEditor.isChecked()) newEndStatus = "active";
+        if (endCheckBoxEditor.isChecked()) newEndStatus = "active";
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {

@@ -12,15 +12,18 @@
         - call this out in the readme.md when finishing up documentation.
 - find out what this requirement means: `action bar`
 - ~~implement [date & time pickers](https://www.tutorialspoint.com/android/android_datepicker_control.htm)~~
-- notifications or alerts
-    - hook up to:
-       - course start alert
-       - course end alert
-       - assessment alerts
+- ~~notifications or alerts~~
+    - ~~hook up to:~~
+       - ~~course start alert~~
+       - ~~course end alert~~
+       - ~~assessment alerts~~
 - portrait and landscape modes
 - written portions of assignment
 - document this is targeted at API 26
 - FINALLY FIX THE RESTART LOADER METHOD.... again.
+- add delete method to assessment alert edit activity
+    - add delete reminder method here
+- add cascading deletions of assessments, cn, an, assessment alerts when deleting course
 
 `9/13/2017 12:00:00`
 
