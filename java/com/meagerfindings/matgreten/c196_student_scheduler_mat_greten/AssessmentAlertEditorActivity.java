@@ -27,10 +27,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentEntry.*;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENTS;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_ALERTS;
 
 public class AssessmentAlertEditorActivity extends AppCompatActivity {
 
@@ -142,7 +142,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         getContentResolver().delete(AssessmentAlertEntry.CONTENT_URI, assessmentAlertFilter, null);
         Toast.makeText(this, R.string.assessment_alert_deleted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
-        cancelAssessmentAlarm(calculateAssessmentAlarmID());
+        cancelAssessmentAlarm(calculateExistingAssessmentAlarmID());
         finish();
     }
 
@@ -163,7 +163,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE, assessmentAlertDate);
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK, assessmentID);
         getContentResolver().insert(AssessmentAlertEntry.CONTENT_URI, values);
-        setAssessmentAlert();
+        setNewAssessmentAlert();
         setResult(RESULT_OK);
     }
 
@@ -227,7 +227,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
             timeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
     }
 
-    private int calculateAssessmentAlarmID() {
+    private int calculateExistingAssessmentAlarmID() {
         Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(AssessmentAlertEntry.CONTENT_ITEM_TYPE);
 
@@ -258,7 +258,69 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
 
         String assessmentTitle = cursor.getString(cursor.getColumnIndex(ASSESSMENT_TITLE));
 
-        int notificationID = calculateAssessmentAlarmID();
+        int notificationID = calculateExistingAssessmentAlarmID();
+        String notificationTitle = "Assessment Alert for " + assessmentTitle;
+        String notificationText = String.valueOf(titleEditor.getText());
+        String newAlertTime = timeEditor.getText().toString().trim();
+        String newAlertDate = dateEditor.getText().toString().trim();
+
+        String alertTimeString = newAlertDate + " " + newAlertTime + ":00";
+        String friendlyDT = alertTimeString.substring(0, alertTimeString.length() - 3);
+        String toastMessage = "Scheduled alert for " + friendlyDT;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy HH:mm:ss");
+        Date dateTimeForAlarm = null;
+        try {
+            dateTimeForAlarm = sdf.parse(alertTimeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Long alertTime = dateTimeForAlarm.getTime();
+
+        Intent alertIntent = new Intent(this, AlertHandler.class);
+        alertIntent.putExtra("notificationID", notificationID);
+        alertIntent.putExtra("notificationTitle", notificationTitle);
+        alertIntent.putExtra("notificationText", notificationText);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    private int calculateNewAssessmentAlarmID() {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT " + AssessmentAlertEntry._ID + " FROM " + TABLE_ASSESSMENT_ALERTS;
+
+        cursor = db.rawQuery(sqlQuery, null);
+
+        assert cursor != null;
+        cursor.moveToLast();
+
+        String assessmentAlertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
+        String endAlarmString = "117" + assessmentID + assessmentAlertID;
+        int endAlarmKey = Integer.parseInt(endAlarmString);
+
+        return endAlarmKey;
+    }
+
+    private void setNewAssessmentAlert() {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT " + ASSESSMENT_TITLE + " FROM " + TABLE_ASSESSMENTS +
+                " WHERE " + ASSESSMENT_ID + " = " + assessmentID;
+
+        cursor = db.rawQuery(sqlQuery, null);
+
+        assert cursor != null;
+        cursor.moveToFirst();
+
+        String assessmentTitle = cursor.getString(cursor.getColumnIndex(ASSESSMENT_TITLE));
+
+        int notificationID = calculateNewAssessmentAlarmID();
         String notificationTitle = "Assessment Alert for " + assessmentTitle;
         String notificationText = String.valueOf(titleEditor.getText());
         String newAlertTime = timeEditor.getText().toString().trim();
