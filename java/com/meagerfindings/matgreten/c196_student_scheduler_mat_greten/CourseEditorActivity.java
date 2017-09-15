@@ -82,6 +82,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_editor);
+        getLoaderManager().initLoader(0, null, this);
 
         statusSpinner = (Spinner) findViewById(R.id.courseStatusSpinner);
         ArrayAdapter<CharSequence> statusArrayAdapter = ArrayAdapter.createFromResource(this, status_array, android.R.layout.simple_spinner_item);
@@ -163,7 +164,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             courseNoteListView = (ListView) findViewById(R.id.courseNoteListView);
             courseNoteListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseNoteTitles));
 
-            assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
+//            assessmentAdapter = new CourseAssessmentCursorAdapter(this, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
@@ -175,12 +176,9 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
             ListView assessmentListView = (ListView) findViewById(R.id.courseAssessmentsListView);
 
-            CourseAssessmentCursorAdapter assessmentAdapter;
-            assessmentAdapter = new CourseAssessmentCursorAdapter(this, R.layout.activity_assessment_editor, courseCursor, 0);
+            assessmentAdapter = new CourseAssessmentCursorAdapter(this, null, 0);
             assessmentListView.setAdapter(assessmentAdapter);
             assessmentAdapter.changeCursor(courseCursor);
-
-            getLoaderManager().initLoader(0, null, this);
 
             assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -577,7 +575,21 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
+//        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ASSESSMENTS + " WHERE " +
+                AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " + courseID;
+
+        Cursor courseCursor = db.rawQuery(queryString, null);
+
+        ListView assessmentListView = (ListView) findViewById(R.id.courseAssessmentsListView);
+
+        assessmentAdapter = new CourseAssessmentCursorAdapter(this, null, 0);
+        assessmentListView.setAdapter(assessmentAdapter);
+        assessmentAdapter.changeCursor(courseCursor);
+        return null;
     }
 
     @Override
@@ -677,8 +689,23 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             endAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        finishEditing();
+//    }
+
     @Override
-    public void onBackPressed() {
-        finishEditing();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+            restartLoader();
+//            assessmentAdapter.changeCursor(courseCursor);
+        }
     }
+
+    private void restartLoader() {
+//        startActivity(new Intent(this, CourseEditorActivity.class));
+        getLoaderManager().initLoader(0, null, this);
+
+    }
+
 }

@@ -109,8 +109,6 @@ public class CoursesActivity extends AppCompatActivity implements LoaderManager.
                 .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
                 .setNegativeButton(getString(android.R.string.no), dialogClickListener)
                 .show();
-
-
     }
 
     private void insertSampleData() {

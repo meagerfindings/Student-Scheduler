@@ -403,9 +403,9 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private void showDate(int year, int month, int day) {
         dueDateEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
     }
-
-    @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        finishEditing();
+//    }
 }

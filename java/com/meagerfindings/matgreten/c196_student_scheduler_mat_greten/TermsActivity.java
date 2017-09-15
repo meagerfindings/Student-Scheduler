@@ -1,18 +1,18 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseEntry;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_TERMS;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TermEntry;
 
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
 
@@ -34,7 +37,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_screen);
 
-        termCursorAdapter = new TermCursorAdapter(this, R.layout.activity_term_screen, null, 0);
+        termCursorAdapter = new TermCursorAdapter(this, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -42,11 +45,11 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
 
         ListView termListView = (ListView) findViewById(R.id.termListView);
 
-        TermCursorAdapter termAdapter = new TermCursorAdapter(this, R.layout.activity_term_screen, termCursor, 0);
-        termListView.setAdapter(termAdapter);
-        termAdapter.changeCursor(termCursor);
+//        TermCursorAdapter termAdapter = new TermCursorAdapter(this, termCursor, 0);
+        termListView.setAdapter(termCursorAdapter);
+        termCursorAdapter.changeCursor(termCursor);
 
-//        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
 
         termListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,9 +69,6 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Terms");
 
     }
@@ -147,10 +147,12 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         switch (id) {
             case R.id.action_delete:
                 break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -189,12 +191,16 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     private void restartLoader() {
-        startActivity(new Intent(this, TermsActivity.class));
+//        startActivity(new Intent(this, TermsActivity.class));
+        getLoaderManager().initLoader(0, null, this);
+
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+//        return null;
+        return new CursorLoader(this, TermEntry.CONTENT_URI,
+                null, null, null, null);
     }
 
     @Override

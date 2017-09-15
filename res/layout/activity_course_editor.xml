@@ -199,7 +199,7 @@
             <ListView
                 android:id="@+id/courseAssessmentsListView"
                 android:layout_width="368dp"
-                android:layout_height="287dp"
+                android:layout_height="900dp"
                 app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

@@ -1,15 +1,16 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +37,7 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mentor_screen);
 
-        mentorCursorAdapter = new MentorCursorAdapter(this, R.layout.activity_mentor_screen, null, 0);
+        mentorCursorAdapter = new MentorCursorAdapter(this, null, 0);
 
         if (getIntent().getExtras() != null) {
             String courseTitle = String.valueOf(getIntent().getExtras().getString("courseTitle"));
@@ -55,11 +56,11 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
 
         ListView detailedMentorListView = (ListView) findViewById(R.id.detailedMentorListView);
 
-        MentorCursorAdapter mentorAdapter = new MentorCursorAdapter(this, R.layout.activity_mentor_screen, mentorCursor, 0);
-        detailedMentorListView.setAdapter(mentorAdapter);
-        mentorAdapter.changeCursor(mentorCursor);
+//        MentorCursorAdapter mentorAdapter = new MentorCursorAdapter(this, R.layout.activity_mentor_screen, mentorCursor, 0);
+        detailedMentorListView.setAdapter(mentorCursorAdapter);
+        mentorCursorAdapter.changeCursor(mentorCursor);
 
-//        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
 
         detailedMentorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -152,12 +153,15 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void restartLoader() {
-        startActivity(new Intent(this, MentorActivity.class));
+//        startActivity(new Intent(this, MentorActivity.class));
+        getLoaderManager().initLoader(0, null, this);
+
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        return new CursorLoader(this, MentorEntry.CONTENT_URI,
+                null, null, null, null);
     }
 
     @Override

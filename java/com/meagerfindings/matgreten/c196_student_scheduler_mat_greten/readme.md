@@ -41,6 +41,11 @@
 ```
    - above did not work, look at changing  `startActivityForResult` to `startActivity`, based on https://stackoverflow.com/a/4038637 
      - ~~do this after adding save & delete options to menu bar~~
+     
+     - finish converting adapters and curors to work!
+     - make sure to init cursors in oncreeateload like in course editor :)
+ - fix the jimmy rigged include height for course editor assesments view by maybe placing this lv right in that activity rather than an include?
+     
 - add delete method to assessment alert edit activity
     - add delete reminder method here
 - add cascading deletions of assessments, cn, an, assessment alerts when deleting course

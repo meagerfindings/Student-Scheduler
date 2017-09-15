@@ -102,7 +102,7 @@ public class AssessmentNoteActivity extends AppCompatActivity implements LoaderM
 
     private void restartLoader() {
 //        getLoaderManager().restartLoader(0, null, AssessmentsActivity.this);
-        startActivity(new Intent(this, AssessmentNoteActivity.class));
+//        startActivity(new Intent(this, AssessmentNoteActivity.class));
     }
 
     @Override
