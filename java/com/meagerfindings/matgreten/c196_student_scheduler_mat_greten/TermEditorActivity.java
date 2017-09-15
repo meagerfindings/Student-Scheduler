@@ -122,9 +122,10 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.save_option:
                 finishEditing();
                 break;
@@ -195,7 +196,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
     public void openEditorForNewCourse(View view) {
         Intent intent = new Intent(this, CourseEditorActivity.class);
-
+//        startActivityForResult(intent, EDITOR_REQUEST_CODE);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 

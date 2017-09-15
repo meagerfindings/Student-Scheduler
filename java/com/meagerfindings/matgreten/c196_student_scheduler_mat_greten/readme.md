@@ -10,7 +10,7 @@
 - ~~find out what this requirement means: `an intent class`~~
     - satisfied by passing information between activities using the built in _intent class_
         - call this out in the readme.md when finishing up documentation.
-- find out what this requirement means: `action bar`
+- ~~find out what this requirement means: `action bar`~~
 - ~~implement [date & time pickers](https://www.tutorialspoint.com/android/android_datepicker_control.htm)~~
 - ~~notifications or alerts~~
     - ~~hook up to:~~
@@ -40,7 +40,7 @@
     
 ```
    - above did not work, look at changing  `startActivityForResult` to `startActivity`, based on https://stackoverflow.com/a/4038637 
-     - do this after adding save & delete options to menu bar 
+     - ~~do this after adding save & delete options to menu bar~~
 - add delete method to assessment alert edit activity
     - add delete reminder method here
 - add cascading deletions of assessments, cn, an, assessment alerts when deleting course

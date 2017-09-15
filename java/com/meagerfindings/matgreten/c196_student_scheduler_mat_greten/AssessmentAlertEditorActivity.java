@@ -108,9 +108,10 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.save_option:
                 finishEditing();
                 break;
