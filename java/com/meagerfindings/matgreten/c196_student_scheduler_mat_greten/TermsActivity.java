@@ -1,8 +1,6 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static android.R.attr.id;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
 
 //TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
@@ -143,25 +140,17 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
-            case R.id.action_settings:
-                break;
-            case R.id.action_create_sample:
-                insertSampleData();
-                break;
-            case R.id.action_delete_all:
-                deleteAllTerms();
+            case R.id.action_delete:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

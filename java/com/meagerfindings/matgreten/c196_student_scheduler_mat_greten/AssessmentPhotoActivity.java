@@ -1,7 +1,6 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -84,25 +83,17 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
-            case R.id.action_settings:
-                break;
-            case R.id.action_create_sample:
-                insertSampleData();
-                break;
-            case R.id.action_delete_all:
-                deleteAllAssessmentPhotos();
+            case R.id.action_delete:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

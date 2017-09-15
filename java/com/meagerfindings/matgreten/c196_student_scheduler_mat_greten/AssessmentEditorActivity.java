@@ -262,17 +262,30 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        } else if (action.equals(Intent.ACTION_INSERT)) {
+            getMenuInflater().inflate(R.menu.menu_insert, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.save_option:
                 finishEditing();
                 break;
-            case R.id.action_delete:
+            case R.id.delete_option:
                 deleteAssessment();
                 break;
+            case R.id.cancel_option:
+                finish();
         }
+
         return true;
     }
 
@@ -292,7 +305,6 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-//                    deleteAssessment();
                 } else if (oldText.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
                     setResult(RESULT_CANCELED);
                 } else {
@@ -327,19 +339,6 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         values.put(AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
         getContentResolver().insert(AssessmentEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (action.equals(Intent.ACTION_EDIT)) {
-            getMenuInflater().inflate(R.menu.menu_editor, menu);
-        }
-        return true;
     }
 
     private void restartLoader() {
@@ -402,5 +401,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     private void showDate(int year, int month, int day) {
         dueDateEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishEditing();
     }
 }

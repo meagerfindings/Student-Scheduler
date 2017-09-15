@@ -73,17 +73,30 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        } else if (action.equals(Intent.ACTION_INSERT)){
+            getMenuInflater().inflate(R.menu.menu_insert, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.save_option:
                 finishEditing();
                 break;
-            case R.id.action_delete:
+            case R.id.delete_option:
                 deleteCoursePhoto();
                 break;
+            case R.id.cancel_option:
+                finish();
         }
+
         return true;
     }
 
@@ -131,17 +144,6 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         getContentResolver().insert(CoursePhotoEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
         System.out.println("inserted....");
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (action.equals(Intent.ACTION_EDIT)) getMenuInflater().inflate(R.menu.menu_editor, menu);
-        return true;
     }
 
     public void takePicture(View view) {
@@ -267,6 +269,11 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     @Override

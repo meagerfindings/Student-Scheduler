@@ -116,18 +116,36 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        } else if (action.equals(Intent.ACTION_INSERT)){
+            getMenuInflater().inflate(R.menu.menu_insert, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.save_option:
                 finishEditing();
                 break;
-            case R.id.action_delete:
+            case R.id.delete_option:
                 deleteCourseNote();
                 break;
+            case R.id.cancel_option:
+                finish();
         }
+
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishEditing();
     }
 
     private void finishEditing() {
@@ -145,7 +163,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-//                    deleteCourseNote();
                 } else if (oldText.equals(newTitle) && oldStart.equals(newText)) {
                     setResult(RESULT_CANCELED);
                 } else {
@@ -181,19 +198,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
         getContentResolver().insert(CourseNoteEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (action.equals(Intent.ACTION_EDIT)) {
-            getMenuInflater().inflate(R.menu.menu_editor, menu);
-        }
-        return true;
     }
 
     public void shareNoteText(View view) {

@@ -18,6 +18,7 @@
        - ~~course end alert~~
        - ~~assessment alerts~~
 - portrait and landscape modes
+- fix default times interfering with alerts...
 - written portions of assignment
 - document this is targeted at API 26
 - FINALLY FIX THE RESTART LOADER METHOD.... again.
@@ -36,7 +37,10 @@
     public void onLoaderReset(Loader<Cursor> loader) {
         termCursorAdapter.swapCursor(null);
     }
+    
 ```
+   - above did not work, look at changing  `startActivityForResult` to `startActivity`, based on https://stackoverflow.com/a/4038637 
+     - do this after adding save & delete options to menu bar 
 - add delete method to assessment alert edit activity
     - add delete reminder method here
 - add cascading deletions of assessments, cn, an, assessment alerts when deleting course

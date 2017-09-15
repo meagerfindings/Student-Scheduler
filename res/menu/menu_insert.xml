@@ -14,11 +14,5 @@
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:orderInCategory="101"
         android:title="@string/cancel_changes"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/delete_option"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:orderInCategory="102"
-        android:title="@string/delete"
         app:showAsAction="never" />
 </menu>

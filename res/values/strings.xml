@@ -95,4 +95,7 @@
     <string name="edit_assessment_note">Edit Assessment Note</string>
     <string name="disabled_notification">Disabled Notification</string>
     <string name="scheduled_notification">Scheduled notification for</string>
+    <string name="cancel_changes">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -116,17 +116,30 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        } else if (action.equals(Intent.ACTION_INSERT)) {
+            getMenuInflater().inflate(R.menu.menu_insert, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.save_option:
                 finishEditing();
                 break;
-            case R.id.action_delete:
+            case R.id.delete_option:
                 deleteAssessmentNote();
                 break;
+            case R.id.cancel_option:
+                finish();
         }
+
         return true;
     }
 
@@ -145,7 +158,6 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-//                    deleteAssessmentNote();
                 } else if (oldTitle.equals(newTitle) && oldText.equals(newText)) {
                     setResult(RESULT_CANCELED);
                 } else {
@@ -243,19 +255,6 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     }
 
     @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (action.equals(Intent.ACTION_EDIT)) {
-            getMenuInflater().inflate(R.menu.menu_editor, menu);
-        }
-        return true;
-    }
-
-    @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this, AssessmentPhotoEntry.CONTENT_URI, null, null, null, null);
     }
@@ -274,5 +273,10 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         Intent intent = new Intent(this, AssessmentPhotoEditorActivity.class);
         intent.putExtra("assessmentNoteKey", assessmentNoteKey);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishEditing();
     }
 }

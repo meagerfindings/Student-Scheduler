@@ -451,17 +451,30 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        } else if (action.equals(Intent.ACTION_INSERT)){
+            getMenuInflater().inflate(R.menu.menu_insert, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.save_option:
                 finishEditing();
                 break;
-            case R.id.action_delete:
+            case R.id.delete_option:
                 deleteCourse();
                 break;
+            case R.id.cancel_option:
+                finish();
         }
+
         return true;
     }
 
@@ -559,17 +572,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         Intent intent = new Intent(this, MentorActivity.class);
         intent.putExtra("courseTitle", oldTitle);
         startActivity(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (action.equals(Intent.ACTION_EDIT)) getMenuInflater().inflate(R.menu.menu_editor, menu);
-        return true;
     }
 
     @Override
@@ -672,5 +674,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             endAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(0).append(minute));
         else
             endAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishEditing();
     }
 }

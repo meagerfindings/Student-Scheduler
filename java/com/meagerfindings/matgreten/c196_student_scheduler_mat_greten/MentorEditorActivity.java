@@ -64,16 +64,28 @@ public class MentorEditorActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        } else if (action.equals(Intent.ACTION_INSERT)) {
+            getMenuInflater().inflate(R.menu.menu_insert, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.save_option:
                 finishEditing();
                 break;
-            case R.id.action_delete:
+            case R.id.delete_option:
                 deleteMentor();
                 break;
+            case R.id.cancel_option:
+                finish();
         }
 
         return true;
@@ -97,13 +109,17 @@ public class MentorEditorActivity extends AppCompatActivity {
                 break;
             case Intent.ACTION_EDIT:
                 if (newName.length() == 0) {
-//                    deleteMentor();
-                } else if (oldName.equals(newName) /*&& oldPhone.equals(newPhone) && oldEmail.equals(newEmail)*/) {
+                } else if (oldName.equals(newName)){
                     setResult(RESULT_CANCELED);
                 } else {
                     updateMentor(newName, newPhone, newEmail);
                 }
         }
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
         finish();
     }
 
@@ -119,7 +135,6 @@ public class MentorEditorActivity extends AppCompatActivity {
         values.put(MentorEntry.MENTOR_NAME, mentorName);
         values.put(MentorEntry.MENTOR_PHONE, mentorPhone);
         values.put(MentorEntry.MENTOR_EMAIL, mentorEmail);
-//        values.put(MentorEntry.MENTOR_COURSE_ID_FK, courseID);
         getContentResolver().update(MentorEntry.CONTENT_URI, values, mentorFilter, null);
 
         Toast.makeText(this, R.string.mentor_updated, Toast.LENGTH_SHORT).show();
@@ -134,18 +149,5 @@ public class MentorEditorActivity extends AppCompatActivity {
         values.put(MentorEntry.MENTOR_COURSE_ID_FK, courseID);
         getContentResolver().insert(MentorEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishEditing();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (action.equals(Intent.ACTION_EDIT)) {
-            getMenuInflater().inflate(R.menu.menu_editor, menu);
-        }
-        return true;
     }
 }
