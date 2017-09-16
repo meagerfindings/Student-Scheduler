@@ -57,7 +57,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_assessment_alert_editor);
 
         if (getIntent().getExtras() != null) {
-            assessmentFKID = String.valueOf(getIntent().getExtras().getString("assessmentID"));
+            assessmentFKID = String.valueOf(getIntent().getExtras().getString("assessmentFKID"));
         }
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentAlertTitle);
@@ -311,6 +311,8 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
 
         String sqlQuery = "SELECT " + ASSESSMENT_TITLE + " FROM " + TABLE_ASSESSMENTS +
                 " WHERE " + ASSESSMENT_ID + " = " + assessmentFKID;
+
+        System.out.println(sqlQuery);
 
         cursor = db.rawQuery(sqlQuery, null);
 

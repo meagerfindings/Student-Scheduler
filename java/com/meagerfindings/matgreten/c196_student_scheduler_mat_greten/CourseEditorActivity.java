@@ -586,6 +586,14 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         assessmentAdapter = new CourseAssessmentCursorAdapter(this, null, 0);
         assessmentListView.setAdapter(assessmentAdapter);
         assessmentAdapter.changeCursor(courseCursor);
+
+        ArrayList<String> mentorNames = getMentorNames(courseID);
+        mentorListView = (ListView) findViewById(R.id.mentorListView);
+        mentorListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mentorNames));
+
+        ArrayList<String> courseNoteTitles = getCourseNoteTitles(courseID);
+        courseNoteListView = (ListView) findViewById(R.id.courseNoteListView);
+        courseNoteListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseNoteTitles));
         return null;
     }
 
@@ -695,13 +703,11 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
-//            assessmentAdapter.changeCursor(courseCursor);
         }
     }
 
     private void restartLoader() {
         getLoaderManager().initLoader(0, null, this);
-
     }
 
 }

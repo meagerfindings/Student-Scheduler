@@ -13,7 +13,6 @@ import android.content.Loader;
 import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -154,15 +153,27 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void restartLoader() {
-//        startActivity(new Intent(this, MentorActivity.class));
         getLoaderManager().initLoader(0, null, this);
 
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, MentorEntry.CONTENT_URI,
-                null, null, null, null);
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + TABLE_MENTORS +
+                " WHERE " + MentorEntry.MENTOR_COURSE_ID_FK + " = " + courseID;
+
+        System.out.println(sqlQuery);
+
+        Cursor mentorCursor = db.rawQuery(sqlQuery, null);
+
+        ListView detailedMentorListView = (ListView) findViewById(R.id.detailedMentorListView);
+
+        detailedMentorListView.setAdapter(mentorCursorAdapter);
+        mentorCursorAdapter.changeCursor(mentorCursor);
+        return null;
     }
 
     @Override
@@ -174,22 +185,6 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
         mentorCursorAdapter.swapCursor(null);
     }
-
-//
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, MentorEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        mentorCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        mentorCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewMentor(View view) {
         Intent intent = new Intent(this, MentorEditorActivity.class);

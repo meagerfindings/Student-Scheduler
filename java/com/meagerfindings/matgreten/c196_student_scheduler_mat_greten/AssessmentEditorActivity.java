@@ -348,32 +348,20 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        intent = getIntent();
-//        uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
-////        assessmentFilter = AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
-////        cursor = getContentResolver().query(uri, AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
-//        assert cursor != null;
-//        cursor.moveToFirst();
-//        uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
-        assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
-//
-//        if (alertIntent != null) {
-//            assessmentID = String.valueOf(getIntent().getExtras().getString("assessmentFKID"));
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
 
+        queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
+                AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
 
-//        assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
+        System.out.println(queryString);
+        notesCursor = db.rawQuery(queryString, null);
 
-            ScheduleDBHelper handler = new ScheduleDBHelper(this);
-            SQLiteDatabase db = handler.getWritableDatabase();
+//        assessmentNoteCursorAdapter.changeCursor(notesCursor);
 
-            queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
-                    AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
-
-            System.out.println(queryString);
-            notesCursor = db.rawQuery(queryString, null);
-
-            assessmentNoteCursorAdapter.changeCursor(notesCursor);
-//        }
+        ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentID);
+        assessmentAlertListView = (ListView) findViewById(R.id.assessmentAlertListView);
+        assessmentAlertListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, assessmentAlertTitles));
         return null;
     }
 
@@ -389,9 +377,9 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
-            restartLoader();
-//        }
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+        restartLoader();
+        }
     }
 
     public void openEditorForNewAssessmentNote(View view) {
