@@ -3,8 +3,8 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -41,7 +41,6 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 public class AssessmentEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 4011;
     private AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
-
     private String action;
     private EditText titleEditor;
     private TextView dueDateEditor;
@@ -57,21 +56,26 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private int year;
     private int month;
     private int day;
-
+    private Cursor cursor;
+    private Cursor notesCursor;
+    private String assessmentID;
+    private Uri uri;
+    private Intent intent;
+    private String queryString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_editor);
+        getLoaderManager().initLoader(0, null, this);
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentTitle);
         dueDateEditor = (TextView) findViewById(R.id.editAssessmentDueDateValue);
 
         courseSpinner = (Spinner) findViewById(R.id.assessmentCourseSpinner);
 
-        Intent intent = getIntent();
-
-        Uri uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
+        intent = getIntent();
+        uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -89,11 +93,12 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             action = Intent.ACTION_EDIT;
             assessmentFilter = AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
 
-            final Cursor cursor = getContentResolver().query(uri, AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
+            cursor = getContentResolver().query(uri, AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
 
             assert cursor != null;
             cursor.moveToFirst();
 
+            assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
             oldText = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TARGET_DATE));
             oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
@@ -110,29 +115,23 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             String courseDueDate = getCourseDueDate();
 
             courseDueDateValue = (TextView) findViewById(R.id.courseDueDateValue);
-
             courseDueDateValue.setText(courseDueDate);
 
-            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, null, 0);
-
-            String assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
 
-            String queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
+            queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
                     AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
 
-            Cursor notesCursor = db.rawQuery(queryString, null);
+            notesCursor = db.rawQuery(queryString, null);
 
             ListView assessmentNotesListView = (ListView) findViewById(R.id.assessmentNotesListView);
 
-            AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
-            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, notesCursor, 0);
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, notesCursor, 0);
             assessmentNotesListView.setAdapter(assessmentNoteCursorAdapter);
             assessmentNoteCursorAdapter.changeCursor(notesCursor);
-
-            getLoaderManager().initLoader(0, null, this);
 
             assessmentNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -343,14 +342,31 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     }
 
     private void restartLoader() {
-//        getLoaderManager().initLoader(0, null, TermsActivity.this);
-        startActivity(new Intent(this, AssessmentEditorActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
-
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, AssessmentNoteEntry.CONTENT_URI, null, null, null, null);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        intent = getIntent();
+//        uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
+////        assessmentFilter = AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
+////        cursor = getContentResolver().query(uri, AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
+//        assert cursor != null;
+//        cursor.moveToFirst();
+        assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
+//        assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
+
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
+                AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
+
+        System.out.println(queryString);
+        notesCursor = db.rawQuery(queryString, null);
+
+        assessmentNoteCursorAdapter.changeCursor(notesCursor);
+        return null;
     }
 
     @Override
@@ -403,9 +419,9 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private void showDate(int year, int month, int day) {
         dueDateEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        finishEditing();
-//    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

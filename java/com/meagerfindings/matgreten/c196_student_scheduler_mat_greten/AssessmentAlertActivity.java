@@ -7,9 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,26 +27,27 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 
 public class AssessmentAlertActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
-    private CursorAdapter assessmentAlertCursorAdapter;
-    private String assessmentID = "-1";
+    private CursorAdapter assessmentAlertAdapter;
+    private String assessmentFKID = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_alert_screen);
+        getLoaderManager().initLoader(0, null, this);
 
-        assessmentAlertCursorAdapter = new AssessmentAlertCursorAdapter(this, R.layout.activity_assessment_alert_screen, null, 0);
+        assessmentAlertAdapter = new AssessmentAlertCursorAdapter(this, null, 0);
 
         if (getIntent().getExtras() != null) {
             String assessmentTitle = String.valueOf(getIntent().getExtras().getString("assessmentTitle"));
-            assessmentID = getAssessmentKey(assessmentTitle);
+            assessmentFKID = getAssessmentKey(assessmentTitle);
         }
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
 
         String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_ALERTS +
-                " WHERE " + AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " + assessmentID;
+                " WHERE " + AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " + assessmentFKID;
 
         System.out.println(sqlQuery);
 
@@ -54,11 +55,8 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
 
         ListView detailedAssessmentAlertListView = (ListView) findViewById(R.id.detailedAssessmentAlertListView);
 
-        AssessmentAlertCursorAdapter assessmentAlertAdapter = new AssessmentAlertCursorAdapter(this, R.layout.activity_assessment_alert_screen, assessmentAlertCursor, 0);
         detailedAssessmentAlertListView.setAdapter(assessmentAlertAdapter);
         assessmentAlertAdapter.changeCursor(assessmentAlertCursor);
-
-//        getLoaderManager().initLoader(0, null, this);
 
         detailedAssessmentAlertListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,7 +64,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
                 Intent intent = new Intent(AssessmentAlertActivity.this, AssessmentAlertEditorActivity.class);
                 Uri uri = Uri.parse(AssessmentAlertEntry.CONTENT_URI + "/" + id);
                 intent.putExtra(AssessmentAlertEntry.CONTENT_ITEM_TYPE, uri);
-                intent.putExtra("assessmentID", assessmentID);
+                intent.putExtra("assessmentFKID", assessmentFKID);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
@@ -109,6 +107,9 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_delete:
                 break;
         }
@@ -150,43 +151,47 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
     }
 
     private void restartLoader() {
-//        getLoaderManager().initLoader(0, null, AssessmentAlertsActivity.this);
-        startActivity(new Intent(this, AssessmentAlertActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        assessmentAlertAdapter = new AssessmentAlertCursorAdapter(this, null, 0);
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_ALERTS +
+                " WHERE " + AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK + " = " + assessmentFKID;
+
+        System.out.println(sqlQuery);
+
+        Cursor assessmentAlertCursor = db.rawQuery(sqlQuery, null);
+
+        ListView detailedAssessmentAlertListView = (ListView) findViewById(R.id.detailedAssessmentAlertListView);
+
+        detailedAssessmentAlertListView.setAdapter(assessmentAlertAdapter);
+        assessmentAlertAdapter.changeCursor(assessmentAlertCursor);
         return null;
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        assessmentAlertCursorAdapter.swapCursor(data);
+        assessmentAlertAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        assessmentAlertCursorAdapter.swapCursor(null);
+        assessmentAlertAdapter.swapCursor(null);
     }
-
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, AssessmentAlertEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        assessmentAlertCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        assessmentAlertCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewAssessmentAlert(View view) {
         Intent intent = new Intent(this, AssessmentAlertEditorActivity.class);
-        intent.putExtra("assessmentID", assessmentID);
+        intent.putExtra("assessmentFKID", assessmentFKID);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 

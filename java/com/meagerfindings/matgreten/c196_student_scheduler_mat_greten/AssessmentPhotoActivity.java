@@ -7,9 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,15 +24,17 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 
 public class AssessmentPhotoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
-    private CursorAdapter assessmentPhotoCursorAdapter;
+    private AssessmentPhotoCursorAdapter assessmentPhotoAdapter;
     private String assessmentNoteKey = "-1";
+    private Cursor assessmentPhotoCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_photo_screen);
+        getLoaderManager().initLoader(0, null, this);
 
-        assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, null, 0);
+        assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, null, 0);
 
         if (getIntent().getExtras() != null)
             assessmentNoteKey = String.valueOf(getIntent().getExtras().getString("assessmentNoteKey"));
@@ -44,18 +45,12 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
         String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_PHOTOS +
                 " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteKey;
 
-        System.out.println(sqlQuery);
-
-        Cursor assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
+        assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
 
         ListView testPhotoListView = (ListView) findViewById(R.id.detailedAssessmentPhotoListView);
 
-        AssessmentPhotoCursorAdapter assessmentPhotoAdapter;
-        assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, assessmentPhotoCursor, 0);
         testPhotoListView.setAdapter(assessmentPhotoAdapter);
         assessmentPhotoAdapter.changeCursor(assessmentPhotoCursor);
-
-//        getLoaderManager().initLoader(0, null, this);
 
         testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -131,38 +126,30 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
     }
 
     private void restartLoader() {
-//        getLoaderManager().initLoader(0, null, AssessmentPhotosActivity.this);
-        startActivity(new Intent(this, AssessmentPhotoActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_PHOTOS +
+                " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteKey;
+
+        assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        assessmentPhotoCursorAdapter.swapCursor(data);
+        assessmentPhotoAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        assessmentPhotoCursorAdapter.swapCursor(null);
+        assessmentPhotoAdapter.swapCursor(null);
     }
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, AssessmentPhotoEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        assessmentPhotoCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        assessmentPhotoCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewAssessmentPhoto(View view) {
         Intent intent = new Intent(this, AssessmentPhotoEditorActivity.class);

@@ -7,12 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,13 +25,15 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 public class AssessmentActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1010;
     private CursorAdapter assessmentCursorAdapter;
+    private Cursor assessmentCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_screen);
+        getLoaderManager().initLoader(0, null, this);
 
-        assessmentCursorAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_editor, null, 0);
+        assessmentCursorAdapter = new AssessmentCursorAdapter(this, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
@@ -54,15 +55,13 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
 
         System.out.println(sqlQuery);
 
-        Cursor assessmentCursor = db.rawQuery(sqlQuery, null);
+        assessmentCursor = db.rawQuery(sqlQuery, null);
 
         ListView assessmentListView = (ListView) findViewById(R.id.assessmentListView);
 
-        AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, R.layout.activity_assessment_editor, assessmentCursor, 0);
+        AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, assessmentCursor, 0);
         assessmentListView.setAdapter(assessmentAdapter);
         assessmentAdapter.changeCursor(assessmentCursor);
-
-//        getLoaderManager().initLoader(0, null, this);
 
         assessmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,7 +73,6 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getSupportActionBar().setTitle("Assessments");
 
     }
@@ -137,12 +135,38 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
     }
 
     private void restartLoader() {
-//        getLoaderManager().restartLoader(0, null, AssessmentsActivity.this);
-        startActivity(new Intent(this, AssessmentActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String queryColumns = AssessmentEntry.TABLE_NAME + "." + AssessmentEntry.ASSESSMENT_ID + ", " +
+                AssessmentEntry.ASSESSMENT_TITLE + ", " +
+                AssessmentEntry.ASSESSMENT_TARGET_DATE + ", " +
+                CourseEntry.COURSE_TITLE + ", " +
+                CourseEntry.COURSE_END + ", " +
+                TermEntry.TERM_TITLE;
+
+        String sqlQuery = "SELECT " + queryColumns + " FROM (" + TABLE_ASSESSMENTS +
+                " INNER JOIN " + CourseEntry.TABLE_NAME +
+                " ON " + AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " = " +
+                CourseEntry.TABLE_NAME + "." + CourseEntry.COURSE_ID +
+                ") INNER JOIN " + TermEntry.TABLE_NAME +
+                " ON " + CourseEntry.TABLE_NAME + "." + CourseEntry.COURSE_TERM_ID_FK + " = " +
+                TermEntry.TABLE_NAME + "." + TermEntry.TERM_ID;
+
+        System.out.println(sqlQuery);
+
+        assessmentCursor = db.rawQuery(sqlQuery, null);
+
+        ListView assessmentListView = (ListView) findViewById(R.id.assessmentListView);
+
+        AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, assessmentCursor, 0);
+        assessmentListView.setAdapter(assessmentAdapter);
+        assessmentAdapter.changeCursor(assessmentCursor);
         return null;
     }
 
@@ -155,22 +179,6 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
     public void onLoaderReset(Loader<Cursor> loader) {
         assessmentCursorAdapter.swapCursor(null);
     }
-
-
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, AssessmentEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        assessmentCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        assessmentCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewAssessment(View view) {
         Intent intent = new Intent(AssessmentActivity.this, AssessmentEditorActivity.class);

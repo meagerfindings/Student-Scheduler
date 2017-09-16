@@ -7,12 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,15 +27,12 @@ public class AssessmentNoteActivity extends AppCompatActivity implements LoaderM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_note_screen);
 
-        assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, R.layout.activity_assessment_note_screen, null, 0);
+        assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
 
         ScheduleDBHelper handler = new ScheduleDBHelper(this);
         SQLiteDatabase db = handler.getWritableDatabase();
         String sqlQuery = "SELECT * FROM " + ScheduleContract.TABLE_ASSESSMENT_NOTES;
 
-        System.out.println(sqlQuery);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getSupportActionBar().setTitle("Assessment Notes");
 
     }
@@ -101,8 +97,7 @@ public class AssessmentNoteActivity extends AppCompatActivity implements LoaderM
     }
 
     private void restartLoader() {
-//        getLoaderManager().restartLoader(0, null, AssessmentsActivity.this);
-//        startActivity(new Intent(this, AssessmentNoteActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -119,21 +114,6 @@ public class AssessmentNoteActivity extends AppCompatActivity implements LoaderM
     public void onLoaderReset(Loader<Cursor> loader) {
         assessmentNoteCursorAdapter.swapCursor(null);
     }
-//
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, ScheduleContract.AssessmentNoteEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        assessmentNoteCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        assessmentNoteCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewAssessmentNote(View view) {
         Intent intent = new Intent(this, AssessmentNoteEditorActivity.class);

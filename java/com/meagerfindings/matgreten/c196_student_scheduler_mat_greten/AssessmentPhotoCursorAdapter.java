@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,10 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 09/09/2017.
  */
 
-public class AssessmentPhotoCursorAdapter extends ResourceCursorAdapter {
+public class AssessmentPhotoCursorAdapter extends CursorAdapter {
 
-    public AssessmentPhotoCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
-        super(context, layout, cursor, flags);
+    public AssessmentPhotoCursorAdapter(Context context, Cursor cursor, int flags) {
+        super(context, cursor, flags);
     }
 
     @Override

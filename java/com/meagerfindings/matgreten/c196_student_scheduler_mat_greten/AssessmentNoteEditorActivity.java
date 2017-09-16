@@ -44,6 +44,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     private String assessmentNoteKey;
     private static final int EDITOR_REQUEST_CODE = 10011;
     private CursorAdapter assessmentPhotoCursorAdapter;
+    private Cursor assessmentPhotoCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         } else {
             action = Intent.ACTION_EDIT;
             assessmentNoteFilter = AssessmentNoteEntry.ASSESSMENT_NOTE_ID + "=" + uri.getLastPathSegment();
+            getLoaderManager().initLoader(0, null, this);
 
             Cursor cursor = getContentResolver().query(uri, AssessmentNoteEntry.ALL_ASSESSMENT_NOTE_COLUMNS, assessmentNoteFilter, null, null);
 
@@ -81,7 +83,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
             titleEditor.setText(oldTitle);
             textEditor.setText(oldText);
 
-            assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, null, 0);
+            assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
@@ -91,12 +93,11 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
 
             System.out.println(sqlQuery);
 
-            Cursor assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
+            assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
 
             ListView testPhotoListView = (ListView) findViewById(R.id.detailedAssessmentPhotoListView);
 
-            AssessmentPhotoCursorAdapter assessmentPhotoAdapter;
-            assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, R.layout.activity_assessment_photo_screen, assessmentPhotoCursor, 0);
+            AssessmentPhotoCursorAdapter assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, assessmentPhotoCursor, 0);
             testPhotoListView.setAdapter(assessmentPhotoAdapter);
             assessmentPhotoAdapter.changeCursor(assessmentPhotoCursor);
 
@@ -255,9 +256,31 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         db.close();
     }
 
+    private void restartLoader() {
+        getLoaderManager().initLoader(0, null, this);
+    }
+
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, AssessmentPhotoEntry.CONTENT_URI, null, null, null, null);
+        assessmentPhotoCursorAdapter = new AssessmentPhotoCursorAdapter(this, null, 0);
+
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + TABLE_ASSESSMENT_PHOTOS +
+                " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteKey;
+
+        System.out.println(sqlQuery);
+
+        assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
+
+        ListView testPhotoListView = (ListView) findViewById(R.id.detailedAssessmentPhotoListView);
+
+        AssessmentPhotoCursorAdapter assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, assessmentPhotoCursor, 0);
+        testPhotoListView.setAdapter(assessmentPhotoAdapter);
+        assessmentPhotoAdapter.changeCursor(assessmentPhotoCursor);
+
+        return null;
     }
 
     @Override
@@ -278,6 +301,13 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
 
     @Override
     public void onBackPressed() {
-        finishEditing();
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+            restartLoader();
+        }
     }
 }

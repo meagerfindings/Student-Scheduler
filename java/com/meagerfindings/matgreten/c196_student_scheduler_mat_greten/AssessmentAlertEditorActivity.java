@@ -42,7 +42,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
     private String oldTitle;
     private String oldTime;
     private String oldDate;
-    private String assessmentID;
+    private String assessmentFKID;
     private Calendar calendar;
     private int year;
     private int month;
@@ -57,7 +57,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_assessment_alert_editor);
 
         if (getIntent().getExtras() != null) {
-            assessmentID = String.valueOf(getIntent().getExtras().getString("assessmentID"));
+            assessmentFKID = String.valueOf(getIntent().getExtras().getString("assessmentID"));
         }
 
         titleEditor = (EditText) findViewById(R.id.editAssessmentAlertTitle);
@@ -173,7 +173,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE, assessmentAlertTitle);
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME, assessmentAlertTime);
         values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE, assessmentAlertDate);
-        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK, assessmentID);
+        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_ASSESSMENT_ID_FK, assessmentFKID);
         getContentResolver().insert(AssessmentAlertEntry.CONTENT_URI, values);
         setNewAssessmentAlert();
         setResult(RESULT_OK);
@@ -237,7 +237,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         cursor.moveToFirst();
 
         String assessmentAlertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
-        String endAlarmString = "117" + assessmentID + assessmentAlertID;
+        String endAlarmString = "117" + assessmentFKID + assessmentAlertID;
         int endAlarmKey = Integer.parseInt(endAlarmString);
 
         return endAlarmKey;
@@ -248,7 +248,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         SQLiteDatabase db = handler.getWritableDatabase();
 
         String sqlQuery = "SELECT " + ASSESSMENT_TITLE + " FROM " + TABLE_ASSESSMENTS +
-                " WHERE " + ASSESSMENT_ID + " = " + assessmentID;
+                " WHERE " + ASSESSMENT_ID + " = " + assessmentFKID;
 
         cursor = db.rawQuery(sqlQuery, null);
 
@@ -299,7 +299,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         cursor.moveToLast();
 
         String assessmentAlertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
-        String endAlarmString = "117" + assessmentID + assessmentAlertID;
+        String endAlarmString = "117" + assessmentFKID + assessmentAlertID;
         int endAlarmKey = Integer.parseInt(endAlarmString);
 
         return endAlarmKey;
@@ -310,7 +310,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         SQLiteDatabase db = handler.getWritableDatabase();
 
         String sqlQuery = "SELECT " + ASSESSMENT_TITLE + " FROM " + TABLE_ASSESSMENTS +
-                " WHERE " + ASSESSMENT_ID + " = " + assessmentID;
+                " WHERE " + ASSESSMENT_ID + " = " + assessmentFKID;
 
         cursor = db.rawQuery(sqlQuery, null);
 

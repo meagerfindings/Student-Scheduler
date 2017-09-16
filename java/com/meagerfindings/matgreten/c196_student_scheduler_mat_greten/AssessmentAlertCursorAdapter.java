@@ -6,6 +6,7 @@ import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
@@ -14,10 +15,10 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 09/09/2017.
  */
 
-public class AssessmentAlertCursorAdapter extends ResourceCursorAdapter {
+public class AssessmentAlertCursorAdapter extends CursorAdapter {
 
-    public AssessmentAlertCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
-        super(context, layout, cursor, flags);
+    public AssessmentAlertCursorAdapter(Context context, Cursor cursor, int flags) {
+        super(context, cursor, flags);
     }
 
     /**

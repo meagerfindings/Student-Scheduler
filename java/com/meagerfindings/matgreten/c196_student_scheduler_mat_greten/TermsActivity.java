@@ -45,7 +45,6 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
 
         ListView termListView = (ListView) findViewById(R.id.termListView);
 
-//        TermCursorAdapter termAdapter = new TermCursorAdapter(this, termCursor, 0);
         termListView.setAdapter(termCursorAdapter);
         termCursorAdapter.changeCursor(termCursor);
 
