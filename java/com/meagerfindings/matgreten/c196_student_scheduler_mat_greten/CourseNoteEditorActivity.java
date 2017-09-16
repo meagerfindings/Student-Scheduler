@@ -2,7 +2,6 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,7 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.widget.CursorAdapter;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CourseNoteEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CoursePhotoEntry;
-import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_PHOTOS;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSE_PHOTOS;
 
 /**
@@ -42,7 +40,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     private String courseID;
     private String courseNoteKey;
     private static final int EDITOR_REQUEST_CODE = 11011;
-    private CursorAdapter coursePhotoCursorAdapter;
+    private CursorAdapter coursePhotoAdapter;
 
 
     @Override
@@ -81,7 +79,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
             titleEditor.setText(oldText);
             textEditor.setText(oldStart);
 
-            coursePhotoCursorAdapter = new CoursePhotoCursorAdapter(this, R.layout.activity_course_photo_screen, null, 0);
+            coursePhotoAdapter = new CoursePhotoCursorAdapter(this, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
@@ -95,8 +93,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
             ListView testPhotoListView = (ListView) findViewById(R.id.detailedCoursePhotoListView);
 
-            CoursePhotoCursorAdapter coursePhotoAdapter;
-            coursePhotoAdapter = new CoursePhotoCursorAdapter(this, R.layout.activity_course_photo_screen, coursePhotoCursor, 0);
             testPhotoListView.setAdapter(coursePhotoAdapter);
             coursePhotoAdapter.changeCursor(coursePhotoCursor);
 
@@ -256,17 +252,33 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, CoursePhotoEntry.CONTENT_URI, null, null, null, null);
+        coursePhotoAdapter = new CoursePhotoCursorAdapter(this, null, 0);
+
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + TABLE_COURSE_PHOTOS +
+                " WHERE " + CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " = " + courseNoteKey;
+
+        System.out.println(sqlQuery);
+
+        Cursor coursePhotoCursor = db.rawQuery(sqlQuery, null);
+
+        ListView testPhotoListView = (ListView) findViewById(R.id.detailedCoursePhotoListView);
+
+        testPhotoListView.setAdapter(coursePhotoAdapter);
+        coursePhotoAdapter.changeCursor(coursePhotoCursor);
+        return null;
     }
 
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-        coursePhotoCursorAdapter.swapCursor(data);
+        coursePhotoAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
-        coursePhotoCursorAdapter.swapCursor(null);
+        coursePhotoAdapter.swapCursor(null);
     }
 
     public void openEditorForNewCoursePhoto(View view) {

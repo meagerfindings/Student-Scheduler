@@ -6,16 +6,17 @@ import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 /**
  * Created by matgreten on 9/08/2017.
  */
 
-public class CourseNotesCursorAdapter extends ResourceCursorAdapter {
+public class CourseNotesCursorAdapter extends CursorAdapter {
 
-    public CourseNotesCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
-        super(context, layout, cursor, flags);
+    public CourseNotesCursorAdapter(Context context, Cursor cursor, int flags) {
+        super(context, cursor, flags);
     }
 
     @Override

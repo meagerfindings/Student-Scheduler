@@ -7,9 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,7 +27,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 
 public class CourseNoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 8010;
-    private CursorAdapter courseNoteCursorAdapter;
+    private CursorAdapter courseNoteAdapter;
     private String courseID = "-1";
 
     @Override
@@ -35,7 +35,7 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_screen);
 
-        courseNoteCursorAdapter = new CourseNotesCursorAdapter(this, R.layout.activity_note_screen, null, 0);
+        courseNoteAdapter = new CourseNotesCursorAdapter(this, null, 0);
 
         if (getIntent().getExtras() != null) {
             String courseTitle = String.valueOf(getIntent().getExtras().getString("courseTitle"));
@@ -54,11 +54,10 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
 
         ListView detailedCourseNoteListView = (ListView) findViewById(R.id.detailedCourseNoteListView);
 
-        CourseNotesCursorAdapter courseNoteAdapter = new CourseNotesCursorAdapter(this, R.layout.activity_note_screen, courseNoteCursor, 0);
         detailedCourseNoteListView.setAdapter(courseNoteAdapter);
         courseNoteAdapter.changeCursor(courseNoteCursor);
 
-//        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
 
         detailedCourseNoteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -137,8 +136,7 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
     }
 
     private void restartLoader() {
-//        getLoaderManager().restartLoader(0, null, CoursesActivity.this);
-        startActivity(new Intent(this, CourseNoteActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
     private String getCourseKey(String courseTitle) {
@@ -158,33 +156,34 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + TABLE_COURSE_NOTES +
+                " WHERE " + CourseNoteEntry.COURSE_NOTE_COURSE_FK + " = " + courseID;
+
+        Cursor courseNoteCursor = db.rawQuery(sqlQuery, null);
+
+        System.out.println(sqlQuery);
+
+        ListView detailedCourseNoteListView = (ListView) findViewById(R.id.detailedCourseNoteListView);
+
+        detailedCourseNoteListView.setAdapter(courseNoteAdapter);
+        courseNoteAdapter.changeCursor(courseNoteCursor);
+
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        courseNoteCursorAdapter.swapCursor(data);
+        courseNoteAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        courseNoteCursorAdapter.swapCursor(null);
+        courseNoteAdapter.swapCursor(null);
     }
 
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, CourseNoteEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        courseNoteCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        courseNoteCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewCourseNote(View view) {
         Intent intent = new Intent(this, CourseNoteEditorActivity.class);

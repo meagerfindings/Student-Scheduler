@@ -686,10 +686,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             endAlertTimeEditor.setText(new StringBuilder().append(hour).append(":").append(minute));
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        finishEditing();
-//    }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -700,7 +700,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     private void restartLoader() {
-//        startActivity(new Intent(this, CourseEditorActivity.class));
         getLoaderManager().initLoader(0, null, this);
 
     }

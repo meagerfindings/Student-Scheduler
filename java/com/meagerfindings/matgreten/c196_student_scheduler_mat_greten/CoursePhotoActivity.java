@@ -7,9 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,7 +25,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 
 public class CoursePhotoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 9000;
-    private CursorAdapter coursePhotoCursorAdapter;
+    private CursorAdapter coursePhotoAdapter;
     private String courseNoteKey = "-1";
 
     @Override
@@ -33,7 +33,7 @@ public class CoursePhotoActivity extends AppCompatActivity implements LoaderMana
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_photo_screen);
 
-        coursePhotoCursorAdapter = new CoursePhotoCursorAdapter(this, R.layout.activity_course_photo_screen, null, 0);
+        coursePhotoAdapter = new CoursePhotoCursorAdapter(this, null, 0);
 
         if (getIntent().getExtras() != null)
             courseNoteKey = String.valueOf(getIntent().getExtras().getString("courseNoteKey"));
@@ -50,12 +50,10 @@ public class CoursePhotoActivity extends AppCompatActivity implements LoaderMana
 
         ListView testPhotoListView = (ListView) findViewById(R.id.detailedCoursePhotoListView);
 
-        CoursePhotoCursorAdapter coursePhotoAdapter;
-        coursePhotoAdapter = new CoursePhotoCursorAdapter(this, R.layout.activity_course_photo_screen, coursePhotoCursor, 0);
         testPhotoListView.setAdapter(coursePhotoAdapter);
         coursePhotoAdapter.changeCursor(coursePhotoCursor);
 
-//        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
 
         testPhotoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -128,39 +126,25 @@ public class CoursePhotoActivity extends AppCompatActivity implements LoaderMana
 
 
     private void restartLoader() {
-        startActivity(new Intent(this, CoursePhotoActivity.class));
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
         return null;
 
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        coursePhotoCursorAdapter.swapCursor(data);
+        coursePhotoAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        coursePhotoCursorAdapter.swapCursor(null);
+        coursePhotoAdapter.swapCursor(null);
     }
-//
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, CoursePhotoEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        coursePhotoCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        coursePhotoCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewCoursePhoto(View view) {
         Intent intent = new Intent(this, CoursePhotoEditorActivity.class);

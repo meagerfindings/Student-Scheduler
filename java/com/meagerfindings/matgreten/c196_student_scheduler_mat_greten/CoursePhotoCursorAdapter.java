@@ -8,6 +8,7 @@ import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.CoursePhotoEntry;
@@ -16,10 +17,10 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 09/10/2017 .
  */
 
-public class CoursePhotoCursorAdapter extends ResourceCursorAdapter {
+public class CoursePhotoCursorAdapter extends CursorAdapter {
 
-    public CoursePhotoCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
-        super(context, layout, cursor, flags);
+    public CoursePhotoCursorAdapter(Context context, Cursor cursor, int flags) {
+        super(context, cursor, flags);
     }
 
     @Override
