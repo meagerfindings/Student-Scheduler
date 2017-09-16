@@ -2,65 +2,24 @@
   
 ## TODO LIST
 
-#### Required to have:
+### Features:
 
-- ability to highlight terms to delete them
-    - switch delete to select, and add delete to the action bar options
-- ~~deletion protection for terms with courses~~
-- ~~find out what this requirement means: `an intent class`~~
-    - satisfied by passing information between activities using the built in _intent class_
-        - call this out in the readme.md when finishing up documentation.
-- ~~find out what this requirement means: `action bar`~~
-- ~~implement [date & time pickers](https://www.tutorialspoint.com/android/android_datepicker_control.htm)~~
-- ~~notifications or alerts~~
-    - ~~hook up to:~~
-       - ~~course start alert~~
-       - ~~course end alert~~
-       - ~~assessment alerts~~
-- portrait and landscape modes
-- fix default times interfering with alerts...
-- written portions of assignment
-- document this is targeted at API 26
-- FINALLY FIX THE RESTART LOADER METHOD.... again.
-```
-@Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
+1. ~~Ability to highlight terms to delete them~~
+    - Switch delete to select, and add delete to the action bar options
+2. Portrait and landscape modes
+3. Add cascading deletions of assessments, cn, an, assessment alerts when deleting course
+4. Add objective/performance selector to assessments
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        termCursorAdapter.swapCursor(data);
-    }
+### Bugs:
+1. Fix default times interfering with alerts...
+2. Fix the jimmy rigged include height for course editor assessments view by maybe placing this lv right in that activity rather than an include?
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        termCursorAdapter.swapCursor(null);
-    }
-    
-```
-   - above did not work, look at changing  `startActivityForResult` to `startActivity`, based on https://stackoverflow.com/a/4038637 
-     - ~~do this after adding save & delete options to menu bar~~
-     
-     - finish converting adapters and curors to work!
-     - make sure to init cursors in oncreeateload like in course editor :)
- - fix the jimmy rigged include height for course editor assesments view by maybe placing this lv right in that activity rather than an include?
-     
-- add delete method to assessment alert edit activity
-    - add delete reminder method here
-- add cascading deletions of assessments, cn, an, assessment alerts when deleting course
+### Written portions of assignment
+  1. document this is targeted at API 26
+  2. code cleanup
+  3. citations
+  4. readme.md
 
-`9/13/2017 12:00:00`
-
-#### Nice to have:
-
-- Add validation throughout...
-    - validate for and remove *'* s from inputs!
-- make editors/previewers
-    - `copy` editors, change references to previewers
-    - `paste` editors
-    -  link editors to `edit` buttons in previewers 
-    - Add `save` and `cancel` buttons to editors
 
 ### Competencies:
 - 4026.1.1: Introduction to Mobile Application Development - The graduate explains mobile development, develops a simple mobile application using IDE, documents debugging the mobile application, and describes how to use an emulator.

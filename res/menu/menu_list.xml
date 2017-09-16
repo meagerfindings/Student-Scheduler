@@ -4,7 +4,7 @@
     tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MainActivity">
 
     <item
-        android:actionLayout="@+id/action_delete"
+        android:id="@+id/action_delete"
         android:orderInCategory="103"
         android:title="@string/action_delete"
         app:showAsAction="never" />

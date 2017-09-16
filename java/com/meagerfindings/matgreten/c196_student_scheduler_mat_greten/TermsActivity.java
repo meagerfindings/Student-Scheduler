@@ -31,6 +31,8 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 public class TermsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 100;
     private CursorAdapter termCursorAdapter;
+    private ListView termListView;
+    private String selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         SQLiteDatabase db = handler.getWritableDatabase();
         Cursor termCursor = db.rawQuery("SELECT * FROM " + TABLE_TERMS, null);
 
-        ListView termListView = (ListView) findViewById(R.id.termListView);
+        termListView = (ListView) findViewById(R.id.termListView);
 
         termListView.setAdapter(termCursorAdapter);
         termCursorAdapter.changeCursor(termCursor);
@@ -63,7 +65,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         termListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int row, long arg3) {
-                deleteTerm(String.valueOf(arg3));
+                selectedItem = String.valueOf(arg3);
                 return false;
             }
         });
@@ -138,7 +140,6 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
@@ -146,11 +147,14 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        System.out.println(id);
         switch (id) {
             case android.R.id.home:
                 finish();
                 break;
             case R.id.action_delete:
+                deleteTerm(selectedItem);
+                termListView.clearChoices();
                 break;
         }
         return true;
@@ -162,8 +166,6 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
                     @Override
                     public void onClick(DialogInterface dialog, int button) {
                         if (button == DialogInterface.BUTTON_POSITIVE) {
-
-                            //Insert Data management code here
                             getContentResolver().delete(TermEntry.CONTENT_URI, null, null);
                             restartLoader();
 
