@@ -77,7 +77,6 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
@@ -86,10 +85,13 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_delete:
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void deleteAllAssessmentPhotos() {

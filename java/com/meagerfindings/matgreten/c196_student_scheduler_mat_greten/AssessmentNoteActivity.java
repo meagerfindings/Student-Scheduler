@@ -56,10 +56,13 @@ public class AssessmentNoteActivity extends AppCompatActivity implements LoaderM
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_delete:
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void deleteAllAssessmentNotes() {

@@ -103,7 +103,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-
         Intent intent = getIntent();
         Uri uri = intent.getParcelableExtra(CourseEntry.CONTENT_ITEM_TYPE);
 

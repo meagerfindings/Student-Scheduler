@@ -56,7 +56,6 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
 
         ListView detailedMentorListView = (ListView) findViewById(R.id.detailedMentorListView);
 
-//        MentorCursorAdapter mentorAdapter = new MentorCursorAdapter(this, R.layout.activity_mentor_screen, mentorCursor, 0);
         detailedMentorListView.setAdapter(mentorCursorAdapter);
         mentorCursorAdapter.changeCursor(mentorCursor);
 
@@ -73,7 +72,6 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getSupportActionBar().setTitle("Mentors");
     }
 
@@ -112,10 +110,13 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_delete:
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void deleteAllMentors() {

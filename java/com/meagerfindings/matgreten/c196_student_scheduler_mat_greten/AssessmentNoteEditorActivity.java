@@ -2,7 +2,6 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,11 +19,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import static android.R.attr.id;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentPhotoEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_ASSESSMENT_PHOTOS;

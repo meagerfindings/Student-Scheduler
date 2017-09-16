@@ -119,10 +119,10 @@ public class MentorEditorActivity extends AppCompatActivity {
         finish();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        finish();
-//    }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     private void deleteMentor() {
         getContentResolver().delete(MentorEntry.CONTENT_URI, mentorFilter, null);

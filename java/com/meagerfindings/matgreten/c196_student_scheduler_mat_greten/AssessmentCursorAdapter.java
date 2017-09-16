@@ -2,7 +2,6 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

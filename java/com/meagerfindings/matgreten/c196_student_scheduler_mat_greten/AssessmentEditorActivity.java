@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import static android.R.attr.id;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
@@ -50,7 +52,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private String oldStart;
     private String oldCourse;
     private Spinner courseSpinner;
-    private String assessmentKeyID = "-1";
+    private String assessmentID;
     private ListView assessmentAlertListView;
     private Calendar calendar;
     private int year;
@@ -58,10 +60,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private int day;
     private Cursor cursor;
     private Cursor notesCursor;
-    private String assessmentID;
     private Uri uri;
     private Intent intent;
     private String queryString;
+    private Intent alertIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,11 +100,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             assert cursor != null;
             cursor.moveToFirst();
 
-            assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
             oldText = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TARGET_DATE));
             oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
-            assessmentKeyID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
+            assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
 
             if (oldText == null) oldText = "";
             if (oldStart == null) oldStart = "";
@@ -129,7 +130,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
             ListView assessmentNotesListView = (ListView) findViewById(R.id.assessmentNotesListView);
 
-            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, notesCursor, 0);
+            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
             assessmentNotesListView.setAdapter(assessmentNoteCursorAdapter);
             assessmentNoteCursorAdapter.changeCursor(notesCursor);
 
@@ -139,12 +140,12 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
                     Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
                     Uri uri = Uri.parse(AssessmentNoteEntry.CONTENT_URI + "/" + id);
                     intent.putExtra(AssessmentNoteEntry.CONTENT_ITEM_TYPE, uri);
-                    intent.putExtra("assessmentKey", assessmentKeyID);
+                    intent.putExtra("assessmentKey", assessmentID);
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
 
-            ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentKeyID);
+            ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentID);
             assessmentAlertListView = (ListView) findViewById(R.id.assessmentAlertListView);
             assessmentAlertListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, assessmentAlertTitles));
         }
@@ -353,19 +354,26 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 ////        cursor = getContentResolver().query(uri, AssessmentEntry.ALL_ASSESSMENT_COLUMNS, assessmentFilter, null, null);
 //        assert cursor != null;
 //        cursor.moveToFirst();
+//        uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
         assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
+//
+//        if (alertIntent != null) {
+//            assessmentID = String.valueOf(getIntent().getExtras().getString("assessmentFKID"));
+
+
 //        assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
 
-        ScheduleDBHelper handler = new ScheduleDBHelper(this);
-        SQLiteDatabase db = handler.getWritableDatabase();
+            ScheduleDBHelper handler = new ScheduleDBHelper(this);
+            SQLiteDatabase db = handler.getWritableDatabase();
 
-        queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
-                AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
+            queryString = "SELECT * FROM " + AssessmentNoteEntry.TABLE_NAME + " WHERE " +
+                    AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK + " = " + assessmentID;
 
-        System.out.println(queryString);
-        notesCursor = db.rawQuery(queryString, null);
+            System.out.println(queryString);
+            notesCursor = db.rawQuery(queryString, null);
 
-        assessmentNoteCursorAdapter.changeCursor(notesCursor);
+            assessmentNoteCursorAdapter.changeCursor(notesCursor);
+//        }
         return null;
     }
 
@@ -379,23 +387,28 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         assessmentNoteCursorAdapter.swapCursor(null);
     }
 
-    public void openEditorForNewAssessmentNote(View view) {
-        Intent intent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
-        intent.putExtra("assessmentKey", assessmentKeyID);
-        startActivityForResult(intent, EDITOR_REQUEST_CODE);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+//        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
-        }
+//        }
+    }
+
+    public void openEditorForNewAssessmentNote(View view) {
+        Intent assessmentNoteIntent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
+        assessmentNoteIntent.putExtra("assessmentKey", assessmentID);
+        startActivityForResult(assessmentNoteIntent, EDITOR_REQUEST_CODE);
     }
 
     public void openAssessmentAlertsList(View view) {
-        Intent intent = new Intent(this, AssessmentAlertActivity.class);
-        intent.putExtra("assessmentTitle", oldText);
-        startActivity(intent);
+        alertIntent = new Intent(AssessmentEditorActivity.this, AssessmentAlertActivity.class);
+        Uri uri = Uri.parse(AssessmentAlertEntry.CONTENT_URI + "/" + id);
+        alertIntent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
+        alertIntent.putExtra("assessmentTitle", oldText);
+        alertIntent.putExtra("assessmentFKID", assessmentID);
+        startActivityForResult(alertIntent, EDITOR_REQUEST_CODE);
+        System.out.println(uri);
+        System.out.println("ASSESSMENT ID IS: " + assessmentID);
     }
 
     @SuppressWarnings("deprecation")

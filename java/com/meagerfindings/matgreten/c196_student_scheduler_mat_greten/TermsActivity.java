@@ -87,7 +87,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
                     @Override
                     public void onClick(DialogInterface dialog, int button) {
                         if (button == DialogInterface.BUTTON_POSITIVE) {
-                            if (termHasCourses(termID)){
+                            if (termHasCourses(termID)) {
 
                                 Toast.makeText(TermsActivity.this,
                                         getString(R.string.cannot_delete_term),
@@ -123,7 +123,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         if (courseCursor.moveToFirst()) {
             String termKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
 
-            if (termID.equals(termKey)){
+            if (termID.equals(termKey)) {
                 courseCursor.close();
                 db.close();
                 return true;
@@ -146,13 +146,14 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_delete:
                 break;
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void deleteAllTerms() {
