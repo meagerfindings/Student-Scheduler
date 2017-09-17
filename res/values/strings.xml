@@ -99,4 +99,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="assessment_type">Assessment Type:</string>
+    <string name="no_terms">Please add a term first.</string>
+    <string name="no_courses">Please create a course first.</string>
 </resources>
