@@ -1,8 +1,10 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
+import android.Manifest;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -10,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -208,7 +212,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
         startActivity(sendIntent);
     }
 
-    public void shareWholeNote(View view) {
+    public void shareWholeNote() {
         String textContents = "Note Title: " + titleEditor.getText() +
                 "\nNote Text: " + textEditor.getText();
 
@@ -285,5 +289,24 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
         Intent intent = new Intent(this, CoursePhotoEditorActivity.class);
         intent.putExtra("courseNoteKey", courseNoteKey);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
+
+    public boolean checkStorageWritePermission(View view) {
+        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            shareWholeNote();
+            return true;
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            return false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] permissionsSelected) {
+        super.onRequestPermissionsResult(requestCode, permissions, permissionsSelected);
+        if (permissionsSelected[0] == PackageManager.PERMISSION_GRANTED) {
+            shareWholeNote();
+        }
     }
 }

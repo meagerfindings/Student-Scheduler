@@ -82,14 +82,12 @@
     <include
         android:id="@+id/include_assessment_note_photos"
         layout="@layout/activity_assessment_photo_screen"
-        android:layout_width="357dp"
+        android:layout_width="wrap_content"
         android:layout_height="372dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="9dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assessmentPhotosLabel" />
 
     <Button
@@ -112,7 +110,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="shareWholeNote"
+        android:onClick="checkStorageWritePermission2"
         android:text="@string/share_note_amp_photos"
         app:layout_constraintLeft_toRightOf="@+id/shareNoteTextButton"
         app:layout_constraintRight_toRightOf="parent"

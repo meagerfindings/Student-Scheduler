@@ -182,7 +182,8 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@+id/courseEndAlertDateTime"
-                tools:layout_editor_absoluteX="21dp" />
+                android:layout_marginLeft="8dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
                 android:id="@+id/courseAssessmentsLabel"
@@ -194,7 +195,10 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintRight_toRightOf="@+id/courseNotesLabel"
-                app:layout_constraintTop_toBottomOf="@+id/include_course_notes" />
+                app:layout_constraintTop_toBottomOf="@+id/include_course_notes"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <ListView
                 android:id="@+id/courseAssessmentsListView"
@@ -209,13 +213,16 @@
                 android:id="@+id/courseNotesLabel"
                 android:layout_width="133dp"
                 android:layout_height="28dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="0dp"
                 android:layout_marginTop="7dp"
                 android:onClick="openCourseNoteList"
                 android:text="@string/course_notes"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="@+id/courseMentors"
                 app:layout_constraintTop_toBottomOf="@+id/include_course_mentors" />
 
