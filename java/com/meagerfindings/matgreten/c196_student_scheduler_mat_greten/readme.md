@@ -7,8 +7,10 @@
 1. ~~Ability to highlight terms to delete them~~
     - Switch delete to select, and add delete to the action bar options
 2. Portrait and landscape modes
-3. Add cascading deletions of assessments, cn, an, assessment alerts when deleting course
-     - just filter down the delete methods
+3. ~~Add cascading deletions of assessments, cn, an, assessment alerts when deleting course~~
+     - ~~just filter down the delete methods~~
+     - ~~not necessary, the unique id works for this~~
+     - ~~just delete the reminders~~
 4. ~~Add objective/performance selector to assessments~~
 
 ### Bugs:
@@ -16,6 +18,7 @@
 2. Fix the jimmy rigged include height for course editor assessments view by maybe placing this lv right in that activity rather than an include?
 3. ~~fix Edit term not getting new course updates to list view.~~
 4. ~~fix Edit Assessment not getting new note updates to list view.~~
+5. ~~Keyboard pop on edit screens.~~
 
 ### Written portions of assignment
   1. document this is targeted at API 26

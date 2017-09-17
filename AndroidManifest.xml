@@ -51,7 +51,8 @@
         <activity
             android:name=".TermEditorActivity"
             android:label="@string/edit_term"
-            android:parentActivityName=".TermsActivity">
+            android:parentActivityName=".TermsActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity" />
@@ -67,7 +68,8 @@
         <activity
             android:name=".AssessmentEditorActivity"
             android:label="@string/assessment_editor"
-            android:parentActivityName=".AssessmentActivity">
+            android:parentActivityName=".AssessmentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentActivity" />
@@ -75,6 +77,7 @@
         <activity
             android:name=".CoursesActivity"
             android:label="@string/courses"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -91,6 +94,7 @@
         <activity
             android:name=".CourseEditorActivity"
             android:label="@string/edit_course"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".CoursesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -107,6 +111,7 @@
         <activity
             android:name=".MentorEditorActivity"
             android:label="@string/edit_mentor"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".MentorActivity" />
 
         <meta-data
@@ -124,6 +129,7 @@
         <activity
             android:name=".CourseNoteEditorActivity"
             android:label="@string/edit_course_note"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".CourseNoteActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -140,6 +146,7 @@
         <activity
             android:name=".AssessmentAlertEditorActivity"
             android:label="@string/edit_assessment_alert"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".AssessmentAlertActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -156,6 +163,7 @@
         <activity
             android:name=".AssessmentPhotoEditorActivity"
             android:label="@string/photo"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".AssessmentPhotoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -172,6 +180,7 @@
         <activity
             android:name=".CoursePhotoEditorActivity"
             android:label="@string/photo"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".CoursePhotoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
