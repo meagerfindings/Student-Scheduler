@@ -103,10 +103,11 @@ public class ScheduleContract {
         static final String ASSESSMENT_ID = "_id";
         static final String ASSESSMENT_COURSE_ID_FK = "courseID";
         static final String ASSESSMENT_TITLE = "assessmentTitle";
+        static final String ASSESSMENT_TYPE = "assessmentType";
         static final String ASSESSMENT_TARGET_DATE = "assessmentTargetDate";
         static final String ASSESSMENT_PHOTO = "assessmentPhoto";
         static final String ASSESSMENT_CREATED = "courseAssessmentCreated";
-        static final String[] ALL_ASSESSMENT_COLUMNS = {ASSESSMENT_ID, ASSESSMENT_COURSE_ID_FK, ASSESSMENT_TITLE, ASSESSMENT_TARGET_DATE, ASSESSMENT_PHOTO, ASSESSMENT_CREATED};
+        static final String[] ALL_ASSESSMENT_COLUMNS = {ASSESSMENT_ID, ASSESSMENT_COURSE_ID_FK, ASSESSMENT_TITLE, ASSESSMENT_TYPE,ASSESSMENT_TARGET_DATE, ASSESSMENT_PHOTO, ASSESSMENT_CREATED};
 
         public static Uri buildAssessmentUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

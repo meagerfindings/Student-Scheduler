@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/tvAssessmentTitle"
@@ -44,49 +44,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toRightOf="@+id/tvAssessmentTargetDateLabel"
+        android:layout_marginLeft="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTargetDateLabel"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="@+id/tvAssessmentTargetDateLabel" />
+
+    <TextView
+        android:id="@+id/tvAssessmentTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTitle" />
+        android:layout_weight="1.70"
+        android:text="@string/assessment_type"
+        android:textAlignment="textStart"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTargetDateLabel"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/tvAssessmentAlertLabel"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:text="@string/assessment_alert"-->
-        <!--android:textAlignment="textStart"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:textSize="18sp"-->
-        <!--android:textStyle="bold"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTargetDateLabel" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/tvAssessmentAlertValue"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:textAlignment="textStart"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:textSize="18sp"-->
-        <!--android:textStyle="italic"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTargetDateValue"-->
-        <!--app:layout_constraintLeft_toRightOf="@+id/tvAssessmentAlertLabel" />-->
+    <TextView
+        android:id="@+id/tvAssessmentTypeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/assessment_type"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintLeft_toRightOf="@+id/tvAssessmentTypeLabel"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toTopOf="@+id/tvAssessmentTypeLabel"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTypeLabel"
+        android:layout_marginBottom="0dp" />
 
     <TextView
         android:id="@+id/tvAssessmentTermLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/term"
         android:textAlignment="textStart"
         android:textAllCaps="false"
@@ -94,30 +105,32 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTargetDateLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTypeLabel" />
 
     <TextView
         android:id="@+id/tvAssessmentTermValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="6dp"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTargetDateValue"
         app:layout_constraintLeft_toRightOf="@+id/tvAssessmentTermLabel"
-        android:layout_marginLeft="22dp" />
+        app:layout_constraintTop_toTopOf="@+id/tvAssessmentTermLabel"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTermLabel"
+        android:layout_marginBottom="0dp" />
 
     <TextView
         android:id="@+id/tvAssessmentCourseLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/course"
         android:textAlignment="textStart"
         android:textAllCaps="false"
@@ -125,8 +138,6 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTermLabel" />
 
     <TextView
@@ -134,13 +145,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="0dp"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@+id/tvAssessmentTargetDateValue"
-        app:layout_constraintLeft_toRightOf="@+id/tvAssessmentCourseLabel" />
+        app:layout_constraintLeft_toRightOf="@+id/tvAssessmentCourseLabel"
+        android:layout_marginLeft="44dp"
+        app:layout_constraintTop_toTopOf="@+id/tvAssessmentCourseLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentCourseLabel"
+        android:layout_marginBottom="0dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -8,11 +8,12 @@
     - Switch delete to select, and add delete to the action bar options
 2. Portrait and landscape modes
 3. Add cascading deletions of assessments, cn, an, assessment alerts when deleting course
-4. Add objective/performance selector to assessments
+4. ~~Add objective/performance selector to assessments~~
 
 ### Bugs:
 1. Fix default times interfering with alerts...
 2. Fix the jimmy rigged include height for course editor assessments view by maybe placing this lv right in that activity rather than an include?
+3. fix Edit term not getting new course updates to list view.
 
 ### Written portions of assignment
   1. document this is targeted at API 26

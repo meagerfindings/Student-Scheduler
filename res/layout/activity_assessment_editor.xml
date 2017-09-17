@@ -85,8 +85,36 @@
                 app:layout_constraintLeft_toRightOf="@+id/editAssessmentCourse"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assessmentLabel"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/courseDueDateLabel" />
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/editAssessmentTypeLabel"
+                android:layout_width="162dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:gravity="top"
+                android:text="@string/assessment_type"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseSpinner" />
+
+            <Spinner
+                android:id="@+id/assessmentTypeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                app:layout_constraintLeft_toRightOf="@+id/editAssessmentTypeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseSpinner"
+                android:layout_marginRight="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" />
 
             <TextView
                 android:id="@+id/courseDueDateValue"
@@ -121,7 +149,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editAssessmentCourse" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentTypeSpinner" />
 
             <TextView
                 android:id="@+id/assessmentDueDateLabel"

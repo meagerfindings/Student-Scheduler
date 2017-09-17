@@ -13,7 +13,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 public class ScheduleDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "schedule.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     public ScheduleDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -55,6 +55,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
                     AssessmentEntry.ASSESSMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     AssessmentEntry.ASSESSMENT_COURSE_ID_FK + " INTEGER, " +
                     AssessmentEntry.ASSESSMENT_TITLE + " TEXT, " +
+                    AssessmentEntry.ASSESSMENT_TYPE + " TEXT, " +
                     AssessmentEntry.ASSESSMENT_TARGET_DATE + " TEXT, " +
                     AssessmentEntry.ASSESSMENT_PHOTO + " BLOB, " +
                     AssessmentEntry.ASSESSMENT_CREATED + " TEXT default CURRENT_TIMESTAMP" + ")";

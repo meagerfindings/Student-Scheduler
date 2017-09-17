@@ -268,7 +268,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         else if (courseNoteTitles.size() > 2)
             courseNoteTitles.set(2, "Click COURSE NOTES label to see full list of notes.");
 
-        System.out.println("Course note tiltes =" + courseNoteTitles);
+        System.out.println("Course note titles =" + courseNoteTitles);
 
         return courseNoteTitles;
     }

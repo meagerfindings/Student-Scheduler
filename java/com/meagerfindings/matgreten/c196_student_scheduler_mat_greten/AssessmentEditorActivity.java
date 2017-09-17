@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.R.attr.id;
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.R.array.type_array;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentAlertEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentEntry;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
@@ -48,10 +48,12 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
     private TextView dueDateEditor;
     private TextView courseDueDateValue;
     private String assessmentFilter;
-    private String oldText;
+    private String oldTitle;
+    private String oldType;
     private String oldStart;
     private String oldCourse;
     private Spinner courseSpinner;
+    private Spinner typeSpinner;
     private String assessmentID;
     private ListView assessmentAlertListView;
     private Calendar calendar;
@@ -76,6 +78,11 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
         courseSpinner = (Spinner) findViewById(R.id.assessmentCourseSpinner);
 
+        typeSpinner = (Spinner) findViewById(R.id.assessmentTypeSpinner);
+        ArrayAdapter<CharSequence> statusArrayAdapter = ArrayAdapter.createFromResource(this, type_array, android.R.layout.simple_spinner_item);
+        statusArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(statusArrayAdapter);
+
         intent = getIntent();
         uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
 
@@ -83,6 +90,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
+
 
         if (uri == null) {
             action = Intent.ACTION_INSERT;
@@ -100,15 +108,16 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             assert cursor != null;
             cursor.moveToFirst();
 
-            oldText = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TITLE));
+            oldTitle = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TARGET_DATE));
             oldCourse = courseTitleFromKey(cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_COURSE_ID_FK)));
+            oldType = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_TYPE));
             assessmentID = cursor.getString(cursor.getColumnIndex(AssessmentEntry.ASSESSMENT_ID));
 
-            if (oldText == null) oldText = "";
+            if (oldTitle == null) oldTitle = "";
             if (oldStart == null) oldStart = "";
 
-            titleEditor.setText(oldText);
+            titleEditor.setText(oldTitle);
             dueDateEditor.setText(oldStart);
 
             loadCourseSpinnerData();
@@ -148,6 +157,13 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
             ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentID);
             assessmentAlertListView = (ListView) findViewById(R.id.assessmentAlertListView);
             assessmentAlertListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, assessmentAlertTitles));
+
+            for (int i = 0; i < statusArrayAdapter.getCount(); i++) {
+                if (Objects.equals(statusArrayAdapter.getItem(i).toString(), oldType)) {
+                    typeSpinner.setSelection(i);
+                    break;
+                }
+            }
         }
     }
 
@@ -294,6 +310,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         String newTitle = titleEditor.getText().toString().trim();
         String newTargetEndDate = dueDateEditor.getText().toString().trim();
         int newCourseID = getCourseKey(courseSpinner.getSelectedItem().toString());
+        String newType = typeSpinner.getSelectedItem().toString();
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
@@ -301,15 +318,15 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
                 } else if (newTargetEndDate.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    insertAssessment(newTitle, newTargetEndDate, newCourseID);
+                    insertAssessment(newTitle, newType, newTargetEndDate, newCourseID);
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldText.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
+                } else if (oldTitle.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateAssessment(newTitle, newTargetEndDate, newCourseID);
+                    updateAssessment(newTitle,newType, newTargetEndDate, newCourseID);
                 }
         }
         finish();
@@ -322,9 +339,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         finish();
     }
 
-    private void updateAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID) {
+    private void updateAssessment(String assessmentTitle, String assessmentType, String assessmentTargetEndDate, int courseID) {
         ContentValues values = new ContentValues();
         values.put(AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
+        values.put(AssessmentEntry.ASSESSMENT_TYPE, assessmentType);
         values.put(AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
         values.put(AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
         getContentResolver().update(AssessmentEntry.CONTENT_URI, values, assessmentFilter, null);
@@ -333,9 +351,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         setResult(RESULT_OK);
     }
 
-    private void insertAssessment(String assessmentTitle, String assessmentTargetEndDate, int courseID) {
+    private void insertAssessment(String assessmentTitle, String assessmentType, String assessmentTargetEndDate, int courseID) {
         ContentValues values = new ContentValues();
         values.put(AssessmentEntry.ASSESSMENT_TITLE, assessmentTitle);
+        values.put(AssessmentEntry.ASSESSMENT_TYPE, assessmentType);
         values.put(AssessmentEntry.ASSESSMENT_TARGET_DATE, assessmentTargetEndDate);
         values.put(AssessmentEntry.ASSESSMENT_COURSE_ID_FK, courseID);
         getContentResolver().insert(AssessmentEntry.CONTENT_URI, values);
@@ -392,7 +411,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         alertIntent = new Intent(AssessmentEditorActivity.this, AssessmentAlertActivity.class);
         Uri uri = Uri.parse(AssessmentAlertEntry.CONTENT_URI + "/" + id);
         alertIntent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
-        alertIntent.putExtra("assessmentTitle", oldText);
+        alertIntent.putExtra("assessmentTitle", oldTitle);
         alertIntent.putExtra("assessmentFKID", assessmentID);
         startActivityForResult(alertIntent, EDITOR_REQUEST_CODE);
         System.out.println(uri);

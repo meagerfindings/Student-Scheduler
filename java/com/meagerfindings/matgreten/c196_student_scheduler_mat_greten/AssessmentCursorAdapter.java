@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 /**
  * Created by matgreten on 8/29/17.
  */
@@ -27,20 +29,24 @@ public class AssessmentCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView tvAssessmentTitle = view.findViewById(R.id.tvAssessmentTitle);
-        String assessmentTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
+        String assessmentTitle = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentEntry.ASSESSMENT_TITLE));
         tvAssessmentTitle.setText(assessmentTitle);
 
         TextView tvAssessmentTargetDateValue = view.findViewById(R.id.tvAssessmentTargetDateValue);
-        String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
+        String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentEntry.ASSESSMENT_TARGET_DATE));
         tvAssessmentTargetDateValue.setText(assessmentDate);
 
         TextView tvAssessmentTermValue = view.findViewById(R.id.tvAssessmentTermValue);
-        String assessmentTerm = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.TermEntry.TERM_TITLE));
+        String assessmentTerm = cursor.getString(cursor.getColumnIndexOrThrow(TermEntry.TERM_TITLE));
         tvAssessmentTermValue.setText(assessmentTerm);
 
         TextView tvAssessmentCourseValue = view.findViewById(R.id.tvAssessmentCourseValue);
-        String assessmentCourse = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.CourseEntry.COURSE_TITLE));
+        String assessmentCourse = cursor.getString(cursor.getColumnIndexOrThrow(CourseEntry.COURSE_TITLE));
         tvAssessmentCourseValue.setText(assessmentCourse);
+
+        TextView tvAssessmentTypeValue = view.findViewById(R.id.tvAssessmentTypeValue);
+        String assessmentType = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentEntry.ASSESSMENT_TYPE));
+        tvAssessmentTypeValue.setText(assessmentType);
 
     }
 

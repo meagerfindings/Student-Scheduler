@@ -41,6 +41,7 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
         String queryColumns = AssessmentEntry.TABLE_NAME + "." + AssessmentEntry.ASSESSMENT_ID + ", " +
                 AssessmentEntry.ASSESSMENT_TITLE + ", " +
                 AssessmentEntry.ASSESSMENT_TARGET_DATE + ", " +
+                AssessmentEntry.ASSESSMENT_TYPE + ", " +
                 CourseEntry.COURSE_TITLE + ", " +
                 CourseEntry.COURSE_END + ", " +
                 TermEntry.TERM_TITLE;
@@ -149,6 +150,7 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
         String queryColumns = AssessmentEntry.TABLE_NAME + "." + AssessmentEntry.ASSESSMENT_ID + ", " +
                 AssessmentEntry.ASSESSMENT_TITLE + ", " +
                 AssessmentEntry.ASSESSMENT_TARGET_DATE + ", " +
+                AssessmentEntry.ASSESSMENT_TYPE + ", " +
                 CourseEntry.COURSE_TITLE + ", " +
                 CourseEntry.COURSE_END + ", " +
                 TermEntry.TERM_TITLE;

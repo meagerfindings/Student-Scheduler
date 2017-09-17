@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.*;
+
 /**
  * Created by matgreten on 8/29/17.
  */
@@ -28,12 +30,16 @@ public class CourseAssessmentCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView tvCourseAssessmentTitle = view.findViewById(R.id.tvCourseAssessmentTitle);
-        String assessmentTitle = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TITLE));
+        String assessmentTitle = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentEntry.ASSESSMENT_TITLE));
         tvCourseAssessmentTitle.setText(assessmentTitle);
 
         TextView tvCourseAssessmentTargetDateValue = view.findViewById(R.id.tvCourseAssessmentTargetDateValue);
-        String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(ScheduleContract.AssessmentEntry.ASSESSMENT_TARGET_DATE));
+        String assessmentDate = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentEntry.ASSESSMENT_TARGET_DATE));
         tvCourseAssessmentTargetDateValue.setText(assessmentDate);
+
+        TextView tvCourseAssessmentTypeValue = view.findViewById(R.id.tvCourseAssessmentType);
+        String assessmentType = cursor.getString(cursor.getColumnIndexOrThrow(AssessmentEntry.ASSESSMENT_TYPE));
+        tvCourseAssessmentTypeValue.setText(assessmentType);
     }
 
 }
