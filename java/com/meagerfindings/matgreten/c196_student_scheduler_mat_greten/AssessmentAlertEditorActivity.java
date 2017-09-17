@@ -50,6 +50,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
     private int hour;
     private int minute;
     private Cursor cursor;
+    private String alertID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
             oldTitle = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE));
             oldTime = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_TIME));
             oldDate = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE));
+            alertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
 
             if (oldTime.isEmpty()) oldTime = "12:00";
             if (oldDate.isEmpty()) oldDate = "12/15/2017";
@@ -227,17 +229,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
     }
 
     private int calculateExistingAssessmentAlarmID() {
-        Intent intent = getIntent();
-        Uri uri = intent.getParcelableExtra(AssessmentAlertEntry.CONTENT_ITEM_TYPE);
-
-        assessmentAlertFilter = AssessmentAlertEntry.ASSESSMENT_ALERT_ID + "=" + uri.getLastPathSegment();
-        cursor = getContentResolver().query(uri, AssessmentAlertEntry.ALL_ASSESSMENT_ALERT_COLUMNS, assessmentAlertFilter, null, null);
-
-        assert cursor != null;
-        cursor.moveToFirst();
-
-        String assessmentAlertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
-        String endAlarmString = "117" + assessmentFKID + assessmentAlertID;
+        String endAlarmString = "117" + assessmentFKID + alertID;
         int endAlarmKey = Integer.parseInt(endAlarmString);
 
         return endAlarmKey;
