@@ -2,6 +2,7 @@ package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Loader;
@@ -21,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -40,7 +40,7 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 8/29/17.
  */
 
-public class AssessmentEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class AssessmentEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 4011;
     private AssessmentNotesCursorAdapter assessmentNoteCursorAdapter;
     private String action;
@@ -91,7 +91,6 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-
         if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Assessment");
@@ -126,8 +125,6 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
 
             courseDueDateValue = (TextView) findViewById(R.id.courseDueDateValue);
             courseDueDateValue.setText(courseDueDate);
-
-            assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
@@ -376,7 +373,10 @@ public class AssessmentEditorActivity extends AppCompatActivity implements andro
         System.out.println(queryString);
         notesCursor = db.rawQuery(queryString, null);
 
-//        assessmentNoteCursorAdapter.changeCursor(notesCursor);
+        ListView assessmentNotesListView = (ListView) findViewById(R.id.assessmentNotesListView);
+        assessmentNoteCursorAdapter = new AssessmentNotesCursorAdapter(this, null, 0);
+        assessmentNotesListView.setAdapter(assessmentNoteCursorAdapter);
+        assessmentNoteCursorAdapter.changeCursor(notesCursor);
 
         ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentID);
         assessmentAlertListView = (ListView) findViewById(R.id.assessmentAlertListView);
