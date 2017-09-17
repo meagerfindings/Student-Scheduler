@@ -31,6 +31,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     private TextView startEditor;
     private TextView endEditor;
     private String termFilter;
+    private String courseFK;
     private String oldText;
     private String oldStart;
     private String oldEnd;
@@ -76,11 +77,9 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
             startEditor.setText(oldStart);
             endEditor.setText(oldEnd);
 
-//            titleEditor.requestFocus();
-
             termCourseCursorAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, cursor, 0);
 
-            String courseFK = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_ID));
+            courseFK = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_ID));
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
@@ -157,8 +156,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-//                    deleteTerm();
-                } else if (oldText.equals(newTitle) /*&& oldStart.equals(newStart) && oldEnd.equals(newEnd)*/) {
+                } else if (oldText.equals(newTitle)) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateTerm(newTitle, newStart, newEnd);
@@ -196,7 +194,6 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
     public void openEditorForNewCourse(View view) {
         Intent intent = new Intent(this, CourseEditorActivity.class);
-//        startActivityForResult(intent, EDITOR_REQUEST_CODE);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 
@@ -207,7 +204,20 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, ScheduleContract.CourseEntry.CONTENT_URI, null, null, null, null);
+
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String queryString = "SELECT * FROM " + ScheduleContract.TABLE_COURSES + " WHERE " +
+                ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + courseFK;
+
+        Cursor courseCursor = db.rawQuery(queryString, null);
+
+        ListView courseListView = (ListView) findViewById(R.id.termCourseListView);
+
+        TermCourseCursorAdapter courseAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, courseCursor, 0);
+        courseListView.setAdapter(courseAdapter);
+        return null;
     }
 
     @Override
