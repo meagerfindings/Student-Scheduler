@@ -119,7 +119,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     public boolean onCreateOptionsMenu(Menu menu) {
         if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
-        } else if (action.equals(Intent.ACTION_INSERT)){
+        } else if (action.equals(Intent.ACTION_INSERT)) {
             getMenuInflater().inflate(R.menu.menu_insert, menu);
         }
         return true;
@@ -213,45 +213,53 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     }
 
     public void shareWholeNote() {
-        String textContents = "Note Title: " + titleEditor.getText() +
-                "\nNote Text: " + textEditor.getText();
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_note_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
 
-        ArrayList<Uri> imageUris = new ArrayList<>();
-        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+                String textContents = "Note Title: " + titleEditor.getText() +
+                        "\nNote Text: " + textEditor.getText();
 
-        String sqlQuery = "SELECT * FROM " + TABLE_COURSE_PHOTOS +
-                " WHERE " + CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " = " + courseNoteKey;
+                ArrayList<Uri> imageUris = new ArrayList<>();
+                ScheduleDBHelper handler = new ScheduleDBHelper(this);
 
-        SQLiteDatabase db = handler.getWritableDatabase();
-        Cursor photoCursor = db.rawQuery(sqlQuery, null);
+                String sqlQuery = "SELECT * FROM " + TABLE_COURSE_PHOTOS +
+                        " WHERE " + CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " = " + courseNoteKey;
 
-        if (photoCursor.moveToFirst()) {
-            do {
+                SQLiteDatabase db = handler.getWritableDatabase();
+                Cursor photoCursor = db.rawQuery(sqlQuery, null);
+
+                if (photoCursor.moveToFirst()) {
+                    do {
 //              TODO Cite: https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
 
-                byte[] coursePhoto = photoCursor.getBlob(photoCursor.getColumnIndexOrThrow(CoursePhotoEntry.COURSE_PHOTO));
-                Bitmap bitmap = BitmapFactory.decodeByteArray(coursePhoto, 0, coursePhoto.length);
+                        byte[] coursePhoto = photoCursor.getBlob(photoCursor.getColumnIndexOrThrow(CoursePhotoEntry.COURSE_PHOTO));
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(coursePhoto, 0, coursePhoto.length);
 
-                System.out.println("looping through");
+                        System.out.println("looping through");
 
-                String temporaryPhotoPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Course Note Photo", null);
-                Uri photoUri = Uri.parse(temporaryPhotoPath);
+                        String temporaryPhotoPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Course Note Photo", null);
+                        Uri photoUri = Uri.parse(temporaryPhotoPath);
 
-                imageUris.add(photoUri);
+                        imageUris.add(photoUri);
 
-            } while (photoCursor.moveToNext());
+                    } while (photoCursor.moveToNext());
+                }
+
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, textContents);
+                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+
+                shareIntent.setType("image/*");
+                startActivity(Intent.createChooser(shareIntent, "Share images to.."));
+
+                photoCursor.close();
+                db.close();
+                break;
         }
-
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, textContents);
-        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
-
-        shareIntent.setType("image/*");
-        startActivity(Intent.createChooser(shareIntent, "Share images to.."));
-
-        photoCursor.close();
-        db.close();
     }
 
     @Override
@@ -286,17 +294,23 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     }
 
     public void openEditorForNewCoursePhoto(View view) {
-        Intent intent = new Intent(this, CoursePhotoEditorActivity.class);
-        intent.putExtra("courseNoteKey", courseNoteKey);
-        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_note_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent intent = new Intent(this, CoursePhotoEditorActivity.class);
+                intent.putExtra("courseNoteKey", courseNoteKey);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                break;
+        }
     }
 
     public boolean checkStorageWritePermission(View view) {
         if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             shareWholeNote();
             return true;
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             return false;
         }

@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -323,7 +324,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
                 } else if (oldTitle.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
                     setResult(RESULT_CANCELED);
                 } else {
-                    updateAssessment(newTitle,newType, newTargetEndDate, newCourseID);
+                    updateAssessment(newTitle, newType, newTargetEndDate, newCourseID);
                 }
         }
         finish();
@@ -397,25 +398,39 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
-        restartLoader();
+            restartLoader();
         }
     }
 
     public void openEditorForNewAssessmentNote(View view) {
-        Intent assessmentNoteIntent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
-        assessmentNoteIntent.putExtra("assessmentKey", assessmentID);
-        startActivityForResult(assessmentNoteIntent, EDITOR_REQUEST_CODE);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_assessment_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent assessmentNoteIntent = new Intent(AssessmentEditorActivity.this, AssessmentNoteEditorActivity.class);
+                assessmentNoteIntent.putExtra("assessmentKey", assessmentID);
+                startActivityForResult(assessmentNoteIntent, EDITOR_REQUEST_CODE);
+                break;
+        }
     }
 
     public void openAssessmentAlertsList(View view) {
-        alertIntent = new Intent(AssessmentEditorActivity.this, AssessmentAlertActivity.class);
-        Uri uri = Uri.parse(AssessmentAlertEntry.CONTENT_URI + "/" + id);
-        alertIntent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
-        alertIntent.putExtra("assessmentTitle", oldTitle);
-        alertIntent.putExtra("assessmentFKID", assessmentID);
-        startActivityForResult(alertIntent, EDITOR_REQUEST_CODE);
-        System.out.println(uri);
-        System.out.println("ASSESSMENT ID IS: " + assessmentID);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_assessment_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                alertIntent = new Intent(AssessmentEditorActivity.this, AssessmentAlertActivity.class);
+                Uri uri = Uri.parse(AssessmentAlertEntry.CONTENT_URI + "/" + id);
+                alertIntent.putExtra(AssessmentEntry.CONTENT_ITEM_TYPE, uri);
+                alertIntent.putExtra("assessmentTitle", oldTitle);
+                alertIntent.putExtra("assessmentFKID", assessmentID);
+                startActivityForResult(alertIntent, EDITOR_REQUEST_CODE);
+                System.out.println(uri);
+                System.out.println("ASSESSMENT ID IS: " + assessmentID);
+                break;
+        }
     }
 
     @SuppressWarnings("deprecation")

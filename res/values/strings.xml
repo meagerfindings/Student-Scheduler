@@ -99,6 +99,10 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="assessment_type">Assessment Type:</string>
-    <string name="no_terms">Please add a term first.</string>
+    <string name="no_terms">Please create a term first.</string>
     <string name="no_courses">Please create a course first.</string>
+    <string name="save_term_first">Please save term before adding courses to a new term.</string>
+    <string name="save_course_first">Please save new course first.</string>
+    <string name="save_note_first">Please save note first.</string>
+    <string name="save_assessment_first">Please save assessment first.</string>
 </resources>

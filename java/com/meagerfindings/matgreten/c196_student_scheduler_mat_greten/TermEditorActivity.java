@@ -113,7 +113,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     public boolean onCreateOptionsMenu(Menu menu) {
         if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
-        } else if (action.equals(Intent.ACTION_INSERT)){
+        } else if (action.equals(Intent.ACTION_INSERT)) {
             getMenuInflater().inflate(R.menu.menu_insert, menu);
         }
         return true;
@@ -193,8 +193,15 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     }
 
     public void openEditorForNewCourse(View view) {
-        Intent intent = new Intent(this, CourseEditorActivity.class);
-        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_term_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent intent = new Intent(this, CourseEditorActivity.class);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                break;
+        }
     }
 
     @Override

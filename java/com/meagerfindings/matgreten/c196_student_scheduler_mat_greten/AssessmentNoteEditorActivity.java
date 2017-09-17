@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.AssessmentNoteEntry;
@@ -293,9 +294,16 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     }
 
     public void openEditorForNewAssessmentPhoto(View view) {
-        Intent intent = new Intent(this, AssessmentPhotoEditorActivity.class);
-        intent.putExtra("assessmentNoteKey", assessmentNoteKey);
-        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_note_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent intent = new Intent(this, AssessmentPhotoEditorActivity.class);
+                intent.putExtra("assessmentNoteKey", assessmentNoteKey);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                break;
+        }
     }
 
     @Override
@@ -311,14 +319,20 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     }
 
     public boolean checkStorageWritePermission2(View view) {
-        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            shareWholeAssessmentNote();
-            return true;
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_note_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    shareWholeAssessmentNote();
+                    return true;
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    return false;
+                }
         }
-        else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            return false;
-        }
+        return false;
     }
 
     @Override

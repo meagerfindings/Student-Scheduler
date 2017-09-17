@@ -450,7 +450,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     public boolean onCreateOptionsMenu(Menu menu) {
         if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
-        } else if (action.equals(Intent.ACTION_INSERT)){
+        } else if (action.equals(Intent.ACTION_INSERT)) {
             getMenuInflater().inflate(R.menu.menu_insert, menu);
         }
         return true;
@@ -554,21 +554,42 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     public void openEditorForNewAssessment(View view) {
-        Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
-        intent.putExtra("courseTitle", oldTitle);
-        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_course_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent intent = new Intent(CourseEditorActivity.this, AssessmentEditorActivity.class);
+                intent.putExtra("courseTitle", oldTitle);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                break;
+        }
     }
 
     public void openCourseNoteList(View view) {
-        Intent intent = new Intent(this, CourseNoteActivity.class);
-        intent.putExtra("courseTitle", oldTitle);
-        startActivityForResult(intent, EDITOR_REQUEST_CODE);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_course_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent intent = new Intent(this, CourseNoteActivity.class);
+                intent.putExtra("courseTitle", oldTitle);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                break;
+        }
     }
 
     public void openMentorsList(View view) {
-        Intent intent = new Intent(this, MentorActivity.class);
-        intent.putExtra("courseTitle", oldTitle);
-        startActivity(intent);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                Toast.makeText(this, R.string.save_course_first, Toast.LENGTH_LONG).show();
+                break;
+            case Intent.ACTION_EDIT:
+                Intent intent = new Intent(this, MentorActivity.class);
+                intent.putExtra("courseTitle", oldTitle);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override
