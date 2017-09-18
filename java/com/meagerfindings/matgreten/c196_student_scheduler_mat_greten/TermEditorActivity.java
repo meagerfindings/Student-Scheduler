@@ -4,10 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+
+import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_COURSES;
 
 public class TermEditorActivity extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -168,11 +172,67 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     }
 
     private void deleteTerm() {
-        getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, termFilter, null);
-        Toast.makeText(this, R.string.term_deleted, Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
-        finish();
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            if (termHasCourses(termKey)) {
+
+                                Toast.makeText(TermEditorActivity.this,
+                                        getString(R.string.cannot_delete_term),
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, termFilter, null);
+                                Toast.makeText(TermEditorActivity.this, R.string.term_deleted, Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+
+                                Toast.makeText(TermEditorActivity.this,
+                                        getString(R.string.deleted_term),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
+                .show();
     }
+
+    private boolean termHasCourses(String termID) {
+        ScheduleDBHelper handler = new ScheduleDBHelper(this);
+        SQLiteDatabase db = handler.getWritableDatabase();
+
+        String queryString = "SELECT " + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " FROM " + TABLE_COURSES +
+                " WHERE " + ScheduleContract.CourseEntry.COURSE_TERM_ID_FK + " = " + termID;
+
+        Cursor courseCursor = db.rawQuery(queryString, null);
+
+        if (courseCursor.moveToFirst()) {
+            String termKey = courseCursor.getString(courseCursor.getColumnIndex(ScheduleContract.CourseEntry.COURSE_TERM_ID_FK));
+
+            if (termID.equals(termKey)) {
+                courseCursor.close();
+                db.close();
+                return true;
+            }
+        }
+
+        courseCursor.close();
+        db.close();
+
+        return false;
+    }
+
+//    private void deleteTerm() {
+//        getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, termFilter, null);
+//        Toast.makeText(this, R.string.term_deleted, Toast.LENGTH_SHORT).show();
+//        setResult(RESULT_OK);
+//        finish();
+//    }
 
     private void updateTerm(String termTitle, String termStart, String termEnd) {
         ContentValues values = new ContentValues();
