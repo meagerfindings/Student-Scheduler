@@ -155,22 +155,20 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
-                    setResult(RESULT_CANCELED);
-                } else if (newText.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.note_title_blank), Toast.LENGTH_LONG).show();
                 } else {
                     insertCourseNote(newTitle, newText);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldText.equals(newTitle) && oldStart.equals(newText)) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.note_title_blank), Toast.LENGTH_LONG).show();
                 } else {
                     updateCourseNote(newTitle, newText);
+                    finish();
                 }
         }
-        finish();
     }
 
     private void deleteCourseNote() {

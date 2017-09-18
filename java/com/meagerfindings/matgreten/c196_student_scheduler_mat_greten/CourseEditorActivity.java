@@ -7,11 +7,13 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,6 +117,34 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             }
             loadTermSpinnerData();
 
+            startCheckBoxEditor.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (startCheckBoxEditor.isChecked()) {
+                                if (startEditor.getText().toString().isEmpty() || startAlertTimeEditor.getText().toString().isEmpty()) {
+                                    dateAndTimeMissing();
+                                    startCheckBoxEditor.setChecked(false);
+                                }
+                            }
+                        }
+                    }
+            );
+
+            endCheckBoxEditor.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (endCheckBoxEditor.isChecked()) {
+                                if (endEditor.getText().toString().isEmpty() || endAlertTimeEditor.getText().toString().isEmpty()) {
+                                    dateAndTimeMissing();
+                                    endCheckBoxEditor.setChecked(false);
+                                }
+                            }
+                        }
+                    }
+            );
+
         } else {
             action = Intent.ACTION_EDIT;
             courseFilter = CourseEntry.COURSE_ID + "=" + uri.getLastPathSegment();
@@ -139,8 +169,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             if (oldStart == null) oldStart = "";
             if (oldEnd == null) oldEnd = "";
             if (oldStatus == null || oldStatus.isEmpty()) oldStatus = "Planned";
-            if (oldStartAlertTime.isEmpty()) oldStartAlertTime = "12:00";
-            if (oldEndAlertTime.isEmpty()) oldEndAlertTime = "13:00";
             if (Objects.equals(oldStartAlertStatus, "active")) startCheckBoxEditor.setChecked(true);
             if (Objects.equals(oldEndAlertStatus, "active")) endCheckBoxEditor.setChecked(true);
 
@@ -166,8 +194,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             ArrayList<String> courseNoteTitles = getCourseNoteTitles(courseID);
             courseNoteListView = (ListView) findViewById(R.id.courseNoteListView);
             courseNoteListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseNoteTitles));
-
-//            assessmentAdapter = new CourseAssessmentCursorAdapter(this, null, 0);
 
             ScheduleDBHelper handler = new ScheduleDBHelper(this);
             SQLiteDatabase db = handler.getWritableDatabase();
@@ -197,8 +223,14 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (startCheckBoxEditor.isChecked()) setCourseStartAlarm();
-                            else if (!startCheckBoxEditor.isChecked())
+                            if (startCheckBoxEditor.isChecked()) {
+                                if (startAlertTimeEditor.getText().toString().isEmpty()) {
+                                    dateAndTimeMissing();
+                                    startCheckBoxEditor.setChecked(false);
+                                } else {
+                                    setCourseStartAlarm();
+                                }
+                            } else if (!startCheckBoxEditor.isChecked())
                                 cancelCourseAlarm(calculateStartAlarmID());
                         }
                     }
@@ -208,14 +240,23 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (endCheckBoxEditor.isChecked()) setCourseEndAlarm();
-                            else if (!endCheckBoxEditor.isChecked())
+                            if (endCheckBoxEditor.isChecked()) {
+                                if (endAlertTimeEditor.getText().toString().isEmpty()) {
+                                    dateAndTimeMissing();
+                                    endCheckBoxEditor.setChecked(false);
+                                } else {
+                                    setCourseEndAlarm();
+                                }
+                            } else if (!endCheckBoxEditor.isChecked())
                                 cancelCourseAlarm(calculateEndAlarmID());
                         }
                     }
             );
-
         }
+    }
+
+    private void dateAndTimeMissing() {
+        Toast.makeText(this, getString(R.string.time_and_date_necessary), Toast.LENGTH_LONG).show();
     }
 
     private ArrayList<String> getMentorNames(String courseID) {
@@ -542,33 +583,50 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.title_cannot_be_blank), Toast.LENGTH_LONG).show();
                 } else if (newStart.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.start_date_required), Toast.LENGTH_LONG).show();
                 } else if (newEnd.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.end_date_required), Toast.LENGTH_LONG).show();
                 } else {
                     if (startCheckBoxEditor.isChecked()) setCourseStartAlarm();
                     if (endCheckBoxEditor.isChecked()) setCourseEndAlarm();
                     insertCourse(newTitle, newStart, newEnd, newStatus, newTermID, newStartAlertTime, newEndAlertTime, newStartStatus, newEndStatus);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldTitle.equals(newTitle) && oldStart.equals(newStart) && oldEnd.equals(newEnd)) {
-                    setResult(RESULT_CANCELED);
+                } else if (newStart.length() == 0) {
+                    Toast.makeText(this, getString(R.string.start_date_required), Toast.LENGTH_LONG).show();
+                } else if (newEnd.length() == 0) {
+                    Toast.makeText(this, getString(R.string.end_date_required), Toast.LENGTH_LONG).show();
                 } else {
                     updateCourse(newTitle, newStart, newEnd, newStatus, newTermID, newStartAlertTime, newEndAlertTime, newStartStatus, newEndStatus);
+                    finish();
                 }
         }
-        finish();
     }
 
     private void deleteCourse() {
-        getContentResolver().delete(CourseEntry.CONTENT_URI, courseFilter, null);
-        Toast.makeText(this, R.string.course_deleted, Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
-        finish();
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            getContentResolver().delete(CourseEntry.CONTENT_URI, courseFilter, null);
+                            Toast.makeText(CourseEditorActivity.this, R.string.course_deleted, Toast.LENGTH_SHORT).show();
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    }
+                };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
+                .show();
     }
 
     private void updateCourse(String courseTitle, String courseStart, String courseEnd, String courseStatus, int termID, String startAlertTime,
@@ -602,6 +660,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(CourseEntry.COURSE_START_ALERT_STATUS, startAlertStatus);
         values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().insert(CourseEntry.CONTENT_URI, values);
+        Toast.makeText(this, R.string.course_inserted, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 

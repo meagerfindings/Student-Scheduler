@@ -99,24 +99,20 @@ public class MentorEditorActivity extends AppCompatActivity {
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newName.length() == 0) {
-                    setResult(RESULT_CANCELED);
-                } else if (newPhone.length() == 0) {
-                    setResult(RESULT_CANCELED);
-                } else if (newEmail.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.mentor_name_blank), Toast.LENGTH_LONG).show();
                 } else {
                     insertMentor(newName, newPhone, newEmail);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newName.length() == 0) {
-                } else if (oldName.equals(newName)){
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.mentor_name_blank), Toast.LENGTH_LONG).show();
                 } else {
                     updateMentor(newName, newPhone, newEmail);
+                    finish();
                 }
         }
-        finish();
     }
 
     @Override

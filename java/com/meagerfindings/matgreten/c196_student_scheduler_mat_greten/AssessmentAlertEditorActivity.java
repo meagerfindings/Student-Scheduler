@@ -89,9 +89,6 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
             oldDate = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_DATE));
             alertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
 
-            if (oldTime.isEmpty()) oldTime = "12:00";
-            if (oldDate.isEmpty()) oldDate = "12/15/2017";
-
             titleEditor.setText(oldTitle);
             timeEditor.setText(oldTime);
             dateEditor.setText(oldDate);
@@ -134,22 +131,28 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.alert_title_blank), Toast.LENGTH_LONG).show();
                 } else if (newTime.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.alert_time_blank), Toast.LENGTH_LONG).show();
+                } else if (newDate.length() == 0) {
+                    Toast.makeText(this, getString(R.string.alert_date_blank), Toast.LENGTH_LONG).show();
                 } else {
                     insertAssessmentAlert(newTitle, newTime, newDate);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldTitle.equals(newTitle) /*&& oldTime.equals(newTime) && oldEmail.equals(newEmail)*/) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.alert_title_blank), Toast.LENGTH_LONG).show();
+                } else if (newTime.length() == 0) {
+                    Toast.makeText(this, getString(R.string.alert_time_blank), Toast.LENGTH_LONG).show();
+                } else if (newDate.length() == 0) {
+                    Toast.makeText(this, getString(R.string.alert_date_blank), Toast.LENGTH_LONG).show();
                 } else {
                     updateAssessmentAlert(newTitle, newTime, newDate);
+                    finish();
                 }
         }
-        finish();
     }
 
     private void deleteAssessmentAlert() {

@@ -151,22 +151,20 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
-                    setResult(RESULT_CANCELED);
-                } else if (newText.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.note_title_blank), Toast.LENGTH_LONG).show();
                 } else {
                     insertAssessmentNote(newTitle, newText);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldTitle.equals(newTitle) && oldText.equals(newText)) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.note_title_blank), Toast.LENGTH_LONG).show();
                 } else {
                     updateAssessmentNote(newTitle, newText);
+                    finish();
                 }
         }
-        finish();
     }
 
     public void openAssessmentPhotosList(View view) {

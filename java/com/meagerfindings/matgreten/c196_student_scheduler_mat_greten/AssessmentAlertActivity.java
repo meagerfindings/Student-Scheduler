@@ -127,9 +127,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
                             getContentResolver().delete(AssessmentAlertEntry.CONTENT_URI, null, null);
                             restartLoader();
 
-                            Toast.makeText(AssessmentAlertActivity.this,
-                                    getString(R.string.all_deleted),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AssessmentAlertActivity.this, getString(R.string.all_deleted), Toast.LENGTH_SHORT).show();
                         }
                     }
                 };

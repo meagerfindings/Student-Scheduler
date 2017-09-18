@@ -23,9 +23,9 @@
     <string name="course_end">Course End</string>
     <string name="course_status">Course Status:</string>
     <string name="hyphen">  -  </string>
-    <string name="course_updated">Course udpated</string>
+    <string name="course_updated">Course updated</string>
     <string name="course_deleted">Course deleted</string>
-    <string name="date_hint">Ex: 08/23/1987</string>
+    <string name="date_hint">Click here to add date</string>
     <string name="course_mentors">Course Mentors</string>
     <string name="assessments">Assessments</string>
     <string name="course_notes">Course Notes</string>
@@ -51,7 +51,7 @@
     <string name="assessment_updated">Assessment Updated</string>
     <string name="assessment_due_date">Assessment Due Date:</string>
     <string name="assessment_alert">Assessment Alert:</string>
-    <string name="time_hint">Ex:15:00</string>
+    <string name="time_hint">Click here to add time</string>
     <string name="assessment_term">Assessment Term</string>
     <string name="course">Course:</string>
     <string name="note_title">Note Title:</string>
@@ -105,4 +105,15 @@
     <string name="save_course_first">Please save new course first.</string>
     <string name="save_note_first">Please save note first.</string>
     <string name="save_assessment_first">Please save assessment first.</string>
+    <string name="time_and_date_necessary">Time and date must be filled out first.</string>
+    <string name="title_cannot_be_blank">The title cannot be blank.</string>
+    <string name="start_date_required">A start date is required.</string>
+    <string name="end_date_required">An end date is required.</string>
+    <string name="course_inserted">New course created.</string>
+    <string name="mentor_name_blank">Mentor name cannot be blank.</string>
+    <string name="note_title_blank">Note title cannot be blank.</string>
+    <string name="alert_title_blank">Alert title cannot be blank.</string>
+    <string name="alert_time_blank">Alert time cannot be blank.</string>
+    <string name="alert_date_blank">Alert date cannot be blank.</string>
+    <string name="target_date_required">A taget end date is required.</string>
 </resources>

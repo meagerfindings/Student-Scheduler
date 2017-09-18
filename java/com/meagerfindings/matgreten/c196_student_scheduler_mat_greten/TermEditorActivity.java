@@ -151,24 +151,28 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.title_cannot_be_blank), Toast.LENGTH_LONG).show();
                 } else if (newStart.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.start_date_required), Toast.LENGTH_LONG).show();
                 } else if (newEnd.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.end_date_required), Toast.LENGTH_LONG).show();
                 } else {
                     insertTerm(newTitle, newStart, newEnd);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldText.equals(newTitle)) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.title_cannot_be_blank), Toast.LENGTH_LONG).show();
+                } else if (newStart.length() == 0) {
+                    Toast.makeText(this, getString(R.string.start_date_required), Toast.LENGTH_LONG).show();
+                } else if (newEnd.length() == 0) {
+                    Toast.makeText(this, getString(R.string.end_date_required), Toast.LENGTH_LONG).show();
                 } else {
                     updateTerm(newTitle, newStart, newEnd);
+                    finish();
                 }
         }
-        finish();
     }
 
     private void deleteTerm() {
@@ -226,13 +230,6 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
         return false;
     }
-
-//    private void deleteTerm() {
-//        getContentResolver().delete(ScheduleContract.TermEntry.CONTENT_URI, termFilter, null);
-//        Toast.makeText(this, R.string.term_deleted, Toast.LENGTH_SHORT).show();
-//        setResult(RESULT_OK);
-//        finish();
-//    }
 
     private void updateTerm(String termTitle, String termStart, String termEnd) {
         ContentValues values = new ContentValues();

@@ -78,6 +78,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
         dueDateEditor = (TextView) findViewById(R.id.editAssessmentDueDateValue);
 
         courseSpinner = (Spinner) findViewById(R.id.assessmentCourseSpinner);
+        courseDueDateValue = (TextView) findViewById(R.id.courseDueDateValue);
 
         typeSpinner = (Spinner) findViewById(R.id.assessmentTypeSpinner);
         ArrayAdapter<CharSequence> statusArrayAdapter = ArrayAdapter.createFromResource(this, type_array, android.R.layout.simple_spinner_item);
@@ -87,19 +88,35 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
         intent = getIntent();
         uri = intent.getParcelableExtra(AssessmentEntry.CONTENT_ITEM_TYPE);
 
+        courseSpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        courseDueDateValue.setText(getCourseDueDate());
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        if (uri == null) {
+        if (uri == null)
+
+        {
             action = Intent.ACTION_INSERT;
             setTitle("New Assessment");
             if (getIntent().getExtras() != null)
                 oldCourse = String.valueOf(getIntent().getExtras().getString("courseTitle"));
-
             loadCourseSpinnerData();
-        } else {
+        } else
+
+        {
             action = Intent.ACTION_EDIT;
             assessmentFilter = AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
 
@@ -312,22 +329,24 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.title_cannot_be_blank), Toast.LENGTH_LONG).show();
                 } else if (newTargetEndDate.length() == 0) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.target_date_required), Toast.LENGTH_LONG).show();
                 } else {
                     insertAssessment(newTitle, newType, newTargetEndDate, newCourseID);
+                    finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
                 if (newTitle.length() == 0) {
-                } else if (oldTitle.equals(newTitle) && oldStart.equals(newTargetEndDate)) {
-                    setResult(RESULT_CANCELED);
+                    Toast.makeText(this, getString(R.string.title_cannot_be_blank), Toast.LENGTH_LONG).show();
+                } else if (newTargetEndDate.length() == 0) {
+                    Toast.makeText(this, getString(R.string.target_date_required), Toast.LENGTH_LONG).show();
                 } else {
                     updateAssessment(newTitle, newType, newTargetEndDate, newCourseID);
+                    finish();
                 }
         }
-        finish();
     }
 
     private void deleteAssessment() {
