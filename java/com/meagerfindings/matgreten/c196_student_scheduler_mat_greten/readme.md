@@ -6,6 +6,12 @@
 
 1. ~~Ability to highlight terms to delete them~~
     - Switch delete to select, and add delete to the action bar options
+    - test alerts
+    - Assessments
+    - courses
+    - mentors
+    - course notes
+    
 2. Portrait and landscape modes
 
 

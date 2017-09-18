@@ -87,40 +87,7 @@ public class CoursesActivity extends AppCompatActivity implements LoaderManager.
         return true;
     }
 
-    private void deleteAllCourses() {
-        DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE) {
-
-                            //Insert Data management code here
-                            getContentResolver().delete(ScheduleContract.CourseEntry.CONTENT_URI, null, null);
-                            restartLoader();
-
-                            Toast.makeText(CoursesActivity.this,
-                                    getString(R.string.all_deleted),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.are_you_sure))
-                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
-                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
-                .show();
-    }
-
-    private void insertSampleData() {
-        insertCourse("First Course");
-        insertCourse("Second course");
-
-        restartLoader();
-    }
-
     private void restartLoader() {
-//        getLoaderManager().restartLoader(0, null, CoursesActivity.this);
         startActivity(new Intent(this, CoursesActivity.class));
     }
 
@@ -138,22 +105,6 @@ public class CoursesActivity extends AppCompatActivity implements LoaderManager.
     public void onLoaderReset(Loader<Cursor> loader) {
         courseCursorAdapter.swapCursor(null);
     }
-
-
-//    @Override
-//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this, ScheduleContract.CourseEntry.CONTENT_URI, null, null, null, null);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-//        courseCursorAdapter.swapCursor(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(android.content.Loader<Cursor> loader) {
-//        courseCursorAdapter.swapCursor(null);
-//    }
 
     public void openEditorForNewCourse(View view) {
         Intent intent = new Intent(this, CourseEditorActivity.class);

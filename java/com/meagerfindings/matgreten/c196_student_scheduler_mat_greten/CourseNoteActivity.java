@@ -101,40 +101,6 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
         return true;
     }
 
-    private void deleteAllCourseNotes() {
-        DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE) {
-
-                            //Insert Data management code here
-                            getContentResolver().delete(CourseNoteEntry.CONTENT_URI, null, null);
-                            restartLoader();
-
-                            Toast.makeText(CourseNoteActivity.this,
-                                    getString(R.string.all_deleted),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.are_you_sure))
-                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
-                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
-                .show();
-
-
-    }
-
-    private void insertSampleData() {
-        insertCourseNote("Simple Course Note");
-        insertCourseNote("Multi-line\nCourse Note");
-
-        restartLoader();
-    }
-
     private void restartLoader() {
         getLoaderManager().initLoader(0, null, this);
     }

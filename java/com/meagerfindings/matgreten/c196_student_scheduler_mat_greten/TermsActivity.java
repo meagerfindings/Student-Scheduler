@@ -160,47 +160,13 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         return true;
     }
 
-    private void deleteAllTerms() {
-        DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE) {
-                            getContentResolver().delete(TermEntry.CONTENT_URI, null, null);
-                            restartLoader();
-
-                            Toast.makeText(TermsActivity.this,
-                                    getString(R.string.all_deleted),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.are_you_sure))
-                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
-                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
-                .show();
-
-
-    }
-
-    private void insertSampleData() {
-        insertTerm("First Term");
-        insertTerm("Second Term");
-
-        restartLoader();
-    }
-
     private void restartLoader() {
-//        startActivity(new Intent(this, TermsActivity.class));
         getLoaderManager().initLoader(0, null, this);
 
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return null;
         return new CursorLoader(this, TermEntry.CONTENT_URI,
                 null, null, null, null);
     }
