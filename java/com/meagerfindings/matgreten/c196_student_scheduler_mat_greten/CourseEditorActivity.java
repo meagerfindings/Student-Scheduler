@@ -391,10 +391,11 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
                 Cursor cursor = db.rawQuery(sqlQuery, null);
 
-                assert cursor != null;
-                cursor.moveToLast();
+                int lastID = 0;
 
-                int lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
+                assert cursor != null;
+                if(cursor.moveToLast())
+                    lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
                 courseID = String.valueOf(lastID + 1);
                 break;
@@ -427,15 +428,14 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
                 ScheduleDBHelper handler = new ScheduleDBHelper(this);
                 SQLiteDatabase db = handler.getWritableDatabase();
-
                 String sqlQuery = "SELECT " + CourseEntry._ID + " FROM " + TABLE_COURSES;
-
                 Cursor cursor = db.rawQuery(sqlQuery, null);
 
-                assert cursor != null;
-                cursor.moveToLast();
+                int lastID = 0;
 
-                int lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
+                assert cursor != null;
+                if(cursor.moveToLast())
+                    lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
                 courseID = String.valueOf(lastID + 1);
                 break;
