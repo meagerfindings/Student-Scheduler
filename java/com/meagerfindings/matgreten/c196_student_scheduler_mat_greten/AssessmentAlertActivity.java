@@ -87,21 +87,6 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
         return assessmentKey;
     }
 
-    public void insertAssessmentAlert(String assessmentAlertTitle) {
-        ContentValues values = new ContentValues();
-        values.put(AssessmentAlertEntry.ASSESSMENT_ALERT_TITLE, assessmentAlertTitle);
-        Uri assessmentAlertUri = getContentResolver().insert(AssessmentAlertEntry.CONTENT_URI, values);
-
-        assert assessmentAlertUri != null;
-        Log.d("AssessmentAlert", "Inserted Alert " + assessmentAlertUri.getLastPathSegment());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_list, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

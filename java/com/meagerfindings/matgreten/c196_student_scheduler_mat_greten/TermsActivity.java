@@ -98,9 +98,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
                                 getContentResolver().delete(TermEntry.CONTENT_URI, TermEntry.TERM_ID + "=" + termID, null);
                                 restartLoader();
 
-                                Toast.makeText(TermsActivity.this,
-                                        getString(R.string.deleted_term),
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TermsActivity.this, getString(R.string.deleted_term), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
