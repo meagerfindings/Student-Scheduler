@@ -10,6 +10,22 @@
 - **prevent `'` from being entered in fields** 
 - add scrollview to note activity screens
 
+```
+09-18 16:24:59.746 4841-4841/com.meagerfindings.matgreten.c196_student_scheduler_mat_greten E/AndroidRuntime: FATAL EXCEPTION: main
+                                                                                                              Process: com.meagerfindings.matgreten.c196_student_scheduler_mat_greten, PID: 4841
+                                                                                                              java.lang.RuntimeException: Unable to start activity ComponentInfo{com.meagerfindings.matgreten.c196_student_scheduler_mat_greten/com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseNoteEditorActivity}: java.lang.IllegalArgumentException: Wrong state class, expecting View State but received class android.support.design.widget.CoordinatorLayout$SavedState instead. This usually happens when two views of different type have the same id in the same hierarchy. This view's id is id/include_course_note_photos. Make sure other views do not use the same id.
+                                                                                                                  at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2666)
+                                                                                                                  at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2727)
+                                                                                                                  at android.app.ActivityThread.handleRelaunchActivity(ActivityThread.java:4520)
+                                                                                                                  at android.app.ActivityThread.-wrap19(ActivityThread.java)
+                                                                                                                  at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1484)
+                                                                                                                  at android.os.Handler.dispatchMessage(Handler.java:102)
+                                                                                                                  at android.os.Looper.loop(Looper.java:154)
+                                                                                                                  at android.app.ActivityThread.main(ActivityThread.java:6121)
+                                                                                                                  at java.lang.reflect.Method.invoke(Native Method)
+                                                                      
+```
+
 
 ### Written portions of assignment
   1. document this is targeted at API 26

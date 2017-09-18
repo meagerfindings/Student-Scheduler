@@ -56,8 +56,8 @@
     <string name="course">Course:</string>
     <string name="note_title">Note Title:</string>
     <string name="note_text">Note Text:</string>
-    <string name="assessment_note_deleted">Assessment Note Deleted</string>
-    <string name="assessment_note_updated">Assessment Note Deleted</string>
+    <string name="assessment_note_deleted">Assessment Note Deleted.</string>
+    <string name="assessment_note_updated">Assessment Note Updated.</string>
     <string name="add_assessment">Add Assessment</string>
     <string name="mentor_name">Mentor Name:</string>
     <string name="email">Email:</string>
@@ -117,4 +117,6 @@
     <string name="alert_date_blank">Alert date cannot be blank.</string>
     <string name="target_date_required">A taget end date is required.</string>
     <string name="deleted_alert">Deleted Alert.</string>
+    <string name="course_note_created">Course Note Created</string>
+    <string name="note_text_blank">Note text cannot be blank.</string>
 </resources>

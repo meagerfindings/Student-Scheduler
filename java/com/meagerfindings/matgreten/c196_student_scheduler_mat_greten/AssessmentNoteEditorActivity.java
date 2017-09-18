@@ -184,7 +184,6 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         ContentValues values = new ContentValues();
         values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_TITLE, assessmentNoteTitle);
         values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_TEXT, assessmentNoteText);
-        values.put(AssessmentNoteEntry.ASSESSMENT_NOTE_ASSESSMENT_FK, assessmentKey);
         getContentResolver().update(AssessmentNoteEntry.CONTENT_URI, values, assessmentNoteFilter, null);
 
         Toast.makeText(this, R.string.assessment_note_updated, Toast.LENGTH_SHORT).show();

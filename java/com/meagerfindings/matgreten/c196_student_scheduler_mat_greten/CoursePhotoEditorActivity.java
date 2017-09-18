@@ -134,7 +134,6 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(CoursePhotoEntry.COURSE_PHOTO, coursePhotoFile);
         getContentResolver().update(CoursePhotoEntry.CONTENT_URI, values, coursePhotoFilter, null);
-
         Toast.makeText(this, R.string.photo_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }

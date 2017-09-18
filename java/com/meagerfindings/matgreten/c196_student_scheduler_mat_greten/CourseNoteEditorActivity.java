@@ -76,10 +76,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
             oldStart = cursor.getString(cursor.getColumnIndex(CourseNoteEntry.COURSE_NOTE_TEXT));
             courseNoteKey = cursor.getString(cursor.getColumnIndex(CourseNoteEntry.COURSE_NOTE_ID));
 
-
-            if (oldText == null) oldText = "";
-            if (oldStart == null) oldStart = "";
-
             titleEditor.setText(oldText);
             textEditor.setText(oldStart);
 
@@ -90,8 +86,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
             String sqlQuery = "SELECT * FROM " + TABLE_COURSE_PHOTOS +
                     " WHERE " + CoursePhotoEntry.COURSE_PHOTO_NOTE_FK + " = " + courseNoteKey;
-
-            System.out.println(sqlQuery);
 
             Cursor coursePhotoCursor = db.rawQuery(sqlQuery, null);
 
@@ -146,7 +140,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
     @Override
     public void onBackPressed() {
-        finishEditing();
+        finish();
     }
 
     private void finishEditing() {
@@ -156,14 +150,18 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {
                     Toast.makeText(this, getString(R.string.note_title_blank), Toast.LENGTH_LONG).show();
+                } else if (newText.length() == 0) {
+                    Toast.makeText(this, getString(R.string.note_text_blank), Toast.LENGTH_LONG).show();
                 } else {
                     insertCourseNote(newTitle, newText);
                     finish();
                 }
                 break;
             case Intent.ACTION_EDIT:
-                if (newTitle.length() == 0) {
+                if (newTitle.isEmpty()) {
                     Toast.makeText(this, getString(R.string.note_title_blank), Toast.LENGTH_LONG).show();
+                } else if (newText.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.note_text_blank), Toast.LENGTH_LONG).show();
                 } else {
                     updateCourseNote(newTitle, newText);
                     finish();
@@ -182,7 +180,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
         ContentValues values = new ContentValues();
         values.put(CourseNoteEntry.COURSE_NOTE_TITLE, courseNoteTitle);
         values.put(CourseNoteEntry.COURSE_NOTE_TEXT, courseNoteText);
-        values.put(CourseNoteEntry.COURSE_NOTE_COURSE_FK, courseID);
         getContentResolver().update(CourseNoteEntry.CONTENT_URI, values, courseNoteFilter, null);
 
         Toast.makeText(this, R.string.course_note_updated, Toast.LENGTH_SHORT).show();
@@ -196,6 +193,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
         values.put(CourseNoteEntry.COURSE_NOTE_COURSE_FK, courseID);
 
         getContentResolver().insert(CourseNoteEntry.CONTENT_URI, values);
+        Toast.makeText(this, R.string.course_note_created, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
