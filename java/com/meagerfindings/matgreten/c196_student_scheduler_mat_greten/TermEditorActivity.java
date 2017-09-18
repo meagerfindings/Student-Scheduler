@@ -39,6 +39,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     private int year;
     private int month;
     private int day;
+    private String termKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
             oldText = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_TITLE));
             oldStart = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_START));
             oldEnd = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_END));
+            termKey = cursor.getString(cursor.getColumnIndex(ScheduleContract.TermEntry.TERM_ID));
 
             titleEditor.setText(oldText);
             startEditor.setText(oldStart);
@@ -199,6 +201,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
                 break;
             case Intent.ACTION_EDIT:
                 Intent intent = new Intent(this, CourseEditorActivity.class);
+                intent.putExtra("termKey", termKey);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 break;
         }

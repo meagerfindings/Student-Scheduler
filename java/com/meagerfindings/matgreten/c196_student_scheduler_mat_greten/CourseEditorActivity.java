@@ -109,7 +109,12 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle("New Course");
+
+            if (intent.getExtras() != null) {
+                oldTerm = termTitleFromKey(intent.getExtras().getString("termKey"));
+            }
             loadTermSpinnerData();
+
         } else {
             action = Intent.ACTION_EDIT;
             courseFilter = CourseEntry.COURSE_ID + "=" + uri.getLastPathSegment();
@@ -350,7 +355,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
                 int lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
-                courseID = String.valueOf(lastID+ 1);
+                courseID = String.valueOf(lastID + 1);
                 break;
             case Intent.ACTION_EDIT:
                 assert courseCursor != null;
@@ -391,7 +396,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
 
                 int lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
-                courseID = String.valueOf(lastID+ 1);
+                courseID = String.valueOf(lastID + 1);
                 break;
             case Intent.ACTION_EDIT:
                 assert courseCursor != null;

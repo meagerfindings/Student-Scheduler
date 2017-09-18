@@ -14,6 +14,9 @@
 
 ### Bugs:
 1. Fix default times interfering with alerts...
+2. Fix default values to suggest adding values
+3. Disallow inserting without mandatory values
+    - for course alerts
 
 ### Written portions of assignment
   1. document this is targeted at API 26
