@@ -4,6 +4,11 @@
 
 ### Features:   
 2. Portrait and landscape modes
+3. change long click to click to edit or delete in terms activity?
+
+### bug: 
+- **prevent `'` from being entered in fields** 
+- add scrollview to note activity screens
 
 
 ### Written portions of assignment
