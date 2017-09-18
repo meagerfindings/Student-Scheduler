@@ -332,10 +332,34 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     private int calculateStartAlarmID() {
-        assert courseCursor != null;
-        courseCursor.moveToFirst();
+        String oldTermKey = "-1";
 
-        String oldTermKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                oldTermKey = String.valueOf(getTermKey(termSpinner.getSelectedItem().toString()));
+
+                ScheduleDBHelper handler = new ScheduleDBHelper(this);
+                SQLiteDatabase db = handler.getWritableDatabase();
+
+                String sqlQuery = "SELECT " + CourseEntry._ID + " FROM " + TABLE_COURSES;
+
+                Cursor cursor = db.rawQuery(sqlQuery, null);
+
+                assert cursor != null;
+                cursor.moveToLast();
+
+                int lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
+
+                courseID = String.valueOf(lastID+ 1);
+                break;
+            case Intent.ACTION_EDIT:
+                assert courseCursor != null;
+                courseCursor.moveToFirst();
+
+                oldTermKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+                break;
+        }
+
         String startAlarmString = "51" + oldTermKey + courseID;
         int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
         int startAlarmKey = Integer.parseInt(startAlarmString);
@@ -345,15 +369,38 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             startAlarmString = "51" + newTermID + courseID;
             startAlarmKey = Integer.parseInt(startAlarmString);
         }
-
         return startAlarmKey;
     }
 
     private int calculateEndAlarmID() {
-        assert courseCursor != null;
-        courseCursor.moveToFirst();
+        String oldTermKey = "-1";
 
-        String oldTermKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                oldTermKey = String.valueOf(getTermKey(termSpinner.getSelectedItem().toString()));
+
+                ScheduleDBHelper handler = new ScheduleDBHelper(this);
+                SQLiteDatabase db = handler.getWritableDatabase();
+
+                String sqlQuery = "SELECT " + CourseEntry._ID + " FROM " + TABLE_COURSES;
+
+                Cursor cursor = db.rawQuery(sqlQuery, null);
+
+                assert cursor != null;
+                cursor.moveToLast();
+
+                int lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
+
+                courseID = String.valueOf(lastID+ 1);
+                break;
+            case Intent.ACTION_EDIT:
+                assert courseCursor != null;
+                courseCursor.moveToFirst();
+
+                oldTermKey = courseCursor.getString(courseCursor.getColumnIndex(CourseEntry.COURSE_TERM_ID_FK));
+                break;
+        }
+
         String endAlarmString = "52" + oldTermKey + courseID;
         int newTermID = getTermKey(termSpinner.getSelectedItem().toString());
         int endAlarmKey = Integer.parseInt(endAlarmString);
@@ -496,6 +543,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 } else if (newEnd.length() == 0) {
                     setResult(RESULT_CANCELED);
                 } else {
+                    if (startCheckBoxEditor.isChecked()) setCourseStartAlarm();
+                    if (endCheckBoxEditor.isChecked()) setCourseEndAlarm();
                     insertCourse(newTitle, newStart, newEnd, newStatus, newTermID, newStartAlertTime, newEndAlertTime, newStartStatus, newEndStatus);
                 }
                 break;
@@ -531,7 +580,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().update(CourseEntry.CONTENT_URI, values, courseFilter, null);
 
-        // TODO: 9/12/17 Add set start and end date notifications to this, first check if box is checked
         Toast.makeText(this, R.string.course_updated, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
@@ -550,7 +598,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         values.put(CourseEntry.COURSE_END_ALERT_STATUS, endAlertStatus);
         getContentResolver().insert(CourseEntry.CONTENT_URI, values);
         setResult(RESULT_OK);
-        // TODO: 9/12/17 Add set start and end date notifications to this, first check if box is checked
     }
 
     public void openEditorForNewAssessment(View view) {

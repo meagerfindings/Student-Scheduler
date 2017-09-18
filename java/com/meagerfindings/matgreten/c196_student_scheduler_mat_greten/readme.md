@@ -7,8 +7,8 @@
 1. ~~Ability to highlight terms to delete them~~
     - Switch delete to select, and add delete to the action bar options
 3. ~~disable adding of courses without terms on so on down the line~~
-3. disable buttons throughout when in insert mode
-3. Add enabling of course alerts after inserting new courses
+3. ~~disable buttons throughout when in insert mode~~
+3. ~~Add enabling of course alerts after inserting new courses~~
 3. handel empty inputs in saves.
 2. Portrait and landscape modes
 
