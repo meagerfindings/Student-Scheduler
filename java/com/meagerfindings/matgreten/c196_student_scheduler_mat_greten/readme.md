@@ -2,36 +2,13 @@
   
 ## TODO LIST
 
-### Features:   
-2. Portrait and landscape modes
-3. change long click to click to edit or delete in terms activity?
-
-### bug: 
-- **prevent `'` from being entered in fields** 
-- add scrollview to note activity screens
-
-```
-09-18 16:24:59.746 4841-4841/com.meagerfindings.matgreten.c196_student_scheduler_mat_greten E/AndroidRuntime: FATAL EXCEPTION: main
-                                                                                                              Process: com.meagerfindings.matgreten.c196_student_scheduler_mat_greten, PID: 4841
-                                                                                                              java.lang.RuntimeException: Unable to start activity ComponentInfo{com.meagerfindings.matgreten.c196_student_scheduler_mat_greten/com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseNoteEditorActivity}: java.lang.IllegalArgumentException: Wrong state class, expecting View State but received class android.support.design.widget.CoordinatorLayout$SavedState instead. This usually happens when two views of different type have the same id in the same hierarchy. This view's id is id/include_course_note_photos. Make sure other views do not use the same id.
-                                                                                                                  at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2666)
-                                                                                                                  at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2727)
-                                                                                                                  at android.app.ActivityThread.handleRelaunchActivity(ActivityThread.java:4520)
-                                                                                                                  at android.app.ActivityThread.-wrap19(ActivityThread.java)
-                                                                                                                  at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1484)
-                                                                                                                  at android.os.Handler.dispatchMessage(Handler.java:102)
-                                                                                                                  at android.os.Looper.loop(Looper.java:154)
-                                                                                                                  at android.app.ActivityThread.main(ActivityThread.java:6121)
-                                                                                                                  at java.lang.reflect.Method.invoke(Native Method)
-                                                                      
-```
-
-
 ### Written portions of assignment
-  1. document this is targeted at API 26
+  1. read through requirements step by step again from Taskstream
   2. code cleanup
   3. citations
+  5. screenshots
   4. readme.md
+    1. document this is targeted at API 26
 
 
 ### Competencies:
@@ -193,3 +170,10 @@ Note: Verify that all the required functions of your application are working by 
 > Note: When using sources to support ideas and elements in an assessment, the submission MUST include APA formatted in-text citations with a corresponding reference list for any direct quotes or paraphrasing. It is not necessary to list sources that were consulted if they have not been quoted or paraphrased in the text of the assessment.
 
 > Note: No more than a combined total of 30% of a submission can be directly quoted or closely paraphrased from outside sources, even if cited correctly. For tips on using APA style, please refer to the APA Handout web link included in the APA Guidelines section.
+
+
+## Citations:
+```
+Regular Expressions: Predefined Character Classes. (2015). Retrieved September 18, 2017, from https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
+Provided clarity on which characters would be excluded and included by performing regex matching on input strings, ultimately allowing sanitization of user input.
+```

@@ -1,13 +1,13 @@
 package com.meagerfindings.matgreten.c196_student_scheduler_mat_greten;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Created by matgreten on 9/18/17.
  */
 
 class InputValidation {
+
+    /*Regular Expressions: Predefined Character Classes. (2015). Retrieved September 18, 2017, from https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
+    Provided clarity on which characters would be excluded and included by performing regex matching on input strings, ultimately allowing sanitization of user input.*/
 
 
     public static String validateString(String inputString) {
@@ -17,8 +17,7 @@ class InputValidation {
 
             String charToEval = String.valueOf(inputString.charAt(i));
 
-            // TODO: CITE: https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
-            if (charToEval.matches("^[0-9a-zA-Z\\s]+")) sanitizedString.append(charToEval);
+            if (charToEval.matches("^[0-9a-zA-Z-+_\\s]+")) sanitizedString.append(charToEval);
         }
 
         return sanitizedString.toString();
@@ -31,7 +30,7 @@ class InputValidation {
 
             String charToEval = String.valueOf(inputString.charAt(i));
 
-            if (charToEval.matches("^[0-9a-zA-Z@.]+")) sanitizedString.append(charToEval);
+            if (charToEval.matches("^[0-9a-zA-Z@+_.]+")) sanitizedString.append(charToEval);
         }
         return sanitizedString.toString();
     }
