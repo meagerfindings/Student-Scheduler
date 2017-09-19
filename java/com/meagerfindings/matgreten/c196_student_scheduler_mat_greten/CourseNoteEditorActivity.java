@@ -144,8 +144,8 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     }
 
     private void finishEditing() {
-        String newTitle = titleEditor.getText().toString().trim();
-        String newText = textEditor.getText().toString().trim();
+        String newTitle = InputValidation.validateString(titleEditor.getText().toString().trim());
+        String newText = InputValidation.validateString(textEditor.getText().toString().trim());
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newTitle.length() == 0) {

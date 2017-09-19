@@ -84,8 +84,6 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = matchedUriOpenHelper.getWritableDatabase();
         Cursor returnedCursor;
 
-//        System.out.println(uri.toString());
-
         switch (stringUriMatcher.match(uri)) {
             case TERM:
                 returnedCursor = db.query(

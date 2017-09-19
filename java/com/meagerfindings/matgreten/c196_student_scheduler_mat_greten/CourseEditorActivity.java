@@ -569,7 +569,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     private void finishEditing() {
-        String newTitle = titleEditor.getText().toString().trim();
+        String newTitle = InputValidation.validateString(titleEditor.getText().toString().trim());
         String newStart = startEditor.getText().toString().trim();
         String newEnd = endEditor.getText().toString().trim();
         String newStatus = statusSpinner.getSelectedItem().toString();

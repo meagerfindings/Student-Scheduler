@@ -322,7 +322,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
     }
 
     private void finishEditing() {
-        String newTitle = titleEditor.getText().toString().trim();
+        String newTitle = InputValidation.validateString(titleEditor.getText().toString().trim());
         String newTargetEndDate = dueDateEditor.getText().toString().trim();
         int newCourseID = getCourseKey(courseSpinner.getSelectedItem().toString());
         String newType = typeSpinner.getSelectedItem().toString();

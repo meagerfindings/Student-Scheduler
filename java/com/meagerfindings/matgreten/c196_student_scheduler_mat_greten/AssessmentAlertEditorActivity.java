@@ -125,7 +125,7 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
     }
 
     private void finishEditing() {
-        String newTitle = titleEditor.getText().toString().trim();
+        String newTitle = InputValidation.validateString(titleEditor.getText().toString().trim());
         String newTime = timeEditor.getText().toString().trim();
         String newDate = dateEditor.getText().toString().trim();
         switch (action) {

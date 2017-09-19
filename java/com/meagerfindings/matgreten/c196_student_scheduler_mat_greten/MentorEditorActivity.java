@@ -93,9 +93,9 @@ public class MentorEditorActivity extends AppCompatActivity {
     }
 
     private void finishEditing() {
-        String newName = nameEditor.getText().toString().trim();
-        String newPhone = phoneEditor.getText().toString().trim();
-        String newEmail = emailEditor.getText().toString().trim();
+        String newName = InputValidation.validateString(nameEditor.getText().toString().trim());
+        String newPhone = InputValidation.validatePhone(phoneEditor.getText().toString().trim());
+        String newEmail = InputValidation.validateEmail(emailEditor.getText().toString().trim());
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newName.length() == 0) {

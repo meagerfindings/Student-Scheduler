@@ -10,7 +10,7 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,7 +22,7 @@
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="81dp">
@@ -68,11 +68,8 @@
 
             <Spinner
                 android:id="@+id/courseTermSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="246dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/courseTermLabel"
                 app:layout_constraintLeft_toLeftOf="@+id/editCourseStartDate"
                 app:layout_constraintTop_toTopOf="@+id/courseTermLabel"
@@ -112,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="0dp"
                 android:ems="10"
                 android:hint="@string/date_hint"
                 android:onClick="setCourseStartDate"
@@ -123,15 +119,14 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/courseStartLabel"
                 app:layout_constraintLeft_toRightOf="@+id/courseStartLabel"
-                app:layout_constraintTop_toTopOf="@+id/courseStartLabel" />
+                app:layout_constraintTop_toTopOf="@+id/courseStartLabel"
+                android:layout_marginStart="16dp" />
 
             <TextView
                 android:id="@+id/editCourseEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="0dp"
                 android:ems="10"
                 android:hint="@string/date_hint"
                 android:onClick="setCourseEndDate"
@@ -141,7 +136,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/courseEndLabel"
                 app:layout_constraintLeft_toRightOf="@+id/courseEndLabel"
                 app:layout_constraintTop_toTopOf="@+id/courseEndLabel"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor"
+                android:layout_marginStart="16dp" />
 
             <TextView
                 android:id="@+id/courseStatus"
@@ -160,10 +156,8 @@
                 android:id="@+id/courseStatusSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/courseStatus"
                 app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintLeft_toRightOf="@+id/courseStatus"
@@ -183,14 +177,14 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseEndAlertDateTime" />
+                app:layout_constraintTop_toBottomOf="@+id/courseEndAlertDateTime"
+                android:layout_marginStart="8dp" />
 
             <TextView
                 android:id="@+id/courseAssessmentsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="0dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/assessments"
                 android:textAlignment="textEnd"
@@ -198,11 +192,12 @@
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="@+id/courseNotesLabel"
-                app:layout_constraintTop_toBottomOf="@+id/include_course_notes" />
+                app:layout_constraintTop_toBottomOf="@+id/include_course_notes"
+                android:layout_marginStart="8dp" />
 
             <ListView
                 android:id="@+id/courseAssessmentsListView"
-                android:layout_width="368dp"
+                android:layout_width="0dp"
                 android:layout_height="900dp"
                 app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -214,7 +209,6 @@
                 android:layout_width="133dp"
                 android:layout_height="28dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="0dp"
                 android:layout_marginTop="7dp"
                 android:onClick="openCourseNoteList"
                 android:text="@string/course_notes"
@@ -224,7 +218,8 @@
                 android:textSize="18sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="@+id/courseMentors"
-                app:layout_constraintTop_toBottomOf="@+id/include_course_mentors" />
+                app:layout_constraintTop_toBottomOf="@+id/include_course_mentors"
+                android:layout_marginStart="8dp" />
 
             <TextView
                 android:id="@+id/courseAlertsLabel"
@@ -243,10 +238,8 @@
                 android:id="@+id/endAlertCheckBox"
                 android:layout_width="34dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
                 android:checked="false"
                 android:duplicateParentState="false"
                 app:layout_constraintBottom_toBottomOf="@+id/courseEndAlertLabel"
@@ -257,10 +250,8 @@
                 android:id="@+id/startAlertCheckBox"
                 android:layout_width="34dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
                 android:checked="false"
                 android:duplicateParentState="false"
                 app:layout_constraintBottom_toBottomOf="@+id/courseStartAlertLabel"
@@ -303,12 +294,10 @@
                 android:id="@+id/courseStartAlertDateTime"
                 android:layout_width="218dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
                 android:ems="10"
                 android:hint="@string/time_hint"
                 android:onClick="setCourseStartTime"
@@ -324,12 +313,10 @@
                 android:id="@+id/courseEndAlertDateTime"
                 android:layout_width="218dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
                 android:ems="10"
                 android:hint="@string/time_hint"
                 android:onClick="setCourseEndTime"
@@ -356,7 +343,7 @@
             <include
                 android:id="@+id/include_course_mentors"
                 layout="@layout/activity_course_mentor_screen"
-                android:layout_width="395dp"
+                android:layout_width="0dp"
                 android:layout_height="164dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -367,7 +354,7 @@
             <include
                 android:id="@+id/include_course_notes"
                 layout="@layout/activity_course_note_screen"
-                android:layout_width="395dp"
+                android:layout_width="0dp"
                 android:layout_height="164dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintHorizontal_bias="0.0"
