@@ -101,12 +101,14 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         return true;
     }
 
-    //    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
+    /*  Kothari, U. (2015, January 28). How to save bitmap from ImageView to database sqlite? Retrieved September 10, 2017, from https://stackoverflow.com/a/28186390
+      After attempting to convert to multiple formats, Umang's example provided working solution for translating camera input into format acceptable for storage within a SQLite BLOB type field. */
+
     private void finishEditing() {
         Bitmap bitmap = ((BitmapDrawable) fileEditor.getDrawable()).getBitmap();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        byte[] newFile = bos.toByteArray();
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteOutputStream);
+        byte[] newFile = byteOutputStream.toByteArray();
 
         switch (action) {
             case Intent.ACTION_INSERT:
@@ -151,7 +153,9 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         startCamera();
     }
 
-    //TODO CITE: https://www.tutorialspoint.com/android/android_camera.htm
+     /* Android Camera. (2017, August 15). Retrieved September 10, 2017, from https://www.tutorialspoint.com/android/android_camera.htm
+      Example provided groundwork for understanding and implementing the camera. This resource was suggested by WGU class mentors with the suggestion that "You can follow the tutorial without having to make too many changes (all minor)." */
+
     public void startCamera() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (getFromPref(this, ALLOW_KEY)) {
@@ -183,7 +187,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
     private void showAlert() {
         AlertDialog alertDialog = new AlertDialog.Builder(AssessmentPhotoEditorActivity.this).create();
         alertDialog.setTitle("Alert");
-        alertDialog.setMessage("App needs to access the Camera.");
+        alertDialog.setMessage("The camera is needed to take photos for notes.");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DONT ALLOW",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -207,7 +211,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
     private void showSettingsAlert() {
         AlertDialog alertDialog = new AlertDialog.Builder(AssessmentPhotoEditorActivity.this).create();
         alertDialog.setTitle("Alert");
-        alertDialog.setMessage("App needs to access the Camera.");
+        alertDialog.setMessage("The camera is needed to take photos for notes.");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DONT ALLOW",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

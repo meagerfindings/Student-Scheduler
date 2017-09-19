@@ -229,8 +229,6 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
                 if (photoCursor.moveToFirst()) {
                     do {
-//              TODO Cite: https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
-
                         byte[] coursePhoto = photoCursor.getBlob(photoCursor.getColumnIndexOrThrow(CoursePhotoEntry.COURSE_PHOTO));
                         Bitmap bitmap = BitmapFactory.decodeByteArray(coursePhoto, 0, coursePhoto.length);
 

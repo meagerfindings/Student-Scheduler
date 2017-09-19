@@ -211,6 +211,9 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         startActivity(sendIntent);
     }
 
+    /* Annur, B. M. (2013, October 27). How to use "Share image using" sharing Intent to share images in android? Retrieved September 10, 2017, from https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
+      Provided example of sharing multiple images at once though an intent. Adapted and added to author's code in order to share note and photos associated with note to external application of user's choice. */
+
     public void shareWholeAssessmentNote() {
         String textContents = "Note Title: " + titleEditor.getText() +
                 "\nNote Text: " + textEditor.getText();
@@ -226,12 +229,8 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
 
         if (photoCursor.moveToFirst()) {
             do {
-//              TODO Cite: https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
-
                 byte[] assessmentPhoto = photoCursor.getBlob(photoCursor.getColumnIndexOrThrow(AssessmentPhotoEntry.ASSESSMENT_PHOTO));
                 Bitmap bitmap = BitmapFactory.decodeByteArray(assessmentPhoto, 0, assessmentPhoto.length);
-
-                System.out.println("looping through");
 
                 String temporaryPhotoPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Assessment Note Photo", null);
                 Uri photoUri = Uri.parse(temporaryPhotoPath);
@@ -247,7 +246,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
 
         shareIntent.setType("image/*");
-        startActivity(Intent.createChooser(shareIntent, "Share images to.."));
+        startActivity(Intent.createChooser(shareIntent, "Share note with images "));
 
         photoCursor.close();
         db.close();

@@ -172,8 +172,41 @@ Note: Verify that all the required functions of your application are working by 
 > Note: No more than a combined total of 30% of a submission can be directly quoted or closely paraphrased from outside sources, even if cited correctly. For tips on using APA style, please refer to the APA Handout web link included in the APA Guidelines section.
 
 
-## Citations:
+## References List:
+
+```
+Android Camera. (2017, August 15). Retrieved September 10, 2017, from https://www.tutorialspoint.com/android/android_camera.htm
+Example provided groundwork for understanding and implementing the camera. This resource was suggested by WGU class mentors with the suggestion that "You can follow the tutorial without having to make too many changes (all minor)."
+```
+```
+Android Pickers. (2016, October 11). Retrieved September 12, 2017, from https://developer.android.com/guide/topics/ui/controls/pickers.html
+Android documentation of date picker and time pickers.
+```
+```
+Annur, B. M. (2013, October 27). How to use "Share image using" sharing Intent to share images in android? Retrieved September 10, 2017, from https://stackoverflow.com/questions/7661875/how-to-use-share-image-using-sharing-intent-to-share-images-in-android
+Provided example of sharing multiple images at once though an intent. Adapted and added to author's code in order to share note and photos associated with note to external application of user's choice.
+```
+```
+Creating Content ProvidersEdit PagePage History. (n.d.). Retrieved September 1, 2017, from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
+Provided understanding from which the data layer of this application was built on to allow querying of database throughout the application.
+```
+```
+Eric, A. (2012, May 24). Android-er: Cancel alarm with a matching PendingIntent . Retrieved September 12, 2017, from http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
+Provided example of working notification cancelling after examining documentation and multiple sources did not clear this matter up.
+```
+```
+Kothari, U. (2015, January 28). How to save bitmap from ImageView to database sqlite? Retrieved September 10, 2017, from https://stackoverflow.com/a/28186390
+After attempting to convert to multiple formats, Umang's example provided working solution for translating camera input into format acceptable for storage within a SQLite BLOB type field.
+```
+```
+Kurniawan, B. (2015). Android Application Development: A Beginners Tutorial. Retrieved September 11, 2017, from http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0224012307
+Utilized throughout project, but particularly in creating, handling, and scheduling notifications.
+```
 ```
 Regular Expressions: Predefined Character Classes. (2015). Retrieved September 18, 2017, from https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
 Provided clarity on which characters would be excluded and included by performing regex matching on input strings, ultimately allowing sanitization of user input.
+```
+```
+Sharing Content with Intents. (n.d.). Retrieved September 9, 2017, from https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+Source provided insight into using a fileprovider.xml file to allow local storage for images.
 ```

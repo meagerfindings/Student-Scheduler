@@ -3,6 +3,6 @@
     <external-files-path
         name="images"
         path="Pictures" />
-
-    <!--TODO CITE: https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher-->
+    <!--Sharing Content with Intents. (n.d.). Retrieved September 9, 2017, from https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+    Source provided insight into using a fileprovider.xml file to allow local storage for images.-->
 </paths>

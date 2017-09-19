@@ -16,6 +16,9 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
  * Created by matgreten on 8/21/17.
  */
 
+/* Creating Content ProvidersEdit PagePage History. (n.d.). Retrieved September 1, 2017, from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
+        Provided understanding from which the data layer of this application was built on to allow querying of database throughout the application.  */
+
 public class ScheduleProvider extends ContentProvider {
 
     private static final int TERM = 100;
@@ -368,7 +371,7 @@ public class ScheduleProvider extends ContentProvider {
             case COURSE_PHOTO_ID:
                 return CoursePhotoEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri); // TODO citation for: https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
     }
 

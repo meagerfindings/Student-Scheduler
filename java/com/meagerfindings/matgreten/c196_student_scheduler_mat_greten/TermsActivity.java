@@ -26,8 +26,6 @@ import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.Sch
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TABLE_TERMS;
 import static com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.ScheduleContract.TermEntry;
 
-//TODO Follow: https://github.com/androidessence/MovieDatabase/blob/master/app/src/main/java/androidessence/moviedatabase/MovieListActivity.java from https://guides.codepath.com/android/Creating-Content-Providers#contract-classes
-
 public class TermsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 100;
     private CursorAdapter termCursorAdapter;

@@ -346,9 +346,9 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
+    /*Eric, A. (2012, May 24). Android-er: Cancel alarm with a matching PendingIntent . Retrieved September 12, 2017, from http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
+    Provided example of working notification cancelling after examining documentation and multiple sources did not clear this matter up.*/
     private void cancelAssessmentAlarm(int notificationID) {
-        // TODO: 9/12/17 CITE: http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
-
         Intent intent = new Intent(getBaseContext(), AlertHandler.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), notificationID, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

@@ -102,7 +102,6 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         return true;
     }
 
-    //    TODO CITE: https://stackoverflow.com/a/28186390 - for conversion into byte[]
     private void finishEditing() {
         Bitmap bitmap = ((BitmapDrawable) fileEditor.getDrawable()).getBitmap();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -151,7 +150,6 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         startCamera();
     }
 
-    //TODO CITE: https://www.tutorialspoint.com/android/android_camera.htm
     public void startCamera() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (getFromPref(this, ALLOW_KEY)) {
@@ -183,7 +181,7 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
     private void showAlert() {
         AlertDialog alertDialog = new AlertDialog.Builder(CoursePhotoEditorActivity.this).create();
         alertDialog.setTitle("Alert");
-        alertDialog.setMessage("App needs to access the Camera.");
+        alertDialog.setMessage("The camera is needed to take photos for notes.");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DON'T ALLOW",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -207,7 +205,7 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
     private void showSettingsAlert() {
         AlertDialog alertDialog = new AlertDialog.Builder(CoursePhotoEditorActivity.this).create();
         alertDialog.setTitle("Alert");
-        alertDialog.setMessage("App needs to access the Camera.");
+        alertDialog.setMessage("The camera is needed to take photos for notes.");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "DONT ALLOW",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

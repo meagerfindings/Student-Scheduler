@@ -460,8 +460,10 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return endAlarmKey;
     }
 
-    public void setCourseStartAlarm() {
+    /* Kurniawan, B. (2015). Android Application Development: A Beginners Tutorial. Retrieved September 11, 2017, from http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0224012307
+    Utilized throughout project, but particularly in creating, handling, and scheduling notifications. */
 
+    public void setCourseStartAlarm() {
         int notificationID = calculateStartAlarmID();
         String notificationTitle = "Start alert for " + titleEditor.getText();
         String notificationText = "Today is your first day in " + titleEditor.getText() + "!";
@@ -481,10 +483,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
 
         Long alertTime = dateTimeForAlarm.getTime();
-
-        // TODO: 9/12/2017 CITE: http://www.newthinktank.com/2014/12/make-android-apps-19/
-        // TODO: 9/11/17 Cite: http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0224012307
-        // TODO: 9/11/17 CITE:  http://mmlviewer.books24x7.com/book/id_81425/viewer.asp?bookid=81425&chunkid=0158723150
 
         Intent alertIntent = new Intent(this, AlertHandler.class);
         alertIntent.putExtra("notificationID", notificationID);
@@ -529,7 +527,6 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
     }
 
     private void cancelCourseAlarm(int notificationID) {
-        // TODO: 9/12/17 CITE: http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html
 
         Intent intent = new Intent(getBaseContext(), AlertHandler.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), notificationID, intent, 0);
@@ -773,8 +770,8 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         return null;
     }
 
-//    TODO CITE: https://developer.android.com/guide/topics/ui/controls/pickers.html
-//    TODO CITE: https://www.tutorialspoint.com/android/android_datepicker_control.htm
+    /*  Android Pickers. (2016, October 11). Retrieved September 12, 2017, from https://developer.android.com/guide/topics/ui/controls/pickers.html
+        Android documentation of date picker and time pickers.  */
 
     private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
