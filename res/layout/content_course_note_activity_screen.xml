@@ -18,7 +18,8 @@
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_marginRight="16dp" />
 
     <!--<ListView-->
         <!--android:id="@+id/detailedCourseNoteListView"-->
