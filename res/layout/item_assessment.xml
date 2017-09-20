@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/tvAssessmentTitle"
-        android:layout_width="278dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -51,9 +51,8 @@
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toRightOf="@+id/tvAssessmentTargetDateLabel"
-        android:layout_marginLeft="28dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTargetDateLabel"
-        android:layout_marginBottom="0dp"
         app:layout_constraintTop_toTopOf="@+id/tvAssessmentTargetDateLabel" />
 
     <TextView
@@ -87,9 +86,7 @@
         app:layout_constraintLeft_toRightOf="@+id/tvAssessmentTypeLabel"
         android:layout_marginLeft="8dp"
         app:layout_constraintTop_toTopOf="@+id/tvAssessmentTypeLabel"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTypeLabel"
-        android:layout_marginBottom="0dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTypeLabel" />
 
     <TextView
         android:id="@+id/tvAssessmentTermLabel"
@@ -120,9 +117,7 @@
         android:textStyle="italic"
         app:layout_constraintLeft_toRightOf="@+id/tvAssessmentTermLabel"
         app:layout_constraintTop_toTopOf="@+id/tvAssessmentTermLabel"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTermLabel"
-        android:layout_marginBottom="0dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentTermLabel" />
 
     <TextView
         android:id="@+id/tvAssessmentCourseLabel"
@@ -145,16 +140,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintLeft_toRightOf="@+id/tvAssessmentCourseLabel"
-        android:layout_marginLeft="44dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintTop_toTopOf="@+id/tvAssessmentCourseLabel"
-        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentCourseLabel"
-        android:layout_marginBottom="0dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssessmentCourseLabel" />
 
 </android.support.constraint.ConstraintLayout>

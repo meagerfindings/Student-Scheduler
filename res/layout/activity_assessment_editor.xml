@@ -9,8 +9,8 @@
     tools:layout_editor_absoluteY="81dp">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -38,7 +38,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="8dp" />
 
             <EditText
                 android:id="@+id/editAssessmentTitle"
@@ -71,7 +72,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentLabel"
+                android:layout_marginStart="8dp" />
 
             <Spinner
                 android:id="@+id/assessmentCourseSpinner"
@@ -99,7 +101,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseSpinner" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseSpinner"
+                android:layout_marginStart="8dp" />
 
             <Spinner
                 android:id="@+id/assessmentTypeSpinner"
@@ -114,13 +117,13 @@
                 app:layout_constraintHorizontal_bias="0.49"
                 app:layout_constraintLeft_toRightOf="@+id/editAssessmentTypeLabel"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseSpinner" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentCourseSpinner"
+                android:layout_marginEnd="8dp" />
 
             <TextView
                 android:id="@+id/courseDueDateValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -149,7 +152,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/assessmentTypeSpinner" />
+                app:layout_constraintTop_toBottomOf="@+id/assessmentTypeSpinner"
+                android:layout_marginStart="8dp" />
 
             <TextView
                 android:id="@+id/assessmentDueDateLabel"
@@ -163,7 +167,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/courseDueDateLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/courseDueDateLabel"
+                android:layout_marginStart="8dp" />
 
             <TextView
                 android:id="@+id/editAssessmentDueDateValue"
@@ -173,7 +178,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
                 android:ems="10"
                 android:hint="@string/date_hint"
                 android:onClick="setAssessmentDueDate"
@@ -197,15 +201,15 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include_assessment_alerts" />
+                app:layout_constraintTop_toBottomOf="@+id/include_assessment_alerts"
+                android:layout_marginStart="8dp" />
 
             <include
                 android:id="@+id/include_notes"
                 layout="@layout/content_assessment_note_activity_screen"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assessmentNotesLabel" />
@@ -214,7 +218,7 @@
                 android:id="@+id/assessmentAlertLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:onClick="openAssessmentAlertsList"
@@ -238,16 +242,17 @@
                 android:text="@string/add_assessment_note"
                 app:layout_constraintLeft_toRightOf="@+id/assessmentNotesLabel"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/assessmentNotesLabel" />
+                app:layout_constraintTop_toTopOf="@+id/assessmentNotesLabel"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
 
             <include
                 android:id="@+id/include_assessment_alerts"
                 layout="@layout/activity_assessment_alert_titles_screen"
-                android:layout_width="395dp"
+                android:layout_width="match_parent"
                 android:layout_height="164dp"
                 android:layout_marginTop="8dp"
                 android:onClick="openAssessmentAlertsList"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/assessmentAlertLabel" />

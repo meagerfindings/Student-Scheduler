@@ -81,7 +81,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editAssessmentNoteTextValue" />
 
     <include
-        android:id="@+id/include_assessment_note_photos"
+        android:id="@+id/include_assessment_note_photos_land"
         layout="@layout/activity_assessment_photo_screen"
         android:layout_width="667dp"
         android:layout_height="173dp"

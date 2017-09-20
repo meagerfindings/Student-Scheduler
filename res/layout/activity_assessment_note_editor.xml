@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentNoteEditorActivity"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="0dp">
 
     <TextView
         android:id="@+id/editAssessmentNoteTitleLabel"
@@ -79,17 +79,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp" />
 
-    <include
-        android:id="@+id/include_assessment_note_photos"
-        layout="@layout/activity_assessment_photo_screen"
-        android:layout_width="395dp"
-        android:layout_height="372dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assessmentPhotosLabel" />
-
     <Button
         android:id="@+id/shareNoteTextButton"
         android:layout_width="wrap_content"
@@ -115,5 +104,16 @@
         app:layout_constraintLeft_toRightOf="@+id/shareNoteTextButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editAssessmentNoteTextValue" />
+
+    <include
+        android:id="@+id/include_assessment_note_photos"
+        layout="@layout/activity_assessment_photo_screen"
+        android:layout_width="438dp"
+        android:layout_height="431dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentPhotosLabel" />
 
 </android.support.constraint.ConstraintLayout>

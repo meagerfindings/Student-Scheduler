@@ -1,14 +1,29 @@
 # MOBILE APPLICATIONS DEVELOPMENT
   
 ## TODO LIST
+- make long press disable click through to term
+- properly close db connections and cursors
+- assessment alerts hitting immediately, not being scheduled
+- deleted photos appearing in app still?
+    - in assessments screen
+- placeholder photos getting placed if we save
+    - in assessments screen
+- add term information to coursesActivity view
+    - get screenshot
+- ~~changing orientation on photos crashes app~~
+
 
 ### Written portions of assignment
-  1. read through requirements step by step again from Taskstream
+  1. ~~read through requirements step by step again from Taskstream~~
   2. code cleanup
-  3. citations
-  5. screenshots
+  3. ~~citations~~
+  5. ~~screenshots~~
+  6. storyboard
+  5. written portions
   4. readme.md
-    1. document this is targeted at API 26
+    
+## Assumptions
+- This app was written targeting API 25 and was tested on a virtual Nexus 5x and physical LGE Nexus 5x, both running API 25. 
 
 
 ### Competencies:
@@ -29,15 +44,11 @@
 
 ### Input
 _Each of the following needs to be input into the application:_
--  terms, including the following:
+
+- terms, including the following:
   - the term title (e.g., Term 1, Term 2)
   - the start date
-  - the end date
-- courses, including the following:
-  - the course title
-  - the start date
-  - the anticipated end date
-  - the status (e.g., in progress, completed, dropped, plan to take)
+  - the end datetake)
   - the course mentor name(s), phone number(s), and email address(es)
   - objective and performance assessments associated with each course
   - the ability to add optional notes for each course
@@ -50,20 +61,20 @@ _Each of the following needs to be displayed by the application on a separate sc
 - the navigation panel
 - a list of terms
 - a detailed view of each term, including the following:
-- the title (e.g., Term 1, Term 2)
-- the start date
-- the end date
-- a list of courses for each term
+    - the title (e.g., Term 1, Term 2)
+    - the start date
+    - the end date
+    - a list of courses for each term
 - a detailed view of each course, including the following:
-- the course title
-- the start date
-- the anticipated end date
+    - the course title
+    - the start date
+    - the anticipated end date
 - assessments
-- a list of performance and objective assessments for a selected course
-- a detailed view of each objective and performance assessment, including the following:
-- the due date for a selected course
-- notes for the selected course
-- sharing features (e.g., email, SMS)
+    - a list of performance and objective assessments for a selected course
+    - a detailed view of each objective and performance assessment, including the following:
+    - the due date for a selected course
+    - notes for the selected course
+    - sharing features (e.g., email, SMS)
 
 ## Requirements:
 

@@ -79,10 +79,10 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="@+id/include_course_note_photos" />
+        app:layout_constraintLeft_toLeftOf="@+id/include_course_note_photos_land" />
 
     <include
-        android:id="@+id/include_course_note_photos"
+        android:id="@+id/include_course_note_photos_land"
         layout="@layout/activity_course_photo_screen"
         android:layout_width="342dp"
         android:layout_height="286dp"
