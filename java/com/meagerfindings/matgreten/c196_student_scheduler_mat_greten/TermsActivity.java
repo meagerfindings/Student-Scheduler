@@ -64,7 +64,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int row, long arg3) {
                 selectedItem = String.valueOf(arg3);
-                return false;
+                return true;
             }
         });
 
