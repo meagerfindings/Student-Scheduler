@@ -4,8 +4,8 @@
 - make long press disable click through to term
 - properly close db connections and cursors
 - assessment alerts hitting immediately, not being scheduled
-- deleted photos appearing in app still?
-    - in assessments screen
+- ~~deleted photos appearing in app still?~~
+    - ~~only for assessments~~
 - ~~placeholder photos getting placed if we save~~
     - ~~in assessmentnotes screen~~
     - ~~in coursenotes screen~~

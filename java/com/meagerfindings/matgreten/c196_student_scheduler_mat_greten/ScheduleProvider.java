@@ -551,7 +551,7 @@ public class ScheduleProvider extends ContentProvider {
                 rows = db.delete(CoursePhotoEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ASSESSMENT_PHOTOS:
-                rows = db.delete(CoursePhotoEntry.TABLE_NAME, selection, selectionArgs);
+                rows = db.delete(AssessmentPhotoEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
