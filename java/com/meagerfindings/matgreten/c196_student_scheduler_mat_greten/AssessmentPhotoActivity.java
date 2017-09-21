@@ -64,6 +64,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
         });
 
         getSupportActionBar().setTitle("AssessmentPhotos");
+        db.close();
     }
 
     public void insertAssessmentPhoto(String assessmentPhotoName) {
@@ -107,6 +108,7 @@ public class AssessmentPhotoActivity extends AppCompatActivity implements Loader
                 " WHERE " + AssessmentPhotoEntry.ASSESSMENT_PHOTO_NOTE_FK + " = " + assessmentNoteKey;
 
         assessmentPhotoCursor = db.rawQuery(sqlQuery, null);
+        db.close();
         return null;
     }
 

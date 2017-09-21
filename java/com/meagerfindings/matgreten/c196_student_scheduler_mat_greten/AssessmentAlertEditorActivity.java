@@ -279,6 +279,8 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
+        db.close();
+
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
@@ -296,6 +298,8 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         String assessmentAlertID = cursor.getString(cursor.getColumnIndex(AssessmentAlertEntry.ASSESSMENT_ALERT_ID));
         String endAlarmString = "117" + assessmentFKID + assessmentAlertID;
         int endAlarmKey = Integer.parseInt(endAlarmString);
+
+        db.close();
 
         return endAlarmKey;
     }
@@ -342,6 +346,8 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         alertIntent.putExtra("notificationText", notificationText);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        db.close();
 
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }

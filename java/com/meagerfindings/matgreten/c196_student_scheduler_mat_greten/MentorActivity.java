@@ -72,6 +72,7 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
         });
 
         getSupportActionBar().setTitle("Mentors");
+        db.close();
     }
 
     private String getCourseKey(String courseTitle) {
@@ -87,15 +88,6 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
         db.close();
 
         return courseKey;
-    }
-
-    public void insertMentor(String mentorName) {
-        ContentValues values = new ContentValues();
-        values.put(MentorEntry.MENTOR_NAME, mentorName);
-        Uri mentorUri = getContentResolver().insert(MentorEntry.CONTENT_URI, values);
-
-        assert mentorUri != null;
-        Log.d("MentorScreenActivity", "Inserted mentor " + mentorUri.getLastPathSegment());
     }
 
     @Override
@@ -132,6 +124,7 @@ public class MentorActivity extends AppCompatActivity implements LoaderManager.L
 
         detailedMentorListView.setAdapter(mentorCursorAdapter);
         mentorCursorAdapter.changeCursor(mentorCursor);
+        db.close();
         return null;
     }
 

@@ -114,9 +114,7 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
             if (getIntent().getExtras() != null)
                 oldCourse = String.valueOf(getIntent().getExtras().getString("courseTitle"));
             loadCourseSpinnerData();
-        } else
-
-        {
+        } else {
             action = Intent.ACTION_EDIT;
             assessmentFilter = AssessmentEntry.ASSESSMENT_ID + "=" + uri.getLastPathSegment();
 
@@ -179,6 +177,8 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
                     break;
                 }
             }
+            
+            db.close();
         }
     }
 
@@ -209,8 +209,8 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
         else if (assessmentAlertTitles.size() > 2)
             assessmentAlertTitles.set(2, "Click ASSESSMENT ALERT label to see full list of alerts.");
 
-        System.out.println("Course note tiltes =" + assessmentAlertTitles);
-
+//        System.out.println("Course note tiltes =" + assessmentAlertTitles);
+        db.close();
         return assessmentAlertTitles;
     }
 
@@ -401,6 +401,8 @@ public class AssessmentEditorActivity extends AppCompatActivity implements Loade
         ArrayList<String> assessmentAlertTitles = getAssessmentAlertTitles(assessmentID);
         assessmentAlertListView = (ListView) findViewById(R.id.assessmentAlertListView);
         assessmentAlertListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, assessmentAlertTitles));
+
+        db.close();
         return null;
     }
 

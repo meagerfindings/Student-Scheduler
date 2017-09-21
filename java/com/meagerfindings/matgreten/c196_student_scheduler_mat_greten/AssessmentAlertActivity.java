@@ -70,6 +70,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
         });
 
         getSupportActionBar().setTitle("AssessmentAlerts");
+        db.close();
     }
 
     private String getAssessmentKey(String assessmentTitle) {
@@ -122,6 +123,7 @@ public class AssessmentAlertActivity extends AppCompatActivity implements Loader
 
         detailedAssessmentAlertListView.setAdapter(assessmentAlertAdapter);
         assessmentAlertAdapter.changeCursor(assessmentAlertCursor);
+        db.close();
         return null;
     }
 

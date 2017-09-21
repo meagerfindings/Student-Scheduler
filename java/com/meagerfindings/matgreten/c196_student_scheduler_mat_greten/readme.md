@@ -2,7 +2,7 @@
   
 ## TODO LIST
 - make long press disable click through to term
-- properly close db connections and cursors
+- ~~properly close db connections~~
 - assessment alerts hitting immediately, not being scheduled
 - ~~courses off by one in courses activity when clicking through~~
 - ~~deleted photos appearing in app still?~~

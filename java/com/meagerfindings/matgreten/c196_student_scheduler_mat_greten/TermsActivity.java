@@ -69,7 +69,7 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         });
 
         getSupportActionBar().setTitle("Terms");
-
+        db.close();
     }
 
     public void insertTerm(String noteText) {

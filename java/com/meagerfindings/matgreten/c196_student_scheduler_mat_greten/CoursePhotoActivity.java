@@ -67,20 +67,11 @@ public class CoursePhotoActivity extends AppCompatActivity implements LoaderMana
         });
 
         getSupportActionBar().setTitle("CoursePhotos");
-    }
-
-    public void insertCoursePhoto(String coursePhotoName) {
-        ContentValues values = new ContentValues();
-        values.put(CoursePhotoEntry.COURSE_PHOTO, coursePhotoName);
-        Uri coursePhotoUri = getContentResolver().insert(CoursePhotoEntry.CONTENT_URI, values);
-
-        assert coursePhotoUri != null;
-        Log.d("CoursePhoto", "Inserted testPhoto " + coursePhotoUri.getLastPathSegment());
+//        db.close();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
@@ -98,42 +89,13 @@ public class CoursePhotoActivity extends AppCompatActivity implements LoaderMana
         return true;
     }
 
-    private void deleteAllCoursePhotos() {
-        DialogInterface.OnClickListener dialogClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int button) {
-                        if (button == DialogInterface.BUTTON_POSITIVE) {
-
-                            //Insert Data management code here
-                            getContentResolver().delete(CoursePhotoEntry.CONTENT_URI, null, null);
-                            restartLoader();
-
-                            Toast.makeText(CoursePhotoActivity.this,
-                                    getString(R.string.all_deleted),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.are_you_sure))
-                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
-                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
-                .show();
-
-    }
-
-
-    private void restartLoader() {
+        private void restartLoader() {
         getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
         return null;
-
     }
 
     @Override

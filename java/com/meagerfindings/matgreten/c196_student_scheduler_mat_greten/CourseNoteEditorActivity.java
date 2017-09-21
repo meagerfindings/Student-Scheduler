@@ -106,6 +106,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
+            db.close();
         }
     }
 
@@ -198,8 +199,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
     }
 
     public void shareNoteText(View view) {
-        String textContents = "Note Title: " + titleEditor.getText() +
-                "\nNote Text: " + textEditor.getText();
+        String textContents = "Note Title: " + titleEditor.getText() + "\nNote Text: " + textEditor.getText();
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -215,8 +215,7 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
                 break;
             case Intent.ACTION_EDIT:
 
-                String textContents = "Note Title: " + titleEditor.getText() +
-                        "\nNote Text: " + textEditor.getText();
+                String textContents = "Note Title: " + titleEditor.getText() + "\nNote Text: " + textEditor.getText();
 
                 ArrayList<Uri> imageUris = new ArrayList<>();
                 ScheduleDBHelper handler = new ScheduleDBHelper(this);
@@ -274,6 +273,8 @@ public class CourseNoteEditorActivity extends AppCompatActivity implements Loade
 
         testPhotoListView.setAdapter(coursePhotoAdapter);
         coursePhotoAdapter.changeCursor(coursePhotoCursor);
+//        coursePhotoCursor.close();
+        db.close();
         return null;
     }
 

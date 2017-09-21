@@ -112,6 +112,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
+            db.close();
         }
     }
 
@@ -284,6 +285,7 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
 
         TermCourseCursorAdapter courseAdapter = new TermCourseCursorAdapter(this, R.layout.activity_term_editor, courseCursor, 0);
         courseListView.setAdapter(courseAdapter);
+        db.close();
         return null;
     }
 
@@ -335,6 +337,5 @@ public class TermEditorActivity extends AppCompatActivity implements android.app
     private void showEndDate(int year, int month, int day) {
         endEditor.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
     }
-
 
 }

@@ -113,6 +113,8 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
                     startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 }
             });
+
+            db.close();
         }
     }
 
@@ -201,8 +203,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
     }
 
     public void shareNoteText(View view) {
-        String textContents = "Note Title: " + titleEditor.getText() +
-                "\nNote Text: " + textEditor.getText();
+        String textContents = "Note Title: " + titleEditor.getText() + "\nNote Text: " + textEditor.getText();
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -275,7 +276,7 @@ public class AssessmentNoteEditorActivity extends AppCompatActivity implements L
         AssessmentPhotoCursorAdapter assessmentPhotoAdapter = new AssessmentPhotoCursorAdapter(this, assessmentPhotoCursor, 0);
         testPhotoListView.setAdapter(assessmentPhotoAdapter);
         assessmentPhotoAdapter.changeCursor(assessmentPhotoCursor);
-
+        db.close();
         return null;
     }
 

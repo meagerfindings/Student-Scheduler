@@ -75,16 +75,7 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
         });
 
         getSupportActionBar().setTitle("Assessments");
-
-    }
-
-    public void insertAssessment(String assessmentText) {
-        ContentValues values = new ContentValues();
-        values.put(AssessmentEntry.ASSESSMENT_TITLE, assessmentText);
-        Uri assessmentURI = getContentResolver().insert(AssessmentEntry.CONTENT_URI, values);
-
-        assert assessmentURI != null;
-        Log.d("AssessmentActivity", "Inserted assessment " + assessmentURI.getLastPathSegment());
+        db.close();
     }
 
     @Override
@@ -134,6 +125,8 @@ public class AssessmentActivity extends AppCompatActivity implements LoaderManag
         AssessmentCursorAdapter assessmentAdapter = new AssessmentCursorAdapter(this, assessmentCursor, 0);
         assessmentListView.setAdapter(assessmentAdapter);
         assessmentAdapter.changeCursor(assessmentCursor);
+
+        db.close();
         return null;
     }
 

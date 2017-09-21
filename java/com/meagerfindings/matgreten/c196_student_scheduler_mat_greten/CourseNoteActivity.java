@@ -70,7 +70,7 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
         });
 
         getSupportActionBar().setTitle("Course Notes");
-
+        db.close();
     }
 
     public void insertCourseNote(String courseNoteText) {
@@ -130,7 +130,7 @@ public class CourseNoteActivity extends AppCompatActivity implements LoaderManag
 
         detailedCourseNoteListView.setAdapter(courseNoteAdapter);
         courseNoteAdapter.changeCursor(courseNoteCursor);
-
+        db.close();
         return null;
     }
 

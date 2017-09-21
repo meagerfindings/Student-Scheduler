@@ -252,6 +252,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                         }
                     }
             );
+            db.close();
         }
     }
 
@@ -373,7 +374,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
             termTile = termCursor.getString(0);
         termCursor.close();
         db.close();
-
+        db.close();
         return termTile;
     }
 
@@ -398,6 +399,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
                 courseID = String.valueOf(lastID + 1);
+                db.close();
                 break;
             case Intent.ACTION_EDIT:
                 assert courseCursor != null;
@@ -438,6 +440,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                     lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
                 courseID = String.valueOf(lastID + 1);
+                db.close();
                 break;
             case Intent.ACTION_EDIT:
                 assert courseCursor != null;

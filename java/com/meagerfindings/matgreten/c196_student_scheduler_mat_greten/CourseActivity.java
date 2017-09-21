@@ -77,6 +77,8 @@ public class CourseActivity extends AppCompatActivity implements LoaderManager.L
 
         getSupportActionBar().setTitle("Courses");
 
+        db.close();
+
     }
 
     public void insertCourse(String courseText) {
@@ -145,7 +147,7 @@ public class CourseActivity extends AppCompatActivity implements LoaderManager.L
 
         courseListView.setAdapter(courseAdapter);
         courseAdapter.changeCursor(courseCursor);
-
+        db.close();
         return null;
     }
 
