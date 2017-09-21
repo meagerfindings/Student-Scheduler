@@ -88,7 +88,7 @@
     <include
         android:id="@+id/include_course_note_photos"
         layout="@layout/activity_course_photo_screen"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="310dp"
         android:layout_marginTop="10dp"
         app:layout_constraintHorizontal_bias="0.0"

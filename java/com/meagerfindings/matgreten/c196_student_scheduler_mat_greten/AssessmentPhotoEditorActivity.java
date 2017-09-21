@@ -40,6 +40,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
+    private boolean photoTaken = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if (action.equals(Intent.ACTION_EDIT)) {
             getMenuInflater().inflate(R.menu.menu_editor, menu);
-        } else if (action.equals(Intent.ACTION_INSERT)){
+        } else if (action.equals(Intent.ACTION_INSERT)) {
             getMenuInflater().inflate(R.menu.menu_insert, menu);
         }
         return true;
@@ -112,13 +113,19 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
 
         switch (action) {
             case Intent.ACTION_INSERT:
-                insertAssessmentPhoto(newFile);
+                if (photoTaken) {
+                    insertAssessmentPhoto(newFile);
+                } else {
+                    setResult(RESULT_CANCELED);
+                }
                 break;
             case Intent.ACTION_EDIT:
                 if (newFile == oldFile) {
                     setResult(RESULT_CANCELED);
-                } else {
+                } else if (photoTaken) {
                     updateAssessmentPhoto(newFile);
+                } else {
+                    setResult(RESULT_CANCELED);
                 }
         }
         finish();
@@ -273,6 +280,7 @@ public class AssessmentPhotoEditorActivity extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            photoTaken = true;
         }
     }
 

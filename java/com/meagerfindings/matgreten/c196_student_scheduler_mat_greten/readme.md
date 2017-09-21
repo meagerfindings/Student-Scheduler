@@ -6,8 +6,9 @@
 - assessment alerts hitting immediately, not being scheduled
 - deleted photos appearing in app still?
     - in assessments screen
-- placeholder photos getting placed if we save
-    - in assessments screen
+- ~~placeholder photos getting placed if we save~~
+    - ~~in assessmentnotes screen~~
+    - ~~in coursenotes screen~~
 - add term information to coursesActivity view
     - get screenshot
 - ~~changing orientation on photos crashes app~~

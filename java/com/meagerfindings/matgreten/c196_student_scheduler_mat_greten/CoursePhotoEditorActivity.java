@@ -41,6 +41,7 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
+    private boolean photoTaken = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,13 +111,19 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
 
         switch (action) {
             case Intent.ACTION_INSERT:
-                insertCoursePhoto(newFile);
+                if (photoTaken) {
+                    insertCoursePhoto(newFile);
+                } else {
+                    setResult(RESULT_CANCELED);
+                }
                 break;
             case Intent.ACTION_EDIT:
                 if (newFile == oldFile) {
                     setResult(RESULT_CANCELED);
-                } else {
+                } else if (photoTaken){
                     updateCoursePhoto(newFile);
+                } else {
+                    setResult(RESULT_CANCELED);
                 }
         }
         finish();
@@ -267,6 +274,7 @@ public class CoursePhotoEditorActivity extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            photoTaken = true;
         }
     }
 
