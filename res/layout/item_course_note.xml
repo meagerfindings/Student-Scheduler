@@ -32,7 +32,6 @@
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCourseNoteTitle" />
 

@@ -4,13 +4,14 @@
 - make long press disable click through to term
 - properly close db connections and cursors
 - assessment alerts hitting immediately, not being scheduled
+- ~~courses off by one in courses activity when clicking through~~
 - ~~deleted photos appearing in app still?~~
     - ~~only for assessments~~
 - ~~placeholder photos getting placed if we save~~
     - ~~in assessmentnotes screen~~
     - ~~in coursenotes screen~~
-- add term information to coursesActivity view
-    - get screenshot
+- ~~add term information to coursesActivity view~~
+    - ~~get screenshot~~
 - ~~changing orientation on photos crashes app~~
 
 

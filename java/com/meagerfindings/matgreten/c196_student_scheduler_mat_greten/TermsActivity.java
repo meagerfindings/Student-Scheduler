@@ -179,7 +179,6 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
 
     public void openEditorForNewTerm(View view) {
         Intent intent = new Intent(this, TermEditorActivity.class);
-
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
     }
 

@@ -75,7 +75,7 @@
                 android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentActivity" />
         </activity>
         <activity
-            android:name=".CoursesActivity"
+            android:name=".CourseActivity"
             android:label="@string/courses"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".MainActivity">
@@ -95,10 +95,10 @@
             android:name=".CourseEditorActivity"
             android:label="@string/edit_course"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".CoursesActivity">
+            android:parentActivityName=".CourseActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursesActivity" />
+                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseActivity" />
         </activity>
         <activity
             android:name=".MentorActivity"
