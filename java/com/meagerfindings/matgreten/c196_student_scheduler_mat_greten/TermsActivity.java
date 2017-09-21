@@ -72,15 +72,6 @@ public class TermsActivity extends AppCompatActivity implements LoaderManager.Lo
         db.close();
     }
 
-    public void insertTerm(String noteText) {
-        ContentValues values = new ContentValues();
-        values.put(TermEntry.TERM_TITLE, noteText);
-        Uri noteUri = getContentResolver().insert(TermEntry.CONTENT_URI, values);
-
-        assert noteUri != null;
-        Log.d("TermScreenActivity", "Inserted term " + noteUri.getLastPathSegment());
-    }
-
     private void deleteTerm(final String termID) {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {

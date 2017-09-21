@@ -270,18 +270,25 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Long alertTime = dateTimeForAlarm.getTime();
+        long alertTime = dateTimeForAlarm.getTime();
+//        System.out.println("Alert time: " + alertTime);
+
+        long currentTime = System.currentTimeMillis();
+//        System.out.println("Current Time: " + currentTime);
 
         Intent alertIntent = new Intent(this, AlertHandler.class);
         alertIntent.putExtra("notificationID", notificationID);
         alertIntent.putExtra("notificationTitle", notificationTitle);
         alertIntent.putExtra("notificationText", notificationText);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
+        if (currentTime > alertTime) {
+            Toast.makeText(this, "This time is in the past. Saving data, but alarm will not be set.", Toast.LENGTH_LONG).show();
+        } else {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        }
         db.close();
-
-        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
     private int calculateNewAssessmentAlarmID() {
@@ -339,17 +346,24 @@ public class AssessmentAlertEditorActivity extends AppCompatActivity {
         }
 
         Long alertTime = dateTimeForAlarm.getTime();
+//        System.out.println("Alert time: " + alertTime);
+
+        long currentTime = System.currentTimeMillis();
+//        System.out.println("Current Time: " + currentTime);
 
         Intent alertIntent = new Intent(this, AlertHandler.class);
         alertIntent.putExtra("notificationID", notificationID);
         alertIntent.putExtra("notificationTitle", notificationTitle);
         alertIntent.putExtra("notificationText", notificationText);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
+        if (currentTime > alertTime){
+            Toast.makeText(this, "This time is in the past. Saving data, but alarm will not be set.", Toast.LENGTH_LONG).show();
+        } else {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        }
         db.close();
-
-        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
     /*Eric, A. (2012, May 24). Android-er: Cancel alarm with a matching PendingIntent . Retrieved September 12, 2017, from http://android-er.blogspot.com/2012/05/cancel-alarm-with-matching.html

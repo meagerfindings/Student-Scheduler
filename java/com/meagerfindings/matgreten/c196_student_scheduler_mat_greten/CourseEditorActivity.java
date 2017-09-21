@@ -315,7 +315,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         else if (courseNoteTitles.size() > 2)
             courseNoteTitles.set(2, "Click COURSE NOTES label to see full list of notes.");
 
-        System.out.println("Course note titles =" + courseNoteTitles);
+//        System.out.println("Course note titles =" + courseNoteTitles);
 
         return courseNoteTitles;
     }
@@ -395,7 +395,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 int lastID = 0;
 
                 assert cursor != null;
-                if(cursor.moveToLast())
+                if (cursor.moveToLast())
                     lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
                 courseID = String.valueOf(lastID + 1);
@@ -436,7 +436,7 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
                 int lastID = 0;
 
                 assert cursor != null;
-                if(cursor.moveToLast())
+                if (cursor.moveToLast())
                     lastID = cursor.getInt(cursor.getColumnIndex(CourseEntry.COURSE_ID));
 
                 courseID = String.valueOf(lastID + 1);
@@ -486,15 +486,23 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
 
         Long alertTime = dateTimeForAlarm.getTime();
+//        System.out.println("Alert time: " + alertTime);
+
+        long currentTime = System.currentTimeMillis();
+//        System.out.println("Current Time: " + currentTime);
 
         Intent alertIntent = new Intent(this, AlertHandler.class);
         alertIntent.putExtra("notificationID", notificationID);
         alertIntent.putExtra("notificationTitle", notificationTitle);
         alertIntent.putExtra("notificationText", notificationText);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        if (currentTime > alertTime) {
+            Toast.makeText(this, "This time is in the past. Saving data, but alarm will not be set.", Toast.LENGTH_LONG).show();
+        } else {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
     public void setCourseEndAlarm() {
@@ -518,15 +526,23 @@ public class CourseEditorActivity extends AppCompatActivity implements android.a
         }
 
         Long alertTime = dateTimeForAlarm.getTime();
+//        System.out.println("Alert time: " + alertTime);
+
+        long currentTime = System.currentTimeMillis();
+//        System.out.println("Current Time: " + currentTime);
 
         Intent alertIntent = new Intent(this, AlertHandler.class);
         alertIntent.putExtra("notificationID", notificationID);
         alertIntent.putExtra("notificationTitle", notificationTitle);
         alertIntent.putExtra("notificationText", notificationText);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        if (currentTime > alertTime) {
+            Toast.makeText(this, "This time is in the past. Saving data, but alarm will not be set.", Toast.LENGTH_LONG).show();
+        } else {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, notificationID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void cancelCourseAlarm(int notificationID) {

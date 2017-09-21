@@ -1,8 +1,8 @@
 # MOBILE APPLICATIONS DEVELOPMENT
   
 ## TODO LIST
-- assessment alerts hitting immediately, not being scheduled
-- course alerts hitting immediately, not being scheduled
+- ~~assessment alerts hitting immediately, not being scheduled~~
+- ~~course alerts hitting immediately, not being scheduled~~
 - ~~make long press disable click through to term~~
 - ~~properly close db connections~~
 - ~~courses off by one in courses activity when clicking through~~
