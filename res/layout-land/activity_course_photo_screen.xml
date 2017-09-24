@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursePhotoActivity">
+    tools:context="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CoursePhotoActivity">
 
     <android.support.design.widget.FloatingActionButton
     android:id="@+id/fab"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten">
+    package="com.meagerfindings.matgreten.student_scheduler">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,14 +25,14 @@
         </activity>
 
         <provider
-            android:name=".ScheduleProvider"
-            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten"
+            android:name="com.meagerfindings.matgreten.student_scheduler.ScheduleProvider"
+            android:authorities="com.meagerfindings.matgreten.student_scheduler"
             android:exported="false"
             android:protectionLevel="signature"
             android:syncable="true" />
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.fileprovider"
+            android:authorities="com.meagerfindings.matgreten.student_scheduler.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -41,152 +41,152 @@
         </provider>
 
         <activity
-            android:name=".TermsActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.TermsActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.TermsActivity" />
         </activity>
         <activity
-            android:name=".TermEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.TermEditorActivity"
             android:label="@string/edit_term"
-            android:parentActivityName=".TermsActivity"
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.TermsActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.TermsActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.TermsActivity" />
         </activity>
         <activity
-            android:name=".AssessmentActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentActivity"
             android:label="@string/assessments"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MainActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.MainActivity" />
         </activity>
         <activity
-            android:name=".AssessmentEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentEditorActivity"
             android:label="@string/assessment_editor"
-            android:parentActivityName=".AssessmentActivity"
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.AssessmentActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.AssessmentActivity" />
         </activity>
         <activity
-            android:name=".CourseActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.CourseActivity"
             android:label="@string/courses"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MainActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.MainActivity" />
         </activity>
         <activity
-            android:name=".AssessmentNoteEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentNoteEditorActivity"
             android:label="@string/edit_assessment_note"
-            android:parentActivityName=".AssessmentEditorActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.AssessmentEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.AssessmentEditorActivity" />
         </activity>
         <activity
-            android:name=".CourseEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.CourseEditorActivity"
             android:label="@string/edit_course"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".CourseActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.CourseActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CourseActivity" />
         </activity>
         <activity
-            android:name=".MentorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.MentorActivity"
             android:label="@string/course_mentors"
-            android:parentActivityName=".CourseEditorActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.CourseEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CourseEditorActivity" />
         </activity>
         <activity
-            android:name=".MentorEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.MentorEditorActivity"
             android:label="@string/edit_mentor"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".MentorActivity" />
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.MentorActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.MentorActivity" />
+            android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.MentorActivity" />
 
         <activity
-            android:name=".CourseNoteActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.CourseNoteActivity"
             android:label="@string/course_notes"
-            android:parentActivityName=".CourseEditorActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.CourseEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseEditorActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CourseEditorActivity" />
         </activity>
         <activity
-            android:name=".CourseNoteEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.CourseNoteEditorActivity"
             android:label="@string/edit_course_note"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".CourseNoteActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.CourseNoteActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseNoteActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CourseNoteActivity" />
         </activity>
         <activity
-            android:name=".AssessmentAlertActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentAlertActivity"
             android:label="@string/assessment_alert"
-            android:parentActivityName=".AssessmentEditorActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.AssessmentEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentEditorActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.AssessmentEditorActivity" />
         </activity>
         <activity
-            android:name=".AssessmentAlertEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentAlertEditorActivity"
             android:label="@string/edit_assessment_alert"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".AssessmentAlertActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.AssessmentAlertActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentAlertActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.AssessmentAlertActivity" />
         </activity>
         <activity
-            android:name=".AssessmentPhotoActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentPhotoActivity"
             android:label="@string/assessment_note_photos"
-            android:parentActivityName=".AssessmentNoteEditorActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.AssessmentNoteEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentNoteEditorActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.AssessmentNoteEditorActivity" />
         </activity>
         <activity
-            android:name=".AssessmentPhotoEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.AssessmentPhotoEditorActivity"
             android:label="@string/photo"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".AssessmentPhotoActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.AssessmentPhotoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.AssessmentPhotoActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.AssessmentPhotoActivity" />
         </activity>
         <activity
-            android:name=".CoursePhotoActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.CoursePhotoActivity"
             android:label="@string/course_note_photos1"
-            android:parentActivityName=".CourseNoteEditorActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.CourseNoteEditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CourseNoteEditorActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CourseNoteEditorActivity" />
         </activity>
         <activity
-            android:name=".CoursePhotoEditorActivity"
+            android:name="com.meagerfindings.matgreten.student_scheduler.CoursePhotoEditorActivity"
             android:label="@string/photo"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".CoursePhotoActivity">
+            android:parentActivityName="com.meagerfindings.matgreten.student_scheduler.CoursePhotoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.meagerfindings.matgreten.c196_student_scheduler_mat_greten.CoursePhotoActivity" />
+                android:value="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.CoursePhotoActivity" />
         </activity>
 
-        <receiver android:name=".AlertHandler" />
+        <receiver android:name="com.meagerfindings.matgreten.student_scheduler.AlertHandler" />
     </application>
 </manifest>
