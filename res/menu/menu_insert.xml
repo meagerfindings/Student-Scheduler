@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.meagerfindings.matgreten.student_scheduler.com.meagerfindings.matgreten.student_scheduler.MainActivity">
+    <item
+        android:id="@+id/save_option"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="100"
+        android:title="@string/save"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/cancel_option"
+        android:checkable="false"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:orderInCategory="101"
+        android:title="@string/cancel_changes"
+        app:showAsAction="never" />
+</menu>

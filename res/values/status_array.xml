@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="status_array">
+        <item>Planned</item>
+        <item>In Progress</item>
+        <item>Complete</item>
+        <item>Dropped</item>
+        <item>Cancelled</item>
+        <item>Enrolled, Not Started</item>
+    </string-array>
+</resources>
